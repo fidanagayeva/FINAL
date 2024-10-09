@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Victor+Serif:wght@400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #FFFAF2; 
+  font-family: 'Victor Serif', serif; 
+}
