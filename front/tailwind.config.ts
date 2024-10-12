@@ -17,6 +17,8 @@ const config: Config = {
         customHoverPLNTS: "#9E1814",
         customText:"#134A21",
         customBG:"#FFFAF2",
+        custombgclr:"#E7E3D9",
+        customftrgrn:"#5E6846",
       },
       fontFamily: {
         'victor-serif': ['"Victor Serif"', 'serif'],
