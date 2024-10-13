@@ -48,6 +48,7 @@ const CustomIcon = () => (
 
 );
 
+
 export const CartSidebar = ({ toggleSidebar }) => {
   const [currentView, setCurrentView] = useState('menu');
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);

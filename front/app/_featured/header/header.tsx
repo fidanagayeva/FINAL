@@ -4,8 +4,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FaChevronDown, FaBars, FaChevronUp } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { CartSidebar } from '../sidebar/CartSidebar';
+import { Sidebar } from '../sidebar/Sidebar';
 
-const UserIcon = () => (
+const UserIcon = ({ onClick }: { onClick: React.MouseEventHandler<SVGSVGElement> }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 74.84 74.84"
@@ -18,6 +19,7 @@ const UserIcon = () => (
     strokeLinejoin="round"
     width="32"
     height="32"
+    onClick={onClick}
   >
     <path d="M43.41,29.29c2.29-1.88,3.29-3.43,3.29-3.43,1.59-2.57,2.34-5.54,1.76-8.64-1.04-5.45-5.69-9.19-11.01-9.21h-.04c-5.32.02-9.97,3.76-11.01,9.21-.59,3.1.17,6.07,1.76,8.64,0,0,4.44,6.52,14.67,8.98,7.04,1.4,12.78,5.45,15.5,10.75,1.23,2.02,1.96,4.39,1.96,6.92v.96c0,7.35-6.01,13.36-13.36,13.36h-19.01c-7.35,0-13.36-6.01-13.36-13.36v-.96c0-2.23.56-4.33,1.53-6.18,2.36-5.25,7.63-9.38,14.24-11.12" />
   </svg>
@@ -112,14 +114,19 @@ const Logo = () => (
 );
 
 export const Header = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState('EN (€)');
   const dropdownRef = useRef(null);
   const router = useRouter();
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+  const toggleMobileSidebar = () => {
+    setIsMobileSidebarOpen(!isMobileSidebarOpen);
+  };
+
+  const toggleDesktopSidebar = () => {
+    setIsDesktopSidebarOpen(!isDesktopSidebarOpen);
   };
 
   const toggleDropdown = (dropdownId) => {
@@ -140,19 +147,19 @@ export const Header = () => {
       document.removeEventListener('mousedown', closeDropdown);
     };
   }, []);
-
+  
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center py-4 bg-customBG shadow-md">
         <div className="flex items-center justify-between w-full px-4 md:px-16">
           <div className="flex items-center">
-            <button onClick={toggleSidebar} className="md:hidden">
+            <button onClick={toggleMobileSidebar} className="md:hidden">
               <FaBars className="text-3xl text-customText" />
             </button>
             <Logo className="ml-2" />
           </div>
           <div className="flex space-x-4">
-            <UserIcon className="block md:hidden" />
+            <UserIcon onClick={toggleDesktopSidebar} className="hidden md:block" />
             <HeartIcon className="block md:hidden" />
             <CartIcon className="block md:hidden" />
             <SearchIcon className="block md:hidden" />
@@ -521,7 +528,9 @@ export const Header = () => {
           </div>
         </nav>
       </header>
-      {isSidebarOpen && <CartSidebar toggleSidebar={toggleSidebar} />}
+      {isMobileSidebarOpen && <CartSidebar toggleSidebar={toggleMobileSidebar} />}
+
+      {isDesktopSidebarOpen && <Sidebar toggleSidebar={toggleDesktopSidebar} />}
     </>
   );
 };
