@@ -126,8 +126,7 @@ export const Footer = () => {
                 </li>
               </ul>
             </div>
-
-
+            
             <div>
               <div className="md:col-span-1">
                 <div className="mb-4 flex space-x-4">

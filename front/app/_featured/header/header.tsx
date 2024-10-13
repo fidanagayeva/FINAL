@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { FaChevronDown, FaBars, FaChevronUp } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
 import { CartSidebar } from '../sidebar/CartSidebar';
 
 const UserIcon = () => (
@@ -115,6 +116,7 @@ export const Header = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState('EN (€)');
   const dropdownRef = useRef(null);
+  const router = useRouter();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -162,16 +164,22 @@ export const Header = () => {
             <div className="relative">
               <a
                 href="#"
-                onClick={() => toggleDropdown('dropdown1')}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push('/');
+                }}
                 className="text-customText text-[1.25rem] font-victor-serif flex items-center hover:text-customHover"
               >
                 Houseplants
                 <FaChevronDown
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleDropdown('dropdown1');
+                  }}
                   className={`ml-1 text-[0.875rem] transition-transform duration-300 ${activeDropdown === 'dropdown1' ? 'rotate-180' : 'rotate-0'
                     }`}
                 />
               </a>
-
               {activeDropdown === 'dropdown1' && (
                 <div
                   className="absolute left-0 right-0 top-full mt-2 bg-customBG shadow-lg p-6 flex justify-between w-screen z-50 -ml-[calc((20vw-100%)/2)]"

@@ -19,6 +19,7 @@ const config: Config = {
         customBG:"#FFFAF2",
         custombgclr:"#E7E3D9",
         customftrgrn:"#5E6846",
+        customtextRed:"#C40000",
       },
       fontFamily: {
         'victor-serif': ['"Victor Serif"', 'serif'],
