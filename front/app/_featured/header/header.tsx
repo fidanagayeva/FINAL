@@ -118,8 +118,9 @@ export const Header = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const [selectedLanguage, setSelectedLanguage] = useState('en'); 
+  const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [translations, setTranslations] = useState({});
+  const [firstName, setFirstName] = useState("");
   const dropdownRef = useRef(null);
   const router = useRouter();
 
@@ -144,7 +145,7 @@ export const Header = () => {
   };
 
   const handleLanguageChange = (languageCode) => {
-    console.log("Seçilen dil: ", languageCode); 
+    console.log("Seçilen dil: ", languageCode);
     setSelectedLanguage(languageCode);
     toggleDropdown('languageDropdown');
   };
@@ -154,10 +155,17 @@ export const Header = () => {
     import(`../../translations/${selectedLanguage}.json`)
       .then((module) => {
         console.log("Yüklenen çeviriler:", module.default);
-        setTranslations(module.default); 
+        setTranslations(module.default);
       })
       .catch((err) => console.error("Çeviri dosyası yüklenemedi:", err));
   }, [selectedLanguage]);
+
+  useEffect(() => {
+    const storedFirstName = localStorage.getItem("firstName");
+    if (storedFirstName) {
+      setFirstName(storedFirstName);
+    }
+  }, []);
 
   return (
     <>
@@ -170,7 +178,21 @@ export const Header = () => {
             <Logo className="ml-2" />
           </div>
           <div className="flex space-x-4">
-            <UserIcon onClick={toggleDesktopSidebar} className="hidden md:block" />
+            <div className="flex items-center">
+              <div className="flex flex-col justify-center mr-2">
+                {firstName && (
+                  <span className="text-customText leading-none">
+                    Hi
+                  </span>
+                )}
+                {firstName && (
+                  <span className="text-customText font-bold leading-none">
+                    {firstName}
+                  </span>
+                )}
+              </div>
+              <UserIcon onClick={toggleDesktopSidebar} className="hidden md:block" />
+            </div>
             <HeartIcon className="block md:hidden" />
             <CartIcon className="block md:hidden" />
             <SearchIcon className="block md:hidden" />
@@ -515,7 +537,7 @@ export const Header = () => {
                   <div
                     key={index}
                     className="flex items-center p-3 cursor-pointer hover:bg-gray-200"
-                    onClick={() => handleLanguageChange(item.code)} 
+                    onClick={() => handleLanguageChange(item.code)}
                   >
                     <span className="flex-grow">{item.label}</span>
                     {selectedLanguage === item.code && <span className="text-[#134A21]">✓</span>}

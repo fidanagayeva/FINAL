@@ -56,9 +56,10 @@ const AuthPage = () => {
             const loginUrl = "http://localhost:3001/api/users/login";
             const loginResponse = await axios.post(loginUrl, loginData);
             localStorage.setItem("token", loginResponse.data.token);
+            localStorage.setItem("firstName", signupData.firstName);
 
             if (loginResponse.status === 200) {
-                router.push("/home");
+                router.push("/account");
             } else {
                 alert("Error occurred");
             }
