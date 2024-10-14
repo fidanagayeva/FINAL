@@ -4,21 +4,7 @@ import React from 'react';
 
 const PLNTS = () => {
     return (
-        <div className="mt-[4.7rem] md:mt-[7.5rem]">
-            <div className="w-full h-[4rem] bg-custombgclr text-customText py-3 px-14 flex items-center justify-start">
-                <p className="text-sm md:text-base font-medium space-x-4">
-                    <span className="font-serif italic hover:text-customHover transition duration-300 cursor-pointer">
-                        Free shipping for orders over €75,-
-                    </span>
-                    <span className="font-serif italic hover:text-customHover transition duration-300 cursor-pointer">
-                        30 days PLNTs health guarantee
-                    </span>
-                    <span className="font-serif italic hover:text-customHover transition duration-300 cursor-pointer">
-                        4.5/5 out of 20,800+ reviews
-                    </span>
-                </p>
-            </div>
-
+        <div>
             <div className="relative w-full h-[100vh]">
                 <div
                     className="absolute inset-0 w-full h-full bg-cover bg-center"

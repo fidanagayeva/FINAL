@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { FaChevronDown, FaBars, FaChevronUp } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { CartSidebar } from '../sidebar/CartSidebar';
@@ -117,7 +118,8 @@ export const Header = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const [selectedLanguage, setSelectedLanguage] = useState('EN (€)');
+  const [selectedLanguage, setSelectedLanguage] = useState('en'); 
+  const [translations, setTranslations] = useState({});
   const dropdownRef = useRef(null);
   const router = useRouter();
 
@@ -141,16 +143,25 @@ export const Header = () => {
     }
   };
 
+  const handleLanguageChange = (languageCode) => {
+    console.log("Seçilen dil: ", languageCode); 
+    setSelectedLanguage(languageCode);
+    toggleDropdown('languageDropdown');
+  };
+
   useEffect(() => {
-    // document.addEventListener('mousedown', closeDropdown);
-    return () => {
-      document.removeEventListener('mousedown', closeDropdown);
-    };
-  }, []);
-  
+    console.log("Yüklenen dil kodu:", selectedLanguage);
+    import(`../../translations/${selectedLanguage}.json`)
+      .then((module) => {
+        console.log("Yüklenen çeviriler:", module.default);
+        setTranslations(module.default); 
+      })
+      .catch((err) => console.error("Çeviri dosyası yüklenemedi:", err));
+  }, [selectedLanguage]);
+
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center py-4 bg-customBG shadow-md">
+      <header key={selectedLanguage} className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center py-4 bg-customBG shadow-md">
         <div className="flex items-center justify-between w-full px-4 md:px-16">
           <div className="flex items-center">
             <button onClick={toggleMobileSidebar} className="md:hidden">
@@ -467,9 +478,9 @@ export const Header = () => {
                 </div>
               )}
             </div>
-            <a href="#" className="text-customText text-[1.25rem] font-victor-serif hover:text-customHover">
+            <Link href="/gifts" className="text-customText text-[1.25rem] font-victor-serif hover:text-customHover">
               Gifts
-            </a>
+            </Link>
             <a href="#" className="text-customPLNTS text-[1.25rem] font-victor-serif hover:text-customHoverPLNTS">
               PLNTS Week
             </a>
@@ -486,7 +497,7 @@ export const Header = () => {
               className="text-customText text-[1.25rem] font-victor-serif flex items-center cursor-pointer hover:text-customHover"
               onClick={() => toggleDropdown('languageDropdown')}
             >
-              {selectedLanguage}
+              {selectedLanguage === 'en' ? 'English (EN)' : 'Deutsch (DE)'}
               <FaChevronDown
                 className={`ml-1 text-[0.875rem] transition-transform duration-300 ${activeDropdown === 'languageDropdown' ? 'rotate-180' : 'rotate-0'
                   }`}
@@ -498,33 +509,28 @@ export const Header = () => {
                 className="absolute right-8 top-[7rem] z-[60] overflow-auto rounded-lg bg-main-menu shadow-lg ring-1 ring-black/5 focus:outline-none bg-customBG"
               >
                 {[
-                  { label: 'Deutsch(DE)', flag: 'de.01580221.svg' },
-                  { label: 'Deutsch(CH)', flag: 'ch.baba02d3.svg' },
-                  { label: 'English(EU-€)', flag: 'eu.9e870f69.svg' },
-                  { label: 'English (UK - £)', flag: 'gb.2117e9c7.svg' },
-                  { label: 'Francais', flag: 'fr.e458d2db.svg' },
-                  { label: 'Italiano', flag: 'it.a33eed70.svg' },
-                  { label: 'Nederlands', flag: 'nl.0f90b76d.svg' },
+                  { label: 'English (EN)', code: 'en' },
+                  { label: 'Deutsch (DE)', code: 'de' },
                 ].map((item, index) => (
                   <div
                     key={index}
                     className="flex items-center p-3 cursor-pointer hover:bg-gray-200"
-                    onClick={() => {
-                      setSelectedLanguage(item.label);
-                      toggleDropdown('languageDropdown');
-                    }}
+                    onClick={() => handleLanguageChange(item.code)} 
                   >
-                    <img
-                      src={`https://plnts.com/_next/static/media/${item.flag}`}
-                      alt={`${item.label} Flag`}
-                      className="w-6 h-6 rounded-full mr-3"
-                    />
                     <span className="flex-grow">{item.label}</span>
-                    {selectedLanguage === item.label && <span className="text-[#134A21]">✓</span>}
+                    {selectedLanguage === item.code && <span className="text-[#134A21]">✓</span>}
                   </div>
                 ))}
               </div>
             )}
+
+            <h1>{translations.greeting}</h1>
+            <a
+              href="#"
+              className="text-customText text-[1.25rem] font-victor-serif hover:text-customHover"
+            >
+              {translations.gifts}
+            </a>
           </div>
         </nav>
       </header>

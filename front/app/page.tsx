@@ -4,5 +4,4 @@ export default function Prew() {
 
   redirect('/home');
 
-
 }

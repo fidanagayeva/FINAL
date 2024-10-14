@@ -4,6 +4,8 @@ import { useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Layout from "../_featured/layout/layout";
+import {Info} from "../_components/Info";
 
 const Signup = () => {
   const [data, setData] = useState({
@@ -44,6 +46,8 @@ const Signup = () => {
   };
 
   return (
+    <Layout>
+    <Info/>
     <div className="flex justify-center items-center min-h-screen bg-white">
       <div className="w-[350px] rounded-lg shadow-lg p-6 bg-white border border-gray-300">
         <h1 className="text-2xl font-semibold text-center mb-4">Welcome Back</h1>
@@ -113,6 +117,7 @@ const Signup = () => {
         </Link>
       </div>
     </div>
+    </Layout>
   );
 };
 

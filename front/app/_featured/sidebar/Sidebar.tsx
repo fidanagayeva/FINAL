@@ -1,10 +1,13 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation'; 
 
 export const Sidebar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
     const sidebarRef = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null); 
+    const router = useRouter();
 
     useEffect(() => {
         setIsVisible(true);
@@ -24,6 +27,18 @@ export const Sidebar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [toggleSidebar]);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const email = (document.getElementById('email') as HTMLInputElement).value;
+        const password = (document.getElementById('password') as HTMLInputElement).value;
+
+        if (!email || !password) {
+            setErrorMessage("Oops! That’s not the correct email or password. Give it another try or create a new password. It’s easy to do so via forgot your password.");
+        } else {
+            setErrorMessage(null);
+        }
+    };
 
     return (
         <>
@@ -60,7 +75,7 @@ export const Sidebar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
                     </button>
                 </div>
 
-                <form className="space-y-4 ml-2">
+                <form className="space-y-4 ml-2" onSubmit={handleSubmit}>
                     <div>
                         <p className="mb-8 text-customText font-bold md:mb-6">
                             Log in with email
@@ -94,6 +109,11 @@ export const Sidebar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
                             Forgot your password?
                         </a>
                     </div>
+                    {errorMessage && (
+                        <div className="mt-4 text-customtextRed text-[0.95rem]">
+                            {errorMessage}
+                        </div>
+                    )}
                     <button
                         type="submit"
                         className="w-full bg-customText text-white py-2 px-4 rounded-3xl hover:bg-customHover transition duration-200"
@@ -102,11 +122,13 @@ export const Sidebar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
                     </button>
                 </form>
 
-
                 <div className="mt-4 ml-2 text-sm">
                     <p className="text-left">
                         No account yet?{' '}
-                        <a href="#" className=" text-customText underline hover:text-customHover hover:border-customHover">
+                        <a 
+                            onClick={() => router.push('/authpage')}  
+                            className=" text-customText underline hover:text-customHover hover:border-customHover"
+                        >
                             Create one here!
                         </a>
                     </p>
