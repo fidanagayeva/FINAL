@@ -43,10 +43,10 @@ export const Sidebar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
         const email = (document.getElementById('email') as HTMLInputElement).value;
         const password = (document.getElementById('password') as HTMLInputElement).value;
 
+        setErrorMessage("Oops! That’s not the correct email or password. Give it another try or create a new password. It’s easy to do so via forgot your password.");
+
         if (!email || !password) {
-            setErrorMessage("Oops! That’s not the correct email or password. Give it another try or create a new password. It’s easy to do so via forgot your password.");
-        } else {
-            setErrorMessage(null);
+            setErrorMessage("Oops! Email or password is empty. Please check again.");
         }
     };
 

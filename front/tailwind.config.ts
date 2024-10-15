@@ -20,6 +20,9 @@ const config: Config = {
         custombgclr:"#E7E3D9",
         customftrgrn:"#5E6846",
         customtextRed:"#C40000",
+        customChevron:"#556442",
+        customHiclr:"#A9AE9A",
+        customBorderclr:"#e4e0d8",
       },
       fontFamily: {
         'victor-serif': ['"Victor Serif"', 'serif'],

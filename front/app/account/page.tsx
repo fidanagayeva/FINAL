@@ -1,14 +1,13 @@
 import Layout from "../_featured/layout/layout";
 import {Info} from "../_components/Info";
-import ReadMore from "../_components/ReadMore"
-
+import Overview from "../_components/Overview";
 
 export default function Account() {
   return (
     <div>
       <Layout>
       <Info/>
-      <ReadMore />
+      <Overview/>
       </Layout>
     </div>
   );

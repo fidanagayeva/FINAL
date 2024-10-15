@@ -77,8 +77,10 @@ const AuthPage = () => {
     return (
         <Layout>
             <Info />
-            <div className="font-victor-serif ml-14 mt-10 text-[37px] leading-[37px] text-customText text-primary md:text-[65px] md:leading-[65px] px-3 md:px-0">
-                Your PLNTS account
+            <div className="bg-background">
+                <div className="font-victor-serif ml-14 p-8 text-[37px] leading-[37px] text-customText text-primary md:text-[65px] md:leading-[65px] px-3 md:px-0">
+                    Your PLNTS account
+                </div>
             </div>
             <div className="min-h-screen bg-background flex items-center justify-center">
                 <div className="flex flex-col md:flex-row w-full max-w-[73rem] p-2 space-x-0 md:space-x-8">
@@ -106,7 +108,7 @@ const AuthPage = () => {
                                         onChange={handleSignupChange}
                                         value={signupData.firstName}
                                         required
-                                        className="w-full p-3 bg-white border-2 border-[#e4e0d8] focus:outline-none"
+                                        className="w-full p-3 bg-white border-2 border-customBorderclr focus:outline-none"
                                     />
                                 </div>
                                 <div className="w-full md:w-1/2">
@@ -117,7 +119,7 @@ const AuthPage = () => {
                                         onChange={handleSignupChange}
                                         value={signupData.lastName}
                                         required
-                                        className="w-full p-3 bg-white border-2 border-[#e4e0d8] focus:outline-none"
+                                        className="w-full p-3 bg-white border-2 border-customBorderclr focus:outline-none"
                                     />
                                 </div>
                             </div>
@@ -131,7 +133,7 @@ const AuthPage = () => {
                                         onChange={handleSignupChange}
                                         value={signupData.email}
                                         required
-                                        className="w-full p-3 bg-white border-2 border-[#e4e0d8] focus:outline-none"
+                                        className="w-full p-3 bg-white border-2 border-customBorderclr focus:outline-none"
                                     />
                                 </div>
                                 <div className="w-full md:w-1/2">
@@ -142,7 +144,7 @@ const AuthPage = () => {
                                         onChange={handleLoginChange}
                                         value={loginData.email}
                                         required
-                                        className="w-full p-3 bg-white border-2 border-[#e4e0d8] focus:outline-none"
+                                        className="w-full p-3 bg-white border-2 border-customBorderclr focus:outline-none"
                                     />
                                 </div>
                             </div>
@@ -156,7 +158,7 @@ const AuthPage = () => {
                                         onChange={handleSignupChange}
                                         value={signupData.password}
                                         required
-                                        className="w-full p-3 bg-white border-2 border-[#e4e0d8] focus:outline-none"
+                                        className="w-full p-3 bg-white border-2 border-customBorderclr focus:outline-none"
                                     />
                                 </div>
                                 <div className="w-full md:w-1/2">
@@ -167,7 +169,7 @@ const AuthPage = () => {
                                         onChange={handleLoginChange}
                                         value={loginData.password}
                                         required
-                                        className="w-full p-3 bg-white border-2 border-[#e4e0d8] focus:outline-none"
+                                        className="w-full p-3 bg-white border-2 border-customBorderclr focus:outline-none"
                                     />
                                 </div>
                             </div>
@@ -177,7 +179,7 @@ const AuthPage = () => {
                                 <input
                                     type="date"
                                     name="birthdate"
-                                    className="w-full md:w-[25rem] p-3 bg-white border-2 border-[#e4e0d8] focus:outline-none"
+                                    className="w-full md:w-[25rem] p-3 bg-white border-2 border-customBorderclr focus:outline-none"
                                 />
                                 <p className="text-sm text-customText mt-2 italic">
                                     Enter your date of birth to receive a present on your birthday!
@@ -220,8 +222,8 @@ const AuthPage = () => {
                                 type="submit"
                                 onClick={handleSignupSubmit}
                                 className={`w-full md:w-[25rem] p-3 rounded-3xl font-bold disabled:cursor-not-allowed ${signupData.firstName && signupData.lastName && signupData.email && signupData.password
-                                        ? 'bg-customText text-white hover:bg-customHover'
-                                        : 'bg-[#8bcca0] text-gray-50'
+                                    ? 'bg-customText text-white hover:bg-customHover'
+                                    : 'bg-[#8bcca0] text-gray-50'
                                     } transition`}
                                 disabled={!signupData.firstName || !signupData.lastName || !signupData.email || !signupData.password}
                             >
