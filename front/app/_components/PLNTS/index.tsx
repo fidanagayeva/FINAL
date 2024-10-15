@@ -1,8 +1,6 @@
 'use client';
 
-import React from 'react';
-
-const PLNTS = () => {
+export default function PLNTS() {
     return (
         <div>
             <div className="relative w-full h-[100vh]">
@@ -32,4 +30,3 @@ const PLNTS = () => {
     );
 };
 
-export default PLNTS;
