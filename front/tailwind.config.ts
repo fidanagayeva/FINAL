@@ -26,6 +26,7 @@ const config: Config = {
       },
       fontFamily: {
         'victor-serif': ['"Victor Serif"', 'serif'],
+        'chicle': ['Chicle', 'serif'], 
       },
     },
   },
