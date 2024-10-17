@@ -1,7 +1,6 @@
 export default function PlntsLife() {
     return (
         <div className="relative flex flex-wrap p-4 sm:p-10 md:p-16 lg:p-20 mt-10 mb-[30rem]">
-            {/* Left Section */}
             <div className="w-full lg:w-[45%] pr-4">
                 <h1 className="text-left text-customText font-victor-serif text-4xl sm:text-5xl lg:text-6xl lg:text-[64px]">
                     PLNTS <span className="italic">for life</span>
@@ -20,7 +19,6 @@ export default function PlntsLife() {
                 </a>
             </div>
 
-            {/* Right Section with Main Image */}
             <div className="w-full lg:w-[55%] relative mt-8 lg:mt-0">
                 <img
                     src="https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2FPLNTS_for_life_background_67f551596d.jpg&w=828&q=75"
@@ -29,7 +27,6 @@ export default function PlntsLife() {
                 />
             </div>
 
-            {/* Small Images and SVGs - Hidden on mobile and tablet */}
             <div className="absolute left-0 mt-[30rem] lg:mt-[41rem] translate-y-[-50%] flex flex-col lg:flex-row">
                 <div className="relative w-full lg:w-[20.375rem] h-[20rem] lg:h-[27.5rem] mb-8 lg:mb-0 hidden lg:block">
                     <img
