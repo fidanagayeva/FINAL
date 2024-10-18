@@ -32,6 +32,24 @@ const CartIcon = () => (
     </svg>
 );
 
+const HeartIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 74.84 74.84"
+        fill="none"
+        stroke="currentColor"
+        className="text-customGreen"
+        strokeWidth="2.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        width="32"
+        height="32"
+    >
+        <path d="M41.17,14.08l-7.77,7.17.13-.14c-.99,1.08-1.63,2.44-1.63,3.98,0,3.07,2.44,5.51,5.51,5.51s5.51-2.44,5.51-5.51c0-1.63-.63-2.98-1.63-3.98l.14.14-8.52-7.85,1.7,1.57c-4.7-4.7-9.13-6.06-13.29-6.06-8.95,0-16.09,7.23-16.09,16.09v.09c0,1.45.18,2.89.45,4.25,4.7,19.25,31.72,36.6,31.72,36.6h0s27.02-17.26,31.72-36.6c.36-1.36.45-2.8.45-4.25v-.09c0-8.95-7.23-16.09-16.09-16.09-4.25,0-8.86,1.54-13.83,6.6" />
+    </svg>
+);
+
 interface GiftCard {
     _id: string;
     title: string;
@@ -43,91 +61,13 @@ interface GiftCard {
     text2?: string;
 }
 
-const GiftCardComponent = ({ giftcard }) => {
-    const [quantity, setQuantity] = useState(1);
-    const price = giftcard?.price || 0;
-    const totalPrice = quantity * price;
-
-    const increaseQuantity = () => {
-        setQuantity(prev => prev + 1);
-    };
-
-    const decreaseQuantity = () => {
-        setQuantity(prev => (prev > 1 ? prev - 1 : 1));
-    };
-
-    return (
-        <div className="w-1/2">
-            <h1 className="text-5xl font-victor-serif text-customText mb-4">{giftcard?.title}</h1>
-            <p className="text-lg text-customText">€{price.toFixed(2)}</p>
-            <p className="text-customText">{giftcard?.description}</p>
-
-            <div className="flex items-center mt-2 gap-1">
-                {[...Array(5)].map((_, index) => (
-                    <StarIcon key={index} />
-                ))}
-            </div>
-
-            <div className="mt-6 p-4 bg-custombgclr max-w-full sm:max-w-md md:max-w-lg">
-                <h2 className="text-lg text-customText font-semibold mb-2">1. Size</h2>
-
-                <div className="flex items-center mb-4">
-                    <div className="w-8 h-8 bg-customText rounded-full flex items-center justify-center text-white font-semibold">
-                        {giftcard?.size}
-                    </div>
-                </div>
-
-                <hr className="border-customText mb-4" />
-
-                <p className="text-base text-customText">Giftcard ({giftcard?.size})</p>
-                <div className="flex flex-col md:flex-row items-center mt-4 w-full">
-                    <div className="flex items-center w-[7rem] bg-white p-2">
-                        <button onClick={decreaseQuantity} className="px-3 py-1">-</button>
-                        <span className="mx-2 text-lg">{quantity}</span>
-                        <button onClick={increaseQuantity} className="px-3 py-1">+</button>
-                    </div>
-
-                    <div className="ml-auto mb-[-3.5rem] text-customText text-right">
-                        <p className="text-lg">€{totalPrice.toFixed(2)}</p>
-                        <p className="mt-10">Total: €{totalPrice.toFixed(2)}</p>
-                    </div>
-                </div>
-                <button className="mt-4 px-4 py-2 bg-customText text-white rounded-3xl flex gap-3 items-center">
-                    <CartIcon />
-                    Add to cart
-                </button>
-            </div>
-
-
-            <div className="flex flex-col mt-7">
-                <div className="flex items-center mb-2">
-                    <span className="text-customText text-xl font-bold mr-3">✓</span>
-                    <p>Straight from the nursery</p>
-                </div>
-
-                <div className="flex items-center mb-2">
-                    <span className="text-customText text-xl font-bold mr-3">✓</span>
-                    <p>The largest range of baby plants</p>
-                </div>
-
-                <div className="flex items-center">
-                    <span className="text-customText text-xl font-bold mr-3">✓</span>
-                    <p>250,000+ PLNTS Community followers</p>
-                </div>
-            </div>
-
-            <p className="mt-4 text-customText">{giftcard?.text1}</p>
-            <p className="mt-2 text-customText">{giftcard?.text2}</p>
-        </div>
-    );
-};
-
 export default function DetailGifts() {
     const params = useParams();
     const router = useRouter();
     const slug = params.slug as string;
     const [giftcard, setGiftcard] = useState<GiftCard | null>(null);
     const [error, setError] = useState<string>("");
+    const [quantity, setQuantity] = useState(1);
 
     const fetchGiftcardDetails = async () => {
         try {
@@ -147,6 +87,17 @@ export default function DetailGifts() {
 
     const handlePlantGiftsClick = () => {
         router.push('/gifts');
+    };
+
+    const price = giftcard?.price || 0;
+    const totalPrice = quantity * price;
+
+    const increaseQuantity = () => {
+        setQuantity(prev => prev + 1);
+    };
+
+    const decreaseQuantity = () => {
+        setQuantity(prev => (prev > 1 ? prev - 1 : 1));
     };
 
     return (
@@ -169,7 +120,73 @@ export default function DetailGifts() {
                                 />
                             </div>
                         </div>
-                        <GiftCardComponent giftcard={giftcard} />
+                        <div className="w-1/2">
+                            <h1 className="flex justify-between items-center text-5xl font-victor-serif text-customText mb-4">
+                                <span>{giftcard?.title}</span>
+                                <div className="flex items-center justify-center w-12 h-12 border-[1px] border-customText rounded-full">
+                                    <HeartIcon />
+                                </div>
+                            </h1>
+                            <p className="text-lg text-customText">€{price.toFixed(2)}</p>
+                            <p className="text-customText">{giftcard?.description}</p>
+
+                            <div className="flex items-center mt-2 gap-1">
+                                {[...Array(5)].map((_, index) => (
+                                    <StarIcon key={index} />
+                                ))}
+                            </div>
+
+                            <div className="mt-6 p-4 bg-custombgclr">
+                                <h2 className="text-lg text-customText font-semibold mb-2">1. Size</h2>
+
+                                <div className="flex items-center mb-4">
+                                    <div className="w-8 h-8 bg-customText rounded-full flex items-center justify-center text-white font-semibold">
+                                        {giftcard?.size}
+                                    </div>
+                                </div>
+
+                                <hr className="border-customText mb-4" />
+
+                                <p className="text-base text-customText">Giftcard ({giftcard?.size})</p>
+
+                                <div className="flex flex-col md:flex-row items-center mt-4 w-full">
+                                    <div className="flex items-center w-[7rem] bg-white p-2">
+                                        <button onClick={decreaseQuantity} className="px-3 py-1">-</button>
+                                        <span className="mx-2 text-lg">{quantity}</span>
+                                        <button onClick={increaseQuantity} className="px-3 py-1">+</button>
+                                    </div>
+
+                                    <div className="ml-auto mb-[-3.5rem] text-customText text-right">
+                                        <p className="text-lg">€{totalPrice.toFixed(2)}</p>
+                                        <p>Total: €{totalPrice.toFixed(2)}</p>
+                                    </div>
+                                </div>
+                                <button className="mt-4 px-4 py-2 bg-customText text-white rounded-3xl flex gap-3 items-center">
+                                    <CartIcon />
+                                    Add to cart
+                                </button>
+                            </div>
+
+                            <div className="flex flex-col mt-7">
+                                <div className="flex items-center mb-2">
+                                    <span className="text-customText text-xl font-bold mr-3">✓</span>
+                                    <p>Straight from the nursery</p>
+                                </div>
+
+                                <div className="flex items-center mb-2">
+                                    <span className="text-customText text-xl font-bold mr-3">✓</span>
+                                    <p>The largest range of baby plants</p>
+                                </div>
+
+                                <div className="flex items-center">
+                                    <span className="text-customText text-xl font-bold mr-3">✓</span>
+                                    <p>250,000+ PLNTS Community followers</p>
+                                </div>
+                            </div>
+
+                            <p className="mt-4 text-customText">{giftcard?.text1}</p>
+                            <p className="mt-2 text-customText">{giftcard?.text2}</p>
+                        </div>
                     </div>
                 </div>
             </Layout>

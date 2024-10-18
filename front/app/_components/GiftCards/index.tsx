@@ -6,6 +6,17 @@ import { FaStar, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { VscListFilter } from 'react-icons/vsc';
+import { AiOutlineClose } from 'react-icons/ai';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+
+interface GiftCard {
+    _id: string;
+    title: string;
+    description: string;
+    image: string;
+    price: number;
+}
 
 const HeartIcon = () => (
     <svg
@@ -25,13 +36,6 @@ const HeartIcon = () => (
     </svg>
 );
 
-interface GiftCard {
-    _id: string;
-    title: string;
-    description: string;
-    image: string;
-    price: number;
-}
 
 export default function GiftCards() {
     const [giftcards, setGiftcards] = useState<GiftCard[]>([]);
@@ -39,12 +43,32 @@ export default function GiftCards() {
     const [error, setError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [activeAccordion, setActiveAccordion] = useState(null);
+    const [filters, setFilters] = useState({
+        size: [],
+        characteristics: [],
+        color: [],
+        location: [],
+        material: [],
+        plantFamily: [],
+        room: [],
+        shape: [],
+        standing: [],
+        style: [],
+        waterCare: [],
+        price: [],
+        height: [],
+        diameter: []
+    });
+
     const router = useRouter();
 
     const fetchGiftcards = async (page: number) => {
         setLoading(true);
         try {
-            const response = await axios.get(`http://localhost:3001/api/giftcards?page=${page}&limit=10`);
+            const params = new URLSearchParams({ page: String(page), ...filters });
+            const response = await axios.get(`http://localhost:3001/api/giftcards?${params}`);
             setGiftcards(response.data.giftcards);
             setTotalPages(response.data.totalPages);
         } catch (error) {
@@ -57,7 +81,7 @@ export default function GiftCards() {
 
     useEffect(() => {
         fetchGiftcards(currentPage);
-    }, [currentPage]);
+    }, [currentPage, filters]);
 
     const handleNextPage = () => {
         if (currentPage < totalPages) {
@@ -72,11 +96,456 @@ export default function GiftCards() {
     };
 
     const handleCardClick = (id: string) => {
-        router.push(`/gifts/${id}`); 
+        router.push(`/gifts/${id}`);
+    };
+
+    const handleFilterChange = (event, filterType) => {
+        const { value, checked } = event.target;
+        setFilters(prevFilters => {
+            const newValues = checked
+                ? [...prevFilters[filterType], value]
+                : prevFilters[filterType].filter(item => item !== value);
+
+            return { ...prevFilters, [filterType]: newValues };
+        });
+    };
+
+
+    const closeSidebar = () => {
+        setIsSidebarOpen(false);
+    };
+
+
+
+    const toggleAccordion = (index) => {
+        setActiveAccordion(activeAccordion === index ? null : index);
     };
 
     return (
         <div className="container mx-auto p-7">
+            <div className="flex flex-col items-end p-2">
+                <div className="flex flex-col md:flex-row items-end gap-2 mb-2 w-full justify-end mt-14 md:mt-0">
+                    <button
+                        className="border border-customText font-bold text-customText px-4 py-2 flex items-center"
+                        onClick={() => setIsSidebarOpen(true)}
+                    >
+                        Filter
+                        <VscListFilter className="ml-2" />
+                    </button>
+                    <div className="relative w-full md:w-auto">
+                        <select className="border font-bold border-customText bg-background text-customText px-4 py-2">
+                            <option value="recommended">Recommended sorting</option>
+                            <option value="name-asc">Name: ascending</option>
+                            <option value="name-desc">Name: descending</option>
+                            <option value="price-asc">Price: low to high</option>
+                            <option value="price-desc">Price: high to low</option>
+                            <option value="relevance-asc">Relevance: ascending</option>
+                            <option value="relevance-desc">Relevance: descending</option>
+                        </select>
+                    </div>
+                </div>
+                <p className="text-customText text-sm text-right">Showing 1-20 of 54 results</p>
+
+                {isSidebarOpen && (
+                    <div
+                        className="fixed inset-0 bg-black bg-opacity-50 z-50"
+                        onClick={closeSidebar}
+                        style={{ pointerEvents: 'auto' }}
+                    ></div>
+                )}
+
+                <div className={`fixed top-0 right-0 w-[27rem] h-full bg-white shadow-lg z-50 transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300`}>
+                    <button className="absolute top-7 right-4" onClick={closeSidebar}>
+                        <AiOutlineClose className="text-customText w-4 h-4" />
+                    </button>
+                    <h2 className="p-4 text-4xl text-customText font-victor-serif">Filter Plant Gifts</h2>
+                    <hr className='bg-customText w-[full] mb-3 ml-4 mr-4 h-[0.15rem]' />
+                    <div className="overflow-y-auto h-[calc(100%-60px)]">
+                        <div className="px-4 py-2">
+                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(0)}>
+                                Size
+                                {activeAccordion === 0 ? (
+                                    <FaChevronUp className="transition-transform duration-300 text-customText" />
+                                ) : (
+                                    <FaChevronDown className="transition-transform duration-300 text-customText" />
+                                )}
+                            </h3>
+                            {activeAccordion === 0 && (
+                                <div className="flex space-x-2 mt-2">
+                                    {['S', 'M', 'L'].map(size => (
+                                        <label key={size} className="block cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                value={size}
+                                                checked={filters.size.includes(size)}
+                                                onChange={(e) => handleFilterChange(e, 'size')}
+                                                className="hidden"
+                                            />
+                                            <span className={`w-9 h-9 rounded-full border border-gray-400 hover:border-customText hover:bg-customText text-gray-400 hover:text-white flex items-center justify-center transition-all duration-300 ${filters.size.includes(size) ? 'bg-customText text-white' : 'bg-white'}`}>
+                                                {size}
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                        <hr className='bg-customText w-[full] my-4 mx-4 h-[0.11rem]' />
+                        <div className="px-4 py-2">
+                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(1)}>
+                                Characteristics
+                                {activeAccordion === 1 ? (
+                                    <FaChevronUp className="transition-transform duration-300 text-customText" />
+                                ) : (
+                                    <FaChevronDown className="transition-transform duration-300 text-customText" />
+                                )}
+                            </h3>
+                            {activeAccordion === 1 && (
+                                <div className="flex flex-col mt-2 space-y-2">
+                                    {['Easy', 'Air purifying', 'Pet friendly', 'Hanging plant'].map(char => (
+                                        <label key={char} className="flex items-center justify-between cursor-pointer">
+                                            <span className="text-customText">{char}</span>
+                                            <span className="relative">
+                                                <input
+                                                    type="checkbox"
+                                                    value={char}
+                                                    checked={filters.characteristics.includes(char)}
+                                                    onChange={(e) => handleFilterChange(e, 'characteristics')}
+                                                    className="sr-only"
+                                                />
+                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
+                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.characteristics.includes(char) ? 'translate-x-5' : 'translate-x-0'}
+                                ml-1 // Add left margin for spacing
+                            `} />
+                                                </span>
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+
+                        <hr className='bg-customText w-[full] my-4 mx-4 h-[0.11rem]' />
+                        <div className="px-4 py-2">
+                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(2)}>
+                                Color
+                                {activeAccordion === 2 ? (
+                                    <FaChevronUp className="transition-transform duration-300 text-customText" />
+                                ) : (
+                                    <FaChevronDown className="transition-transform duration-300 text-customText" />
+                                )}
+                            </h3>
+                            {activeAccordion === 2 && (
+                                <div className="flex flex-col mt-2 space-y-2">
+                                    {['Orange', 'Black', 'Green', 'Brown'].map(color => (
+                                        <label key={color} className="flex items-center justify-between cursor-pointer">
+                                            <span className="text-customText">{color}</span>
+                                            <span className="relative">
+                                                <input
+                                                    type="checkbox"
+                                                    value={color}
+                                                    checked={filters.color.includes(color)}
+                                                    onChange={(e) => handleFilterChange(e, 'color')}
+                                                    className="sr-only"
+                                                />
+                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
+                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.color.includes(color) ? 'translate-x-5' : 'translate-x-0'}
+                                ml-1 // Add left margin for spacing
+                            `} />
+                                                </span>
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        <hr className='bg-customText w-[full] my-4 mx-4 h-[0.11rem]' />
+                        <div className="px-4 py-2">
+                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(3)}>
+                                Location
+                                {activeAccordion === 3 ? (
+                                    <FaChevronUp className="transition-transform duration-300 text-customText" />
+                                ) : (
+                                    <FaChevronDown className="transition-transform duration-300 text-customText" />
+                                )}
+                            </h3>
+                            {activeAccordion === 3 && (
+                                <div className="flex flex-col mt-2 space-y-2">
+                                    {['Sun', 'Partial sun', '(Half) shade'].map(loc => (
+                                        <label key={loc} className="flex items-center justify-between cursor-pointer">
+                                            <span className="text-customText">{loc}</span>
+                                            <span className="relative">
+                                                <input
+                                                    type="checkbox"
+                                                    value={loc}
+                                                    checked={filters.location.includes(loc)}
+                                                    onChange={(e) => handleFilterChange(e, 'location')}
+                                                    className="sr-only"
+                                                />
+                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
+                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.location.includes(loc) ? 'translate-x-5' : 'translate-x-0'}
+                                ml-1 // Add left margin for spacing
+                            `} />
+                                                </span>
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        <hr className='bg-customText w-[full] my-4 mx-4 h-[0.15rem]' />
+                        <div className="px-4 py-2">
+                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(4)}>
+                                Plant Family
+                                {activeAccordion === 4 ? (
+                                    <FaChevronUp className="transition-transform duration-300 text-customText" />
+                                ) : (
+                                    <FaChevronDown className="transition-transform duration-300 text-customText" />
+                                )}
+                            </h3>
+                            {activeAccordion === 4 && (
+                                <div className="flex flex-col mt-2 space-y-2">
+                                    {['Caladium', 'Calathea', 'Ctenanthe', 'Ficus', 'Monstera', 'Nephrolepis', 'Pilea', 'Peperomia', 'Platycerium', 'Rhaphidophora', 'Sansevieria', 'Strelitzia', 'Stromanthe'].map(plantFamily => (
+                                        <label key={plantFamily} className="flex items-center justify-between cursor-pointer">
+                                            <span className="text-customText">{plantFamily}</span>
+                                            <span className="relative">
+                                                <input
+                                                    type="checkbox"
+                                                    value={plantFamily}
+                                                    checked={filters.plantFamily.includes(plantFamily)}
+                                                    onChange={(e) => handleFilterChange(e, 'plantFamily')}
+                                                    className="sr-only"
+                                                />
+                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
+                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.plantFamily.includes(plantFamily) ? 'translate-x-5' : 'translate-x-0'}
+                                ml-1 // Add left margin for spacing
+                            `} />
+                                                </span>
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        <hr className='bg-customText w-[full] my-4 mx-4 h-[0.11rem]' />
+                        <div className="px-4 py-2">
+                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(5)}>
+                                Material
+                                {activeAccordion === 5 ? (
+                                    <FaChevronUp className="transition-transform duration-300 text-customText" />
+                                ) : (
+                                    <FaChevronDown className="transition-transform duration-300 text-customText" />
+                                )}
+                            </h3>
+                            {activeAccordion === 5 && (
+                                <div className="flex flex-col mt-2 space-y-2">
+                                    {['Terracotta', 'Eco'].map(material => (
+                                        <label key={material} className="flex items-center justify-between cursor-pointer">
+                                            <span className="text-customText">{material}</span>
+                                            <span className="relative">
+                                                <input
+                                                    type="checkbox"
+                                                    value={material}
+                                                    checked={filters.material.includes(material)}
+                                                    onChange={(e) => handleFilterChange(e, 'material')}
+                                                    className="sr-only"
+                                                />
+                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
+                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.material.includes(material) ? 'translate-x-5' : 'translate-x-0'}
+                                ml-1 // Add left margin for spacing
+                            `} />
+                                                </span>
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                            <hr className='bg-customText w-[full] my-4 h-[0.11rem]' />
+
+                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(6)}>
+                                Shape
+                                {activeAccordion === 6 ? (
+                                    <FaChevronUp className="transition-transform duration-300 text-customText" />
+                                ) : (
+                                    <FaChevronDown className="transition-transform duration-300 text-customText" />
+                                )}
+                            </h3>
+                            {activeAccordion === 6 && (
+                                <div className="flex flex-col mt-2 space-y-2">
+                                    {['Round'].map(shape => (
+                                        <label key={shape} className="flex items-center justify-between cursor-pointer">
+                                            <span className="text-customText">{shape}</span>
+                                            <span className="relative">
+                                                <input
+                                                    type="checkbox"
+                                                    value={shape}
+                                                    checked={filters.shape.includes(shape)}
+                                                    onChange={(e) => handleFilterChange(e, 'shape')}
+                                                    className="sr-only"
+                                                />
+                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
+                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.shape.includes(shape) ? 'translate-x-5' : 'translate-x-0'}
+                                ml-1 // Add left margin for spacing
+                            `} />
+                                                </span>
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                            <hr className='bg-customText w-[full] my-4 h-[0.15rem]' />
+
+                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(7)}>
+                                Standing or Hanging
+                                {activeAccordion === 7 ? (
+                                    <FaChevronUp className="transition-transform duration-300 text-customText" />
+                                ) : (
+                                    <FaChevronDown className="transition-transform duration-300 text-customText" />
+                                )}
+                            </h3>
+                            {activeAccordion === 7 && (
+                                <div className="flex flex-col mt-2 space-y-2">
+                                    {['Standing'].map(standing => (
+                                        <label key={standing} className="flex items-center justify-between cursor-pointer">
+                                            <span className="text-customText">{standing}</span>
+                                            <span className="relative">
+                                                <input
+                                                    type="checkbox"
+                                                    value={standing}
+                                                    checked={filters.standing.includes(standing)}
+                                                    onChange={(e) => handleFilterChange(e, 'standing')}
+                                                    className="sr-only"
+                                                />
+                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
+                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.standing.includes(standing) ? 'translate-x-5' : 'translate-x-0'}
+                                ml-1 // Add left margin for spacing
+                            `} />
+                                                </span>
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                            <hr className='bg-customText w-[full] my-4 h-[0.11rem]' />
+
+                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(8)}>
+                                Style
+                                {activeAccordion === 8 ? (
+                                    <FaChevronUp className="transition-transform duration-300 text-customText" />
+                                ) : (
+                                    <FaChevronDown className="transition-transform duration-300 text-customText" />
+                                )}
+                            </h3>
+                            {activeAccordion === 8 && (
+                                <div className="flex flex-col mt-2 space-y-2">
+                                    {['Nature', 'Basic', 'Fun'].map(style => (
+                                        <label key={style} className="flex items-center justify-between cursor-pointer">
+                                            <span className="text-customText">{style}</span>
+                                            <span className="relative">
+                                                <input
+                                                    type="checkbox"
+                                                    value={style}
+                                                    checked={filters.style.includes(style)}
+                                                    onChange={(e) => handleFilterChange(e, 'style')}
+                                                    className="sr-only"
+                                                />
+                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
+                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.style.includes(style) ? 'translate-x-5' : 'translate-x-0'}
+                                ml-1 // Add left margin for spacing
+                            `} />
+                                                </span>
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                            <hr className='bg-customText w-[full] my-4 h-[0.15rem]' />
+
+                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(9)}>
+                                Water Care
+                                {activeAccordion === 9 ? (
+                                    <FaChevronUp className="transition-transform duration-300 text-customText" />
+                                ) : (
+                                    <FaChevronDown className="transition-transform duration-300 text-customText" />
+                                )}
+                            </h3>
+                            {activeAccordion === 9 && (
+                                <div className="flex flex-col mt-2 space-y-2">
+                                    {['Weekly', 'Be-weekly'].map(waterCare => (
+                                        <label key={waterCare} className="flex items-center justify-between cursor-pointer">
+                                            <span className="text-customText">{waterCare}</span>
+                                            <span className="relative">
+                                                <input
+                                                    type="checkbox"
+                                                    value={waterCare}
+                                                    checked={filters.waterCare.includes(waterCare)}
+                                                    onChange={(e) => handleFilterChange(e, 'waterCare')}
+                                                    className="sr-only"
+                                                />
+                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
+                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.waterCare.includes(waterCare) ? 'translate-x-5' : 'translate-x-0'}
+                                ml-1 // Add left margin for spacing
+                            `} />
+                                                </span>
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                            <hr className='bg-customText w-[full] my-4 h-[0.11rem]' />
+
+                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(10)}>
+                                Room
+                                {activeAccordion === 10 ? (
+                                    <FaChevronUp className="transition-transform duration-300 text-customText" />
+                                ) : (
+                                    <FaChevronDown className="transition-transform duration-300 text-customText" />
+                                )}
+                            </h3>
+                            {activeAccordion === 10 && (
+                                <div className="flex flex-col mt-2 space-y-2">
+                                    {['Bathroom', 'Bedroom', 'Livingroom', 'Office'].map(room => (
+                                        <label key={room} className="flex items-center justify-between cursor-pointer">
+                                            <span className="text-customText">{room}</span>
+                                            <span className="relative">
+                                                <input
+                                                    type="checkbox"
+                                                    value={room}
+                                                    checked={filters.room.includes(room)}
+                                                    onChange={(e) => handleFilterChange(e, 'room')}
+                                                    className="sr-only"
+                                                />
+                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
+                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.room.includes(room) ? 'translate-x-5' : 'translate-x-0'}
+                                ml-1 // Add left margin for spacing
+                            `} />
+                                                </span>
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        <hr className='bg-customText w-[full] mt-4 mb-10 mx-4 h-[0.11rem]' />
+                    </div>
+                </div>
+
+            </div>
+
             {loading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {Array.from({ length: 20 }).map((_, index) => (
@@ -157,3 +626,4 @@ export default function GiftCards() {
         </div>
     );
 }
+
