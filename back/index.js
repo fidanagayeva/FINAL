@@ -4,6 +4,7 @@ const cors = require("cors");
 const connection = require("./db"); 
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
+const giftcardRoutes = require("./routes/giftcards");
 
 const app = express();
 const path = require("path");
@@ -16,6 +17,7 @@ app.use(express.json({ extended: true }));
 
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/giftcards", giftcardRoutes);
 
 const port = process.env.PORT || 3001; 
 app.listen(port, () => console.log(`Server running on port ${port}`));
