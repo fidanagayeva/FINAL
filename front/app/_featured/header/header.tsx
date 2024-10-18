@@ -540,7 +540,7 @@ export const Header = () => {
                     onClick={() => handleLanguageChange(item.code)}
                   >
                     <span className="flex-grow">{item.label}</span>
-                    {selectedLanguage === item.code && <span className="text-[#134A21]">✓</span>}
+                    {selectedLanguage === item.code && <span className="text-customText">✓</span>}
                   </div>
                 ))}
               </div>
