@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer');
 const router = express.Router();
 const {
   createGiftcard,
@@ -7,12 +8,23 @@ const {
   deleteGiftcard,
 } = require('../controllers/giftcards');
 
-router.post('/', createGiftcard);
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); 
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`); 
+  },
+});
+
+const upload = multer({ storage });
+
+router.post('/', upload.single('image'), createGiftcard);
 
 router.get('/', getGiftcards);
+
+router.get('/:id', getGiftcardById);
 
 router.delete('/:id', deleteGiftcard);
 
 module.exports = router;
-
-router.get('/:id', getGiftcardById); 

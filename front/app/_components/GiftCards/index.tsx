@@ -57,9 +57,6 @@ export default function GiftCards() {
         standing: [],
         style: [],
         waterCare: [],
-        price: [],
-        height: [],
-        diameter: []
     });
 
     const router = useRouter();
