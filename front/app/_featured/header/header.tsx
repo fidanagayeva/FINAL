@@ -6,6 +6,7 @@ import { FaChevronDown, FaBars, FaChevronUp } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { CartSidebar } from '../sidebar/CartSidebar';
 import { Sidebar } from '../sidebar/Sidebar';
+import AddCart from '../sidebar/AddCart';
 
 const UserIcon = ({ onClick }: { onClick: React.MouseEventHandler<SVGSVGElement> }) => (
   <svg
@@ -13,7 +14,7 @@ const UserIcon = ({ onClick }: { onClick: React.MouseEventHandler<SVGSVGElement>
     viewBox="0 0 74.84 74.84"
     fill="none"
     stroke="currentColor"
-    className="text-customGreen"
+    className="text-customGreen cursor-pointer"
     strokeWidth="2.5"
     strokeMiterlimit="10"
     strokeLinecap="round"
@@ -44,19 +45,20 @@ const HeartIcon = () => (
   </svg>
 );
 
-const CartIcon = () => (
+const CartIcon = ({ onClick }: { onClick: React.MouseEventHandler<SVGSVGElement> }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 74.84 74.84"
     fill="none"
     stroke="currentColor"
-    className="text-customGreen"
+    className="text-customGreen cursor-pointer"
     strokeWidth="2.5"
     strokeMiterlimit="10"
     strokeLinecap="round"
     strokeLinejoin="round"
     width="32"
     height="32"
+    onClick={onClick}
   >
     <path d="M14.31,21.63c-.63-3.37-.02-5.89.15-7.26.24-1.95-.46-3.96-2.04-5.14-.01,0-.03-.02-.04-.03-2.24-1.65-5.23-1.43-7.2.38h-.02s0,.02,0,.02v.02c-1.96,1.83-2.39,4.79-.91,7.15.84,1.34,2.14,2.18,3.6,2.58,0,0,1.98.51,9.02.45h-1.16,54.28c.81,0,1.48.67,1.48,1.48l-5.98,31.46H20.22l-5.98-31.46.07.36Z" />
     <circle cx="28.35" cy="61.99" r="4.77" />
@@ -117,10 +119,12 @@ const Logo = () => (
 export const Header = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(false);
+  const [isAddCartOpen, setIsAddCartOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [translations, setTranslations] = useState({});
-  const [firstName, setFirstName] = useState("");
+  const [firstName, setFirstName] = useState('');
   const dropdownRef = useRef(null);
   const router = useRouter();
 
@@ -130,6 +134,15 @@ export const Header = () => {
 
   const toggleDesktopSidebar = () => {
     setIsDesktopSidebarOpen(!isDesktopSidebarOpen);
+  };
+
+  const toggleAddCart = () => {
+    const token = localStorage.getItem('token'); 
+    if (!token) {
+      alert('Zəhmət olmasa, səbətə daxil olmaq üçün giriş edin!');
+      return; 
+    }
+    setIsAddCartOpen(!isAddCartOpen); 
   };
 
   const toggleDropdown = (dropdownId) => {
@@ -145,23 +158,28 @@ export const Header = () => {
   };
 
   const handleLanguageChange = (languageCode) => {
-    console.log("Seçilen dil: ", languageCode);
+    console.log('Seçilen dil: ', languageCode);
     setSelectedLanguage(languageCode);
     toggleDropdown('languageDropdown');
   };
 
   useEffect(() => {
-    console.log("Yüklenen dil kodu:", selectedLanguage);
+    console.log('Yüklenen dil kodu:', selectedLanguage);
     import(`../../translations/${selectedLanguage}.json`)
       .then((module) => {
-        console.log("Yüklenen çeviriler:", module.default);
+        console.log('Yüklenen çeviriler:', module.default);
         setTranslations(module.default);
       })
-      .catch((err) => console.error("Çeviri dosyası yüklenemedi:", err));
+      .catch((err) => console.error('Çeviri dosyası yüklenemedi:', err));
   }, [selectedLanguage]);
 
   useEffect(() => {
-    const storedFirstName = localStorage.getItem("firstName");
+    const token = localStorage.getItem('token'); 
+    if (token) {
+      setIsLoggedIn(true); 
+    }
+
+    const storedFirstName = localStorage.getItem('firstName'); 
     if (storedFirstName) {
       setFirstName(storedFirstName);
     }
@@ -194,7 +212,7 @@ export const Header = () => {
               <UserIcon onClick={toggleDesktopSidebar} className="hidden md:block" />
             </div>
             <HeartIcon className="block md:hidden" />
-            <CartIcon className="block md:hidden" />
+            <CartIcon onClick={toggleAddCart} className="block md:hidden" />
             <SearchIcon className="block md:hidden" />
           </div>
         </div>
@@ -556,6 +574,8 @@ export const Header = () => {
           </div>
         </nav>
       </header>
+      {isAddCartOpen && <AddCart toggleSidebar={toggleAddCart} />}
+
       {isMobileSidebarOpen && <CartSidebar toggleSidebar={toggleMobileSidebar} />}
 
       {isDesktopSidebarOpen && <Sidebar toggleSidebar={toggleDesktopSidebar} />}

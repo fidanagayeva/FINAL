@@ -246,7 +246,12 @@ export const Sidebar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center">
                                         <AccountIcon />
-                                        <a href="#" className="text-customText text-[1.25rem] font-victor-serif ml-4">Account overview</a>
+                                        <Link
+                                            href="/account"
+                                            className="text-customText text-[1.25rem] font-victor-serif ml-4"
+                                        >
+                                            Account overview
+                                        </Link>
                                     </div>
                                     <svg className="w-4 h-4 text-customText" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
