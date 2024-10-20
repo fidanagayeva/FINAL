@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { TbEditCircle } from 'react-icons/tb'; 
-import { AiOutlineDelete } from 'react-icons/ai'; 
-import { FiX } from 'react-icons/fi'; 
+import { TbEditCircle } from 'react-icons/tb';
+import { AiOutlineDelete } from 'react-icons/ai';
+import { FiX } from 'react-icons/fi';
 
 export default function Admintab() {
-  const [giftcards, setGiftcards] = useState([]); // State-də saxlanılan məlumatlar
+  const [giftcards, setGiftcards] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingGiftcard, setEditingGiftcard] = useState(null);
 
@@ -19,21 +19,19 @@ export default function Admintab() {
     size: '',
   });
 
-  // **Backend-dən məlumatları gətir və setGiftcards ilə state-ə yaz**
   const fetchGiftcards = async () => {
     try {
       const response = await axios.get('http://localhost:3001/api/giftcards');
-      console.log('Fetched Giftcards:', response.data.giftcards); // Gələn datanı yoxlayırıq
+      console.log('Fetched Giftcards:', response.data.giftcards);
       setGiftcards(response.data.giftcards);
     } catch (error) {
       console.error('Error fetching giftcards:', error);
     }
   };
 
-  // **Səhifə hər yenilənəndə backend-dən data gətir**
   useEffect(() => {
     fetchGiftcards();
-  }, []); // Komponent yükləndikdə bir dəfə işləyir
+  }, []);
 
   const openModal = (giftcard = null) => {
     setEditingGiftcard(giftcard);
@@ -86,7 +84,7 @@ export default function Admintab() {
         );
       } else {
         response = await axios.post('http://localhost:3001/api/giftcards', form);
-        setGiftcards((prev) => [...prev, response.data.giftcard]); 
+        setGiftcards((prev) => [...prev, response.data.giftcard]);
       }
       closeModal();
     } catch (error) {
@@ -106,10 +104,10 @@ export default function Admintab() {
   return (
     <div className="p-8">
       <button
-        className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+        className="bg-[#EADAC4] text-white px-4 py-2 rounded mb-4"
         onClick={() => openModal()}
       >
-        + Create Giftcard
+        + Create
       </button>
 
       <table className="w-full border-collapse border border-gray-300">
@@ -129,23 +127,23 @@ export default function Admintab() {
               <td className="border border-gray-300 p-2">{giftcard.title}</td>
               <td className="border border-gray-300 p-2">{giftcard.description}</td>
               <td className="border border-gray-300 p-2">
-  <img
-    src={giftcard.image}
-    alt="Giftcard"
-    className="w-16 h-16 object-cover"
-    onError={(e) => (e.target.src = '/fallback-image.jpg')}
-  />
-</td>
+                <img
+                  src={giftcard.image}
+                  alt="Giftcard"
+                  className="w-16 h-16 object-cover"
+                  onError={(e) => (e.target.src = '/fallback-image.jpg')}
+                />
+              </td>
               <td className="border border-gray-300 p-2">{giftcard.price}</td>
               <td className="border border-gray-300 p-2">{giftcard.size}</td>
               <td className="border border-gray-300 p-2 flex items-center space-x-2">
                 <TbEditCircle
-                  className="text-blue-500 cursor-pointer"
+                  className="text-blackcursor-pointer"
                   size={24}
                   onClick={() => openModal(giftcard)}
                 />
                 <AiOutlineDelete
-                  className="text-red-500 cursor-pointer"
+                  className="text-black cursor-pointer"
                   size={24}
                   onClick={() => handleDelete(giftcard._id)}
                 />
@@ -157,13 +155,13 @@ export default function Admintab() {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-customBackground p-8 rounded-lg shadow-lg w-96 border-2 border-customText relative">
+          <div className="bg-customBackground p-8 rounded-lg shadow-lg w-96 border-2 border-customText bg-background relative">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl">
                 {editingGiftcard ? 'Edit Giftcard' : 'Create Giftcard'}
               </h2>
               <FiX
-                className="text-red-500 cursor-pointer"
+                className="text-black cursor-pointer"
                 size={24}
                 onClick={closeModal}
               />
@@ -205,7 +203,7 @@ export default function Admintab() {
               onChange={handleChange}
             />
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded w-full"
+              className="bg-[#EEADAC4] text-white px-4 py-2 rounded w-full"
               onClick={handleCreateOrUpdate}
             >
               {editingGiftcard ? 'Update' : 'Create'}
