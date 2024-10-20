@@ -26,13 +26,19 @@ export default function Admintab() {
     try {
       const response = await axios.get('http://localhost:3001/api/giftcards');
       setGiftcards(response.data.giftcards);
+      localStorage.setItem('giftcards', JSON.stringify(response.data.giftcards));
     } catch (error) {
       console.error('Error fetching giftcards:', error);
     }
   };
 
   useEffect(() => {
-    fetchGiftcards();
+    const storedGiftcards = JSON.parse(localStorage.getItem('giftcards'));
+    if (storedGiftcards) {
+      setGiftcards(storedGiftcards);
+    } else {
+      fetchGiftcards(); 
+    }
   }, []);
 
   const openViewModal = (giftcard) => {
@@ -99,7 +105,11 @@ export default function Admintab() {
         );
       } else {
         response = await axios.post('http://localhost:3001/api/giftcards', form);
-        setGiftcards((prev) => [...prev, response.data.giftcard]);
+        const newGiftcard = response.data.giftcard;
+
+        setGiftcards((prev) => [...prev, newGiftcard]);
+        const updatedGiftcards = [...giftcards, newGiftcard];
+        localStorage.setItem('giftcards', JSON.stringify(updatedGiftcards));
       }
       closeEditModal();
     } catch (error) {
@@ -110,11 +120,16 @@ export default function Admintab() {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:3001/api/giftcards/${id}`);
-      setGiftcards((prev) => prev.filter((giftcard) => giftcard._id !== id));
+      setGiftcards((prev) => {
+        const updatedGiftcards = prev.filter((giftcard) => giftcard._id !== id);
+        localStorage.setItem('giftcards', JSON.stringify(updatedGiftcards)); 
+        return updatedGiftcards;
+      });
     } catch (error) {
       console.error('Error deleting giftcard:', error);
     }
   };
+
 
   return (
     <div className="p-8">
