@@ -2,35 +2,43 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { TbEditCircle } from 'react-icons/tb'; 
+import { AiOutlineDelete } from 'react-icons/ai'; 
+import { FiX } from 'react-icons/fi'; 
 
 export default function Admintab() {
-  const [giftcards, setGiftcards] = useState([]);
+  const [giftcards, setGiftcards] = useState([]); // State-də saxlanılan məlumatlar
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingGiftcard, setEditingGiftcard] = useState(null);
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    image: null, 
+    image: null,
     price: '',
     size: '',
   });
 
+  // **Backend-dən məlumatları gətir və setGiftcards ilə state-ə yaz**
   const fetchGiftcards = async () => {
     try {
       const response = await axios.get('http://localhost:3001/api/giftcards');
+      console.log('Fetched Giftcards:', response.data.giftcards); // Gələn datanı yoxlayırıq
       setGiftcards(response.data.giftcards);
     } catch (error) {
       console.error('Error fetching giftcards:', error);
     }
   };
 
+  // **Səhifə hər yenilənəndə backend-dən data gətir**
   useEffect(() => {
     fetchGiftcards();
-  }, []);
+  }, []); // Komponent yükləndikdə bir dəfə işləyir
 
   const openModal = (giftcard = null) => {
     setEditingGiftcard(giftcard);
     setIsModalOpen(true);
+    document.body.style.overflow = 'hidden';
     setFormData(
       giftcard || { title: '', description: '', image: null, price: '', size: '' }
     );
@@ -39,6 +47,7 @@ export default function Admintab() {
   const closeModal = () => {
     setIsModalOpen(false);
     setEditingGiftcard(null);
+    document.body.style.overflow = 'auto';
     setFormData({
       title: '',
       description: '',
@@ -77,7 +86,7 @@ export default function Admintab() {
         );
       } else {
         response = await axios.post('http://localhost:3001/api/giftcards', form);
-        setGiftcards((prev) => [...prev, response.data.giftcard]);
+        setGiftcards((prev) => [...prev, response.data.giftcard]); 
       }
       closeModal();
     } catch (error) {
@@ -120,23 +129,26 @@ export default function Admintab() {
               <td className="border border-gray-300 p-2">{giftcard.title}</td>
               <td className="border border-gray-300 p-2">{giftcard.description}</td>
               <td className="border border-gray-300 p-2">
-                <img src={giftcard.image} alt="Giftcard" className="w-16 h-16" />
-              </td>
+  <img
+    src={giftcard.image}
+    alt="Giftcard"
+    className="w-16 h-16 object-cover"
+    onError={(e) => (e.target.src = '/fallback-image.jpg')}
+  />
+</td>
               <td className="border border-gray-300 p-2">{giftcard.price}</td>
               <td className="border border-gray-300 p-2">{giftcard.size}</td>
-              <td className="border border-gray-300 p-2">
-                <button
-                  className="text-blue-500 mr-2"
+              <td className="border border-gray-300 p-2 flex items-center space-x-2">
+                <TbEditCircle
+                  className="text-blue-500 cursor-pointer"
+                  size={24}
                   onClick={() => openModal(giftcard)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="text-red-500"
+                />
+                <AiOutlineDelete
+                  className="text-red-500 cursor-pointer"
+                  size={24}
                   onClick={() => handleDelete(giftcard._id)}
-                >
-                  Delete
-                </button>
+                />
               </td>
             </tr>
           ))}
@@ -144,11 +156,18 @@ export default function Admintab() {
       </table>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-8 rounded shadow-lg w-96">
-            <h2 className="text-2xl mb-4">
-              {editingGiftcard ? 'Edit Giftcard' : 'Create Giftcard'}
-            </h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-customBackground p-8 rounded-lg shadow-lg w-96 border-2 border-customText relative">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl">
+                {editingGiftcard ? 'Edit Giftcard' : 'Create Giftcard'}
+              </h2>
+              <FiX
+                className="text-red-500 cursor-pointer"
+                size={24}
+                onClick={closeModal}
+              />
+            </div>
             <input
               className="w-full mb-2 p-2 border rounded"
               type="text"
@@ -185,20 +204,12 @@ export default function Admintab() {
               value={formData.size}
               onChange={handleChange}
             />
-            <div className="flex justify-end">
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-                onClick={handleCreateOrUpdate}
-              >
-                {editingGiftcard ? 'Update' : 'Create'}
-              </button>
-              <button
-                className="bg-gray-300 px-4 py-2 rounded"
-                onClick={closeModal}
-              >
-                Cancel
-              </button>
-            </div>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded w-full"
+              onClick={handleCreateOrUpdate}
+            >
+              {editingGiftcard ? 'Update' : 'Create'}
+            </button>
           </div>
         </div>
       )}
