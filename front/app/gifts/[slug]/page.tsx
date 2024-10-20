@@ -5,6 +5,7 @@ import Layout from "../../_featured/layout/layout";
 import { Info } from "../../_components/Info/index";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
+import AddCart from "@/app/_featured/sidebar/AddCart";
 
 const StarIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5 filled" fill="#134A21" viewBox="0 0 20 20">
@@ -68,6 +69,8 @@ export default function DetailGifts() {
     const [giftcard, setGiftcard] = useState<GiftCard | null>(null);
     const [error, setError] = useState<string>("");
     const [quantity, setQuantity] = useState(1);
+    const [cartItems, setCartItems] = useState([]);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const fetchGiftcardDetails = async () => {
         try {
@@ -79,9 +82,9 @@ export default function DetailGifts() {
         }
     };
 
-    useEffect(() => {
-        fetchGiftcardDetails();
-    }, [slug]);
+    // useEffect(() => {
+    //     fetchGiftcardDetails();
+    // }, [slug]);
 
     if (error) return <p>{error}</p>;
 
@@ -98,6 +101,20 @@ export default function DetailGifts() {
 
     const decreaseQuantity = () => {
         setQuantity(prev => (prev > 1 ? prev - 1 : 1));
+    };
+
+    useEffect(() => {
+        fetchGiftcardDetails();
+        const storedCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
+        setCartItems(storedCart);
+    }, []);
+
+    const addToCart = () => {
+        const newItem = { ...giftcard, quantity };
+        const updatedCart = [...cartItems, newItem];
+        setCartItems(updatedCart);
+        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+        setIsSidebarOpen(true);
     };
 
     return (
@@ -161,7 +178,10 @@ export default function DetailGifts() {
                                         <p>Total: €{totalPrice.toFixed(2)}</p>
                                     </div>
                                 </div>
-                                <button className="mt-4 px-4 py-2 bg-customText text-white rounded-3xl flex gap-3 items-center">
+                                <button
+                                    onClick={addToCart}
+                                    className="mt-4 px-4 py-2 bg-customText text-white rounded-3xl flex gap-3 items-center"
+                                >
                                     <CartIcon />
                                     Add to cart
                                 </button>
@@ -189,6 +209,14 @@ export default function DetailGifts() {
                         </div>
                     </div>
                 </div>
+
+                {isSidebarOpen && (
+                    <AddCart
+                        cartItems={cartItems}
+                        setCartItems={setCartItems}
+                        toggleSidebar={() => setIsSidebarOpen(false)}
+                    />
+                )}
             </Layout>
         </div>
     );
