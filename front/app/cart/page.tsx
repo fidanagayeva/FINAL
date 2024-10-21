@@ -64,6 +64,13 @@ export default function Cart() {
         localStorage.setItem('cartItems', JSON.stringify(updatedCart));
     };
 
+    const handleContinueToPayment = () => {
+        localStorage.setItem('orderItems', JSON.stringify(cartItems));
+
+        setCartItems([]);
+        localStorage.removeItem('cartItems');
+    };
+
     return (
         <Layout>
             <Info />
@@ -146,11 +153,14 @@ export default function Cart() {
                     <hr className="border-t border-customText my-4" />
 
                     <div className="flex flex-col items-start mb-4">
-                        <Link href="/pages">
-                            <button className="w-[15rem] bg-customText rounded-3xl hover:bg-customHover text-white py-2">
-                                Continue to checkout
-                            </button>
-                        </Link>
+                    <Link href="/pages" passHref>
+                        <button
+                            onClick={handleContinueToPayment}
+                            className="w-[15rem] bg-customText rounded-3xl hover:bg-customHover text-white py-2"
+                        >
+                            Continue to payment
+                        </button>
+                    </Link>
                         <p className="flex items-center text-customText hover:text-customHover cursor-pointer mt-2 ml-4">
                             <span className="mr-1">&#8592;</span>
                             Continue shopping

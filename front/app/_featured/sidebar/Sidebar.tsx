@@ -280,7 +280,12 @@ export const Sidebar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center">
                                         <OrdersIcon />
-                                        <a href="#" className="text-customText text-[1.25rem] font-victor-serif ml-4">My orders</a>
+                                        <Link
+                                            href="/account"
+                                            className="text-customText text-[1.25rem] font-victor-serif ml-4"
+                                        >
+                                            My orders
+                                        </Link>
                                     </div>
                                     <svg className="w-4 h-4 text-customText" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -292,7 +297,12 @@ export const Sidebar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center">
                                         <HeartIcon />
-                                        <a href="#" className="text-customText text-[1.25rem] font-victor-serif ml-4">Wishlist</a>
+                                        <Link
+                                            href="/account"
+                                            className="text-customText text-[1.25rem] font-victor-serif ml-4"
+                                        >
+                                            Wishlist
+                                        </Link>
                                     </div>
                                     <svg className="w-4 h-4 text-customText" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />

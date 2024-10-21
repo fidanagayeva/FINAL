@@ -4,28 +4,39 @@ import { FaChevronRight } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+interface CartItem {
+  _id: string;
+  title: string;
+  price: number;
+  image: string;
+  quantity: number;
+}
+
 export default function Overview() {
   const [firstName, setFirstName] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [activeSection, setActiveSection] = useState('overview');
+  const [orderItems, setOrderItems] = useState<CartItem[]>([]);
   const router = useRouter();
 
   useEffect(() => {
     const storedFirstName = localStorage.getItem('firstName');
     const token = localStorage.getItem('token');
+    const storedOrders = JSON.parse(localStorage.getItem('orderItems') || '[]');
 
     if (storedFirstName && token) {
       setFirstName(storedFirstName);
       setIsLoggedIn(true);
+      setOrderItems(storedOrders);
     } else {
       setIsLoggedIn(false);
     }
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("firstName");
+    localStorage.removeItem('token');
+    localStorage.removeItem('firstName');
     setIsLoggedIn(false);
   };
 
@@ -35,7 +46,7 @@ export default function Overview() {
     const password = (document.getElementById('password') as HTMLInputElement).value;
 
     if (!email || !password) {
-      setErrorMessage("Oops! Email or password is empty. Please check again.");
+      setErrorMessage('Oops! Email or password is empty. Please check again.');
       return;
     }
 
@@ -144,10 +155,49 @@ export default function Overview() {
       case 'orders':
         return (
           <div className="bg-background p-10 flex-1">
-            <h2 className="text-[2.7rem] font-semibold font-victor-serif text-customText">My orders</h2>
-            <p className="mb-10 text-customText">You've not ordered anything yet.</p>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-[2.7rem] font-semibold font-victor-serif text-customText">
+                My orders
+              </h2>
+              <button
+                onClick={() => {
+                  setOrderItems([]);
+                  localStorage.removeItem('orderItems');
+                }}
+                className="bg-customText hover:bg-customHover text-white py-2 px-4 rounded-3xl"
+              >
+                Cancel orders
+              </button>
+            </div>
+
+            {orderItems.length === 0 ? (
+              <p className="mb-10 text-customText">You've not ordered anything yet.</p>
+            ) : (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {orderItems.map((item) => (
+                  <div
+                    key={item._id}
+                    className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center"
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-[9rem] h-[12rem] object-cover mb-4"
+                    />
+                    <h3 className="text-[1.25rem] font-bold text-customText mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-customText">Quantity: {item.quantity}</p>
+                    <p className="text-customText">
+                      €{(item.price * item.quantity).toFixed(2)}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         );
+
       case 'wishlist':
         return (
           <div className="bg-background p-10 flex-1">
