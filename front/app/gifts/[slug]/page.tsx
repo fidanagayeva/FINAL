@@ -82,10 +82,6 @@ export default function DetailGifts() {
         }
     };
 
-    // useEffect(() => {
-    //     fetchGiftcardDetails();
-    // }, [slug]);
-
     if (error) return <p>{error}</p>;
 
     const handlePlantGiftsClick = () => {
@@ -110,11 +106,17 @@ export default function DetailGifts() {
     }, []);
 
     const addToCart = () => {
+        const token = localStorage.getItem("token"); 
+        if (!token) {
+            alert("You need to be logged in to add items to your cart.");
+            return;
+        }
+
         const newItem = { ...giftcard, quantity };
         const updatedCart = [...cartItems, newItem];
         setCartItems(updatedCart);
         localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-        setIsSidebarOpen(true);
+        setIsSidebarOpen(true); 
     };
 
     return (
