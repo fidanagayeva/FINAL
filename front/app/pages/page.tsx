@@ -79,7 +79,7 @@ export default function Home() {
 
         <a
           href="https://buy.stripe.com/test_fZe8xA16l4U09byaEE"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"  
+          className="w-[15rem] bg-customText rounded-3xl hover:bg-customHover text-white py-2 flex items-center justify-center text-center"  
         >
           Buy Now
         </a>
