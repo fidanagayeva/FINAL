@@ -559,7 +559,11 @@ export default function GiftCards() {
                     {error && <p>{error}</p>}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {giftcards.map((giftcard) => (
-                            <div key={giftcard._id} onClick={() => handleCardClick(giftcard._id)} className="relative overflow-hidden transition-transform cursor-pointer">
+                            <div
+                                key={giftcard._id}
+                                className="relative overflow-hidden transition-transform cursor-pointer"
+                                onClick={() => handleCardClick(giftcard._id)} 
+                            >
                                 <div className="relative group">
                                     <div className="overflow-hidden">
                                         <img
@@ -568,11 +572,17 @@ export default function GiftCards() {
                                             className="w-full h-[22.28rem] object-cover transition-transform duration-300 ease-in-out transform group-hover:scale-110"
                                         />
                                     </div>
-                                    <div className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md z-20">
+
+                                    <div
+                                        className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md z-20"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
                                         <HeartIcon />
                                     </div>
+
                                     <div className="absolute inset-0 bg-black bg-opacity-15 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 z-10"></div>
                                 </div>
+
                                 <div className="text-start relative z-10">
                                     <h2 className="text-[0.97rem] text-customText font-semibold">{giftcard.title}</h2>
                                     <p className="text-customText text-[0.95rem] italic">{giftcard.description}</p>
