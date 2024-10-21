@@ -139,7 +139,7 @@ export const Header = () => {
   const toggleAddCart = () => {
     const token = localStorage.getItem('token'); 
     if (!token) {
-      alert('Zəhmət olmasa, səbətə daxil olmaq üçün giriş edin!');
+      alert('You need to be logged in to add items to your cart');
       return; 
     }
     setIsAddCartOpen(!isAddCartOpen); 

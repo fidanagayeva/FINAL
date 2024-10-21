@@ -3,6 +3,7 @@
 import { FaTimes } from 'react-icons/fa';
 import { TbTrash } from 'react-icons/tb';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 interface CartItem {
     _id: string;
@@ -115,7 +116,7 @@ export default function AddCart({ toggleSidebar }: AddCartProps) {
                                         className="w-[5rem] h-[7rem] object-cover mr-4"
                                     />
                                     <div className="flex flex-col">
-                                        <h3 className="text-[1rem] text-customText font-bold mb-1">{item.title}</h3>
+                                        <h3 className="text-[1rem] text-customText font-bold mb-8">{item.title}</h3>
                                         <div className="flex items-center">
                                             <button
                                                 onClick={() => decreaseQuantity(item._id)}
@@ -130,7 +131,7 @@ export default function AddCart({ toggleSidebar }: AddCartProps) {
                                 <div className="flex flex-col items-end">
                                     <TbTrash
                                         onClick={() => removeFromCart(item._id)}
-                                        className="text-customText text-xl cursor-pointer mb-1"
+                                        className="text-customText text-xl cursor-pointer mb-8"
                                     />
                                     <p className='text-customText'>€{(item.price * item.quantity).toFixed(2)}</p>
                                 </div>
@@ -144,14 +145,18 @@ export default function AddCart({ toggleSidebar }: AddCartProps) {
                     <hr className="border-t border-customText mb-4" />
 
                     <div className="flex justify-between items-center text-customText">
-                        <p className="text-[1remv] font-bold">Total (including VAT)</p>
+                        <p className="text-[1rem] font-bold">Total (including VAT)</p>
                         <p className="text-[1rem] text-customText">€{totalPrice.toFixed(2)}</p>
                     </div>
 
                     <hr className="border-t border-customText my-4" />
 
                     <div className="flex flex-col items-center mb-4">
-                        <button className="w-full bg-customText rounded-3xl hover:bg-customHover text-white py-2">I&apos;m ready to order</button>
+                        <Link href="/cart">
+                            <button className="w-[25rem] bg-customText rounded-3xl hover:bg-customHover text-white py-2">
+                                I&apos;m ready to order
+                            </button>
+                        </Link>
                         <p className="flex items-center text-customText hover:text-customHover cursor-pointer mt-2" onClick={toggleSidebar}>
                             <span className="mr-1">&#8592;</span>
                             Continue shopping
