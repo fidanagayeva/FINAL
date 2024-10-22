@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FaStar, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaStar } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { VscListFilter } from 'react-icons/vsc';
 import { AiOutlineClose } from 'react-icons/ai';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 interface GiftCard {
     _id: string;
@@ -18,9 +18,9 @@ interface GiftCard {
     price: number;
 }
 
-const HeartIcon = ({ onClick }) => ( 
+const HeartIcon = ({ onClick }) => (
     <svg
-        onClick={onClick} 
+        onClick={onClick}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 74.84 74.84"
         fill="none"
@@ -98,9 +98,14 @@ export default function GiftCards() {
     };
 
     const handleAddToWishlist = (giftcard: GiftCard) => {
+        const token = localStorage.getItem("token"); 
+        if (!token) {
+            alert("You are not logged in. Please log in to add items to your wishlist.");
+            return;
+        }
         setWishlist((prev) => {
-            const updatedWishlist = [...prev, giftcard]; 
-            localStorage.setItem('wishlistItems', JSON.stringify(updatedWishlist)); 
+            const updatedWishlist = [...prev, giftcard];
+            localStorage.setItem('wishlistItems', JSON.stringify(updatedWishlist));
             return updatedWishlist;
         });
     };
@@ -582,7 +587,7 @@ export default function GiftCards() {
                                     <div
                                         className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md z-20"
                                         onClick={(e) => {
-                                            e.stopPropagation(); 
+                                            e.stopPropagation();
                                             handleAddToWishlist(giftcard); 
                                         }}
                                     >
@@ -605,7 +610,6 @@ export default function GiftCards() {
                             </div>
                         ))}
                     </div>
-
                 </>
             )}
             <div className="flex items-center justify-center mt-10 mb-10 relative">
