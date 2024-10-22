@@ -4,15 +4,17 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { TbEditCircle } from 'react-icons/tb';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { LiaEye } from 'react-icons/lia'; 
+import { LiaEye } from 'react-icons/lia';
 import { FiX } from 'react-icons/fi';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Admintab() {
   const [giftcards, setGiftcards] = useState([]);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedGiftcard, setSelectedGiftcard] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null); 
+  const [previewImage, setPreviewImage] = useState(null);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -37,7 +39,7 @@ export default function Admintab() {
     if (storedGiftcards) {
       setGiftcards(storedGiftcards);
     } else {
-      fetchGiftcards(); 
+      fetchGiftcards();
     }
   }, []);
 
@@ -64,7 +66,7 @@ export default function Admintab() {
       price: giftcard?.price || '',
       size: giftcard?.size || '',
     });
-    setPreviewImage(giftcard?.image || null); 
+    setPreviewImage(giftcard?.image || null);
   };
 
   const closeEditModal = () => {
@@ -82,7 +84,7 @@ export default function Admintab() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFormData((prev) => ({ ...prev, image: file }));
-    setPreviewImage(URL.createObjectURL(file)); 
+    setPreviewImage(URL.createObjectURL(file));
   };
 
   const handleCreateOrUpdate = async () => {
@@ -103,6 +105,7 @@ export default function Admintab() {
             gift._id === response.data.giftcard._id ? response.data.giftcard : gift
           )
         );
+        toast.success("Giftcard successfully updated!"); 
       } else {
         response = await axios.post('http://localhost:3001/api/giftcards', form);
         const newGiftcard = response.data.giftcard;
@@ -110,10 +113,12 @@ export default function Admintab() {
         setGiftcards((prev) => [...prev, newGiftcard]);
         const updatedGiftcards = [...giftcards, newGiftcard];
         localStorage.setItem('giftcards', JSON.stringify(updatedGiftcards));
+        toast.success("Giftcard successfully added!"); 
       }
       closeEditModal();
     } catch (error) {
       console.error('Error during operation:', error);
+      toast.error("An error occurred while saving the giftcard."); 
     }
   };
 
@@ -122,17 +127,19 @@ export default function Admintab() {
       await axios.delete(`http://localhost:3001/api/giftcards/${id}`);
       setGiftcards((prev) => {
         const updatedGiftcards = prev.filter((giftcard) => giftcard._id !== id);
-        localStorage.setItem('giftcards', JSON.stringify(updatedGiftcards)); 
+        localStorage.setItem('giftcards', JSON.stringify(updatedGiftcards));
+        toast.success("Giftcard successfully deleted!"); 
         return updatedGiftcards;
       });
     } catch (error) {
       console.error('Error deleting giftcard:', error);
+      toast.error("An error occurred while deleting the giftcard.");
     }
   };
 
-
   return (
     <div className="p-8">
+      <ToastContainer />
       <button
         className="bg-[#EADAC4] text-white px-4 py-2 mb-4"
         onClick={() => openEditModal()}

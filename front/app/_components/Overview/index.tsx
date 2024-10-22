@@ -1,6 +1,7 @@
 'use client';
 
 import { FaChevronRight } from 'react-icons/fa';
+import { FiX } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -221,12 +222,6 @@ export default function Overview() {
           <div className="bg-background p-10 flex-1">
             <div className="flex justify-between items-center mb-5">
               <h2 className="text-[2.5rem] font-semibold font-victor-serif text-customText">Wishlist</h2>
-              <button
-                onClick={() => setWishlistItems([])}
-                className="bg-customText hover:bg-customHover text-white py-2 px-4 rounded-3xl transition"
-              >
-                Cancel Wishlist
-              </button>
             </div>
             <p className="mb-10 text-customText">
               Welcome to your personal jungle oasis! Browse your wishlist and let your green thumb run wild as you curate the ultimate indoor garden that will make all your plant parent friends green with envy.
@@ -238,18 +233,25 @@ export default function Overview() {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                 {wishlistItems.map(item => (
-                  <div key={item._id} className="bg-white w-52 border border-gray-300 rounded-lg p-4 flex flex-col items-center shadow-lg">
-                    <img src={item.image} alt={item.title} className="w-32 h-44 object-cover mb-2" />
+                  <div key={item._id} className="w-full p-4 flex flex-col items-center relative">
+                    <img src={item.image} alt={item.title} className="w-[15.5rem] h-[17rem] object-cover mb-2" />
                     <h3 className="text-lg font-semibold text-customText text-center">{item.title}</h3>
                     <p className="text-customText text-center">{item.description}</p>
                     <p className="text-customText text-center">€{item.price.toFixed(2)}</p>
+                    <div
+                      className="absolute top-7 right-8 w-8 h-8 flex items-center justify-center bg-white border border-customText rounded-full cursor-pointer"
+                      onClick={() => {
+                        setWishlistItems(prev => prev.filter(wishlistItem => wishlistItem._id !== item._id));
+                      }}
+                    >
+                      <FiX className="text-customText" />
+                    </div>
                   </div>
                 ))}
               </div>
             )}
           </div>
         );
-
       case 'restock':
         return (
           <div className="bg-background p-10 flex-1">
