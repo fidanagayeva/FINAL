@@ -12,23 +12,33 @@ interface CartItem {
   quantity: number;
 }
 
+interface WishlistItem {
+  _id: string;
+  title: string;
+  image: string;
+  price: number;
+}
+
 export default function Overview() {
   const [firstName, setFirstName] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [activeSection, setActiveSection] = useState('overview');
   const [orderItems, setOrderItems] = useState<CartItem[]>([]);
+  const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([]);
   const router = useRouter();
 
   useEffect(() => {
     const storedFirstName = localStorage.getItem('firstName');
     const token = localStorage.getItem('token');
     const storedOrders = JSON.parse(localStorage.getItem('orderItems') || '[]');
+    const storedWishlist = JSON.parse(localStorage.getItem('wishlistItems') || '[]'); 
 
     if (storedFirstName && token) {
       setFirstName(storedFirstName);
       setIsLoggedIn(true);
       setOrderItems(storedOrders);
+      setWishlistItems(storedWishlist); 
     } else {
       setIsLoggedIn(false);
     }
@@ -37,6 +47,7 @@ export default function Overview() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('firstName');
+    localStorage.removeItem('wishlistItems'); 
     setIsLoggedIn(false);
   };
 
@@ -63,6 +74,14 @@ export default function Overview() {
 
   const handleCreateAccountClick = () => {
     router.push('/authpage');
+  };
+
+  const handleAddToWishlist = (item: WishlistItem) => {
+    setWishlistItems(prev => {
+      const updatedWishlist = [...prev, item];
+      localStorage.setItem('wishlistItems', JSON.stringify(updatedWishlist));
+      return updatedWishlist;
+    });
   };
 
   const renderContent = () => {
@@ -197,17 +216,32 @@ export default function Overview() {
             )}
           </div>
         );
-
       case 'wishlist':
         return (
           <div className="bg-background p-10 flex-1">
             <h2 className="text-[2.7rem] font-semibold font-victor-serif text-customText">Wishlist</h2>
-            <p className="mb-10 text-customText">Welcome to your personal jungle oasis! Browse your wishlist and let your green thumb run wild as you curate the ultimate indoor garden that will make all your plant parent friends green with envy.</p>
-            <p className="mb-2 text-customText">
-              <span className="font-bold">Oops!</span> something went wrong!
+            <p className="mb-10 text-customText">
+              Welcome to your personal jungle oasis! Browse your wishlist and let your green thumb run wild as you curate the ultimate indoor garden that will make all your plant parent friends green with envy.
             </p>
+            {wishlistItems.length === 0 ? (
+              <p className="mb-2 text-customText">
+                <span className="font-bold">Oops!</span> your wishlist is empty!
+              </p>
+            ) : (
+              <div>
+                {wishlistItems.map(item => (
+                  <div key={item._id} className="border-b border-gray-300 py-4">
+                    <h3 className="text-xl font-semibold">{item.title}</h3>
+                    <p>{item.description}</p>
+                    <p>€{item.price.toFixed(2)}</p>
+                    <img src={item.image} alt={item.title} className="w-32 h-32 object-cover" />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         );
+
       case 'restock':
         return (
           <div className="bg-background p-10 flex-1">

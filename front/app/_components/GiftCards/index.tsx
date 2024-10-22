@@ -18,8 +18,9 @@ interface GiftCard {
     price: number;
 }
 
-const HeartIcon = () => (
+const HeartIcon = ({ onClick }) => ( 
     <svg
+        onClick={onClick} 
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 74.84 74.84"
         fill="none"
@@ -36,9 +37,9 @@ const HeartIcon = () => (
     </svg>
 );
 
-
 export default function GiftCards() {
     const [giftcards, setGiftcards] = useState<GiftCard[]>([]);
+    const [wishlist, setWishlist] = useState<GiftCard[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -96,6 +97,14 @@ export default function GiftCards() {
         router.push(`/gifts/${id}`);
     };
 
+    const handleAddToWishlist = (giftcard: GiftCard) => {
+        setWishlist((prev) => {
+            const updatedWishlist = [...prev, giftcard]; 
+            localStorage.setItem('wishlistItems', JSON.stringify(updatedWishlist)); 
+            return updatedWishlist;
+        });
+    };
+
     const handleFilterChange = (event, filterType) => {
         const { value, checked } = event.target;
         setFilters(prevFilters => {
@@ -107,12 +116,9 @@ export default function GiftCards() {
         });
     };
 
-
     const closeSidebar = () => {
         setIsSidebarOpen(false);
     };
-
-
 
     const toggleAccordion = (index) => {
         setActiveAccordion(activeAccordion === index ? null : index);
@@ -562,7 +568,7 @@ export default function GiftCards() {
                             <div
                                 key={giftcard._id}
                                 className="relative overflow-hidden transition-transform cursor-pointer"
-                                onClick={() => handleCardClick(giftcard._id)} 
+                                onClick={() => handleCardClick(giftcard._id)}
                             >
                                 <div className="relative group">
                                     <div className="overflow-hidden">
@@ -575,7 +581,10 @@ export default function GiftCards() {
 
                                     <div
                                         className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md z-20"
-                                        onClick={(e) => e.stopPropagation()}
+                                        onClick={(e) => {
+                                            e.stopPropagation(); 
+                                            handleAddToWishlist(giftcard); 
+                                        }}
                                     >
                                         <HeartIcon />
                                     </div>
@@ -596,6 +605,7 @@ export default function GiftCards() {
                             </div>
                         ))}
                     </div>
+
                 </>
             )}
             <div className="flex items-center justify-center mt-10 mb-10 relative">

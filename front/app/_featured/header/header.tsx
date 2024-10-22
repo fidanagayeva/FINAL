@@ -120,7 +120,7 @@ export const Header = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(false);
   const [isAddCartOpen, setIsAddCartOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [translations, setTranslations] = useState({});
@@ -137,12 +137,12 @@ export const Header = () => {
   };
 
   const toggleAddCart = () => {
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
     if (!token) {
       alert('You need to be logged in to add items to your cart');
-      return; 
+      return;
     }
-    setIsAddCartOpen(!isAddCartOpen); 
+    setIsAddCartOpen(!isAddCartOpen);
   };
 
   const toggleDropdown = (dropdownId) => {
@@ -174,16 +174,24 @@ export const Header = () => {
   }, [selectedLanguage]);
 
   useEffect(() => {
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
     if (token) {
-      setIsLoggedIn(true); 
+      setIsLoggedIn(true);
     }
 
-    const storedFirstName = localStorage.getItem('firstName'); 
+    const storedFirstName = localStorage.getItem('firstName');
     if (storedFirstName) {
       setFirstName(storedFirstName);
     }
   }, []);
+
+  const handleHeartIconClick = () => {
+    if (isLoggedIn) {
+      router.push('/account');
+    } else {
+      alert("You need to be logged in to add items to your cart");
+    }
+  };
 
   return (
     <>
@@ -211,7 +219,9 @@ export const Header = () => {
               </div>
               <UserIcon onClick={toggleDesktopSidebar} className="hidden md:block" />
             </div>
-            <HeartIcon className="block md:hidden" />
+            <div onClick={handleHeartIconClick} className="cursor-pointer">
+              <HeartIcon className="block md:hidden" />
+            </div>
             <CartIcon onClick={toggleAddCart} className="block md:hidden" />
             <SearchIcon className="block md:hidden" />
           </div>
