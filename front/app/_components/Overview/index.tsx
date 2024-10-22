@@ -32,13 +32,13 @@ export default function Overview() {
     const storedFirstName = localStorage.getItem('firstName');
     const token = localStorage.getItem('token');
     const storedOrders = JSON.parse(localStorage.getItem('orderItems') || '[]');
-    const storedWishlist = JSON.parse(localStorage.getItem('wishlistItems') || '[]'); 
+    const storedWishlist = JSON.parse(localStorage.getItem('wishlistItems') || '[]');
 
     if (storedFirstName && token) {
       setFirstName(storedFirstName);
       setIsLoggedIn(true);
       setOrderItems(storedOrders);
-      setWishlistItems(storedWishlist); 
+      setWishlistItems(storedWishlist);
     } else {
       setIsLoggedIn(false);
     }
@@ -47,7 +47,7 @@ export default function Overview() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('firstName');
-    localStorage.removeItem('wishlistItems'); 
+    localStorage.removeItem('wishlistItems');
     setIsLoggedIn(false);
   };
 
@@ -219,7 +219,15 @@ export default function Overview() {
       case 'wishlist':
         return (
           <div className="bg-background p-10 flex-1">
-            <h2 className="text-[2.7rem] font-semibold font-victor-serif text-customText">Wishlist</h2>
+            <div className="flex justify-between items-center mb-5">
+              <h2 className="text-[2.5rem] font-semibold font-victor-serif text-customText">Wishlist</h2>
+              <button
+                onClick={() => setWishlistItems([])}
+                className="bg-customText hover:bg-customHover text-white py-2 px-4 rounded-3xl transition"
+              >
+                Cancel Wishlist
+              </button>
+            </div>
             <p className="mb-10 text-customText">
               Welcome to your personal jungle oasis! Browse your wishlist and let your green thumb run wild as you curate the ultimate indoor garden that will make all your plant parent friends green with envy.
             </p>
@@ -228,13 +236,13 @@ export default function Overview() {
                 <span className="font-bold">Oops!</span> your wishlist is empty!
               </p>
             ) : (
-              <div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                 {wishlistItems.map(item => (
-                  <div key={item._id} className="border-b border-gray-300 py-4">
-                    <h3 className="text-xl font-semibold">{item.title}</h3>
-                    <p>{item.description}</p>
-                    <p>€{item.price.toFixed(2)}</p>
-                    <img src={item.image} alt={item.title} className="w-32 h-32 object-cover" />
+                  <div key={item._id} className="bg-white w-52 border border-gray-300 rounded-lg p-4 flex flex-col items-center shadow-lg">
+                    <img src={item.image} alt={item.title} className="w-32 h-44 object-cover mb-2" />
+                    <h3 className="text-lg font-semibold text-customText text-center">{item.title}</h3>
+                    <p className="text-customText text-center">{item.description}</p>
+                    <p className="text-customText text-center">€{item.price.toFixed(2)}</p>
                   </div>
                 ))}
               </div>
