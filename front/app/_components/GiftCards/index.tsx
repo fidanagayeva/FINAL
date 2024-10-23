@@ -46,6 +46,19 @@ export default function GiftCards() {
     const [totalPages, setTotalPages] = useState(0);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [activeAccordion, setActiveAccordion] = useState(null);
+    // const [filters, setFilters] = useState({
+    //     size: [],
+    //     characteristics: [],
+    //     color: [],
+    //     location: [],
+    //     material: [],
+    //     plantFamily: [],
+    //     room: [],
+    //     shape: [],
+    //     standing: [],
+    //     style: [],
+    //     waterCare: [],
+    // });
     const [filters, setFilters] = useState({
         size: [],
         characteristics: [],
@@ -77,8 +90,12 @@ export default function GiftCards() {
         }
     };
 
+    // useEffect(() => {
+    //     fetchGiftcards(currentPage);
+    // }, [currentPage, filters]);
+
     useEffect(() => {
-        fetchGiftcards(currentPage);
+        fetchGiftcards(currentPage); 
     }, [currentPage, filters]);
 
     const handleNextPage = () => {
@@ -110,16 +127,29 @@ export default function GiftCards() {
         });
     };
 
+    // const handleFilterChange = (event, filterType) => {
+    //     const { value, checked } = event.target;
+    //     setFilters(prevFilters => {
+    //         const newValues = checked
+    //             ? [...prevFilters[filterType], value]
+    //             : prevFilters[filterType].filter(item => item !== value);
+
+    //         return { ...prevFilters, [filterType]: newValues };
+    //     });
+    // };
+
+
     const handleFilterChange = (event, filterType) => {
         const { value, checked } = event.target;
-        setFilters(prevFilters => {
+        setFilters((prevFilters) => {
             const newValues = checked
                 ? [...prevFilters[filterType], value]
-                : prevFilters[filterType].filter(item => item !== value);
-
+                : prevFilters[filterType].filter((item) => item !== value);
+    
             return { ...prevFilters, [filterType]: newValues };
         });
     };
+
 
     const closeSidebar = () => {
         setIsSidebarOpen(false);

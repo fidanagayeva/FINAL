@@ -1,4 +1,4 @@
-const Giftcard = require('../models/giftcards');
+const Giftcard = require('../models/giftcards'); 
 const path = require('path');
 
 exports.createGiftcard = async (req, res) => {
@@ -58,12 +58,47 @@ exports.updateGiftcard = async (req, res) => {
 
 exports.getGiftcards = async (req, res) => {
   try {
-    const { page = 1 } = req.query;
+    const { page = 1, size, characteristics, color, location, material, plantFamily, room, shape, standing, style, waterCare } = req.query;
     const limitNumber = 20;
     const skip = (page - 1) * limitNumber;
 
-    const giftcards = await Giftcard.find().skip(skip).limit(limitNumber);
-    const totalGiftcards = await Giftcard.countDocuments();
+    const query = {};
+    if (size) {
+      query.size = { $in: size.split(',') }; 
+    }
+    if (characteristics) {
+      query.characteristics = { $in: characteristics.split(',') };
+    }
+    if (color) {
+      query.color = { $in: color.split(',') };
+    }
+    if (location) {
+      query.location = { $in: location.split(',') };
+    }
+    if (material) {
+      query.material = { $in: material.split(',') };
+    }
+    if (plantFamily) {
+      query.plantFamily = { $in: plantFamily.split(',') };
+    }
+    if (room) {
+      query.room = { $in: room.split(',') };
+    }
+    if (shape) {
+      query.shape = { $in: shape.split(',') };
+    }
+    if (standing) {
+      query.standing = { $in: standing.split(',') };
+    }
+    if (style) {
+      query.style = { $in: style.split(',') };
+    }
+    if (waterCare) {
+      query.waterCare = { $in: waterCare.split(',') };
+    }
+
+    const giftcards = await Giftcard.find(query).skip(skip).limit(limitNumber);
+    const totalGiftcards = await Giftcard.countDocuments(query); 
     const totalPages = Math.ceil(totalGiftcards / limitNumber);
 
     res.status(200).json({ totalPages, currentPage: page, giftcards });

@@ -41,7 +41,6 @@ const HeartIcon = ({ onClick }) => (
   </svg>
 );
 
-
 export default function SaleCards() {
   const [salecards, setSalecards] = useState<Salecard[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -67,22 +66,32 @@ export default function SaleCards() {
 
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchSalecards = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get('http://localhost:3001/api/salecards');
-        setSalecards(response.data);
-      } catch (err: any) {
-        setError('Kart məlumatları alınmadı.');
-        console.error('Error fetching salecards:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchSalecards = async () => {
+    try {
+      setLoading(true);
+      const query = new URLSearchParams(
+        Object.entries(filters)
+          .filter(([_, value]) => value.length > 0)
+          .reduce((acc, [key, value]) => {
+            acc[key] = value.join(',');
+            return acc;
+          }, {})
+      ).toString();
 
+      const response = await axios.get(`http://localhost:3001/api/salecards?${query}`);
+      setSalecards(response.data.salecards || []);
+      setTotalPages(Math.ceil(response.data.totalPages || 1));
+    } catch (err: any) {
+      setError('Kart məlumatları alınmadı.');
+      console.error('Error fetching salecards:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchSalecards();
-  }, []);
+  }, [filters]);
 
   const handleAddToWishlist = (card: Salecard) => {
     const token = localStorage.getItem('token');
@@ -117,43 +126,16 @@ export default function SaleCards() {
     setIsSidebarOpen(false);
   };
 
-    const handleFilterChange = (event, filterType) => {
-        const { value, checked } = event.target;
-        setFilters(prevFilters => {
-            const newValues = checked
-                ? [...prevFilters[filterType], value]
-                : prevFilters[filterType].filter(item => item !== value);
+  const handleFilterChange = (event, filterType) => {
+    const { value, checked } = event.target;
+    setFilters((prevFilters) => {
+      const newValues = checked
+        ? [...prevFilters[filterType], value]
+        : prevFilters[filterType].filter((item) => item !== value);
 
-            return { ...prevFilters, [filterType]: newValues };
-        });
-    };
-
-  useEffect(() => {
-    const applyFilters = async () => {
-      try {
-        setLoading(true);
-
-        const query = new URLSearchParams(
-          Object.entries(filters)
-            .filter(([_, value]) => value.length > 0)
-            .reduce((acc, [key, value]) => {
-              acc[key] = value.join(',');
-              return acc;
-            }, {})
-        ).toString();
-
-        const response = await axios.get(`http://localhost:3001/api/salecards?${query}`);
-        setSalecards(response.data);
-      } catch (err) {
-        setError('Filtr nəticələri alınmadı.');
-        console.error('Error fetching filtered salecards:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    applyFilters();
-  }, [filters]);
+      return { ...prevFilters, [filterType]: newValues };
+    });
+  };
 
   const toggleAccordion = (index: number) => {
     setActiveAccordion((prevIndex) => (prevIndex === index ? null : index));
