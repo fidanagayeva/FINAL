@@ -84,8 +84,6 @@ export default function SaleCards() {
     fetchSalecards();
   }, []);
 
-
-
   const handleAddToWishlist = (card: Salecard) => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -119,16 +117,43 @@ export default function SaleCards() {
     setIsSidebarOpen(false);
   };
 
-  const handleFilterChange = (event: any, filterType: string) => {
-    const { value, checked } = event.target;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [filterType]: checked
-        ? [...prevFilters[filterType], value]
-        : prevFilters[filterType].filter((item: string) => item !== value),
-    }));
-  };
+    const handleFilterChange = (event, filterType) => {
+        const { value, checked } = event.target;
+        setFilters(prevFilters => {
+            const newValues = checked
+                ? [...prevFilters[filterType], value]
+                : prevFilters[filterType].filter(item => item !== value);
 
+            return { ...prevFilters, [filterType]: newValues };
+        });
+    };
+
+  useEffect(() => {
+    const applyFilters = async () => {
+      try {
+        setLoading(true);
+
+        const query = new URLSearchParams(
+          Object.entries(filters)
+            .filter(([_, value]) => value.length > 0)
+            .reduce((acc, [key, value]) => {
+              acc[key] = value.join(',');
+              return acc;
+            }, {})
+        ).toString();
+
+        const response = await axios.get(`http://localhost:3001/api/salecards?${query}`);
+        setSalecards(response.data);
+      } catch (err) {
+        setError('Filtr nəticələri alınmadı.');
+        console.error('Error fetching filtered salecards:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    applyFilters();
+  }, [filters]);
 
   const toggleAccordion = (index: number) => {
     setActiveAccordion((prevIndex) => (prevIndex === index ? null : index));
@@ -185,7 +210,7 @@ export default function SaleCards() {
               </h3>
               {activeAccordion === 0 && (
                 <div className="flex space-x-2 mt-2">
-                  {['S', 'M', 'L'].map(size => (
+                  {['S', 'M', 'L', 'XL'].map(size => (
                     <label key={size} className="block cursor-pointer">
                       <input
                         type="checkbox"
@@ -251,7 +276,7 @@ export default function SaleCards() {
               </h3>
               {activeAccordion === 2 && (
                 <div className="flex flex-col mt-2 space-y-2">
-                  {['Orange', 'Black', 'Green', 'Brown'].map(color => (
+                  {['White', 'Black', 'Grey', 'Brown', 'Green', 'Red', 'Creme'].map(color => (
                     <label key={color} className="flex items-center justify-between cursor-pointer">
                       <span className="text-customText">{color}</span>
                       <span className="relative">
@@ -323,7 +348,7 @@ export default function SaleCards() {
               </h3>
               {activeAccordion === 4 && (
                 <div className="flex flex-col mt-2 space-y-2">
-                  {['Caladium', 'Calathea', 'Ctenanthe', 'Ficus', 'Monstera', 'Nephrolepis', 'Pilea', 'Peperomia', 'Platycerium', 'Rhaphidophora', 'Sansevieria', 'Strelitzia', 'Stromanthe'].map(plantFamily => (
+                  {['Amydrium', 'Aglaonema', 'Alocasia', 'Anthurium', 'Calathea', 'Dieffenbachia', 'Ficus', 'Hoya', 'Maranta', 'Philodendron', 'Scindapsus', 'Streliza', 'Peperomia', 'Platycerium', 'Succulent'].map(plantFamily => (
                     <label key={plantFamily} className="flex items-center justify-between cursor-pointer">
                       <span className="text-customText">{plantFamily}</span>
                       <span className="relative">
@@ -359,7 +384,7 @@ export default function SaleCards() {
               </h3>
               {activeAccordion === 5 && (
                 <div className="flex flex-col mt-2 space-y-2">
-                  {['Terracotta', 'Eco'].map(material => (
+                  {['Ceramic', 'Jute', 'Terracotta', 'Stone'].map(material => (
                     <label key={material} className="flex items-center justify-between cursor-pointer">
                       <span className="text-customText">{material}</span>
                       <span className="relative">
@@ -427,7 +452,7 @@ export default function SaleCards() {
               </h3>
               {activeAccordion === 7 && (
                 <div className="flex flex-col mt-2 space-y-2">
-                  {['Standing'].map(standing => (
+                  {['Standing', 'Hanging'].map(standing => (
                     <label key={standing} className="flex items-center justify-between cursor-pointer">
                       <span className="text-customText">{standing}</span>
                       <span className="relative">
@@ -581,7 +606,6 @@ export default function SaleCards() {
                 onClick={() => handleCardClick(salecard._id)}
               >
                 <div className="relative group">
-                  {/* Image */}
                   <div className="overflow-hidden">
                     <img
                       src={salecard.image}
@@ -596,7 +620,7 @@ export default function SaleCards() {
 
                   <div
                     className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-full shadow-md z-20"
-                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }} 
+                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleAddToWishlist(salecard);
