@@ -129,11 +129,16 @@ export default function DetailSale() {
                         <div className="relative w-full md:w-1/2 pr-0 md:pr-4 overflow-hidden">
                             <div className="w-full h-[20rem] md:w-[29rem] md:h-[33rem] overflow-hidden">
                                 <img
-                                    src={salecard?.image}
-                                    alt={salecard?.title}
+                                    src={salecard?.image || "/placeholder-image.png"}
+                                    alt={salecard?.title || "Product Image"}
                                     className="w-full h-full object-cover transition-transform duration-300 ease-in-out transform hover:scale-110"
                                 />
                             </div>
+                            {salecard?.sale && (
+                                <div className="absolute bottom-[20rem] bg-customPLNTS text-white text-sm px-2 py-1">
+                                    Sale {salecard.sale}
+                                </div>
+                            )}
                         </div>
                         <div className="w-1/2">
                             <h1 className="flex justify-between items-center text-5xl font-victor-serif text-customText mb-4">
