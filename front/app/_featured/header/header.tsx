@@ -540,9 +540,9 @@ export const Header = () => {
             <a href="#" className="text-customText text-[1.25rem] font-victor-serif hover:text-customHover">
               Inspiration
             </a>
-            <a href="#" className="text-customText text-[1.25rem] font-victor-serif hover:text-customHover">
+            <Link href="/plnts" className="text-customText text-[1.25rem] font-victor-serif hover:text-customHover">
               PLNTS Doctor
-            </a>
+            </Link>
             <span
               className="text-customText text-[1.25rem] font-victor-serif flex items-center cursor-pointer hover:text-customHover"
               onClick={() => toggleDropdown('languageDropdown')}
