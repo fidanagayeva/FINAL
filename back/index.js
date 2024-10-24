@@ -6,6 +6,7 @@ const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
 const giftcardRoutes = require("./routes/giftcards");
 const salecardRoutes = require("./routes/salecards");
+const plntscardRoutes = require("./routes/plntscards");
 
 const app = express();
 const path = require("path");
@@ -22,6 +23,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/giftcards", giftcardRoutes);
 app.use("/api/salecards", salecardRoutes);
+app.use("/api/plntscards", plntscardRoutes);
 
 const port = process.env.PORT || 3001; 
 app.listen(port, () => console.log(`Server running on port ${port}`));
