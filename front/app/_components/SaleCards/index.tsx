@@ -66,7 +66,7 @@ export default function SaleCards() {
 
   const router = useRouter();
 
-  const fetchSalecards = async () => {
+  const fetchSalecards = async (page: number) => {
     try {
       setLoading(true);
       const query = new URLSearchParams(
@@ -77,10 +77,10 @@ export default function SaleCards() {
             return acc;
           }, {})
       ).toString();
-
-      const response = await axios.get(`http://localhost:3001/api/salecards?${query}`);
+  
+      const response = await axios.get(`http://localhost:3001/api/salecards?page=${page}&${query}`);
       setSalecards(response.data.salecards || []);
-      setTotalPages(Math.ceil(response.data.totalPages || 1));
+      setTotalPages(response.data.totalPages); 
     } catch (err: any) {
       setError('Kart məlumatları alınmadı.');
       console.error('Error fetching salecards:', err);
@@ -90,8 +90,8 @@ export default function SaleCards() {
   };
 
   useEffect(() => {
-    fetchSalecards();
-  }, [filters]);
+    fetchSalecards(currentPage); 
+  }, [currentPage, filters]);
 
   const handleAddToWishlist = (card: Salecard) => {
     const token = localStorage.getItem('token');
@@ -111,12 +111,12 @@ export default function SaleCards() {
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };
-
+  
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prevPage) => prevPage - 1);
     }
-  };
+  };  
 
   const handleCardClick = (id: string) => {
     router.push(`/sale/${id}`);
@@ -400,7 +400,7 @@ export default function SaleCards() {
               </h3>
               {activeAccordion === 6 && (
                 <div className="flex flex-col mt-2 space-y-2">
-                  {['Round'].map(shape => (
+                  {['Round','Cilinder'].map(shape => (
                     <label key={shape} className="flex items-center justify-between cursor-pointer">
                       <span className="text-customText">{shape}</span>
                       <span className="relative">
