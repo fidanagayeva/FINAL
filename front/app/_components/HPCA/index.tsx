@@ -31,12 +31,14 @@ export default function HPCA() {
                     <h3 className="absolute top-4 left-0 right-0 p-4 text-white text-4xl font-victor-serif text-center">
                         Pots
                     </h3>
-                    <button
-                        className="absolute w-[15rem] bottom-0 left-1/2 transform -translate-x-1/2 px-6 py-2 mb-6 bg-white/30 text-white border border-white rounded-3xl 
-                          hover:bg-customHover hover:border-customHover transition duration-300 backdrop-blur-md"
-                    >
-                        See all
-                    </button>
+                    <Link href="/pots"> 
+                        <button
+                            className="absolute w-[15rem] bottom-0 left-1/2 transform -translate-x-1/2 px-6 py-2 mb-6 bg-white/30 text-white border border-white rounded-3xl 
+                      hover:bg-customHover hover:border-customHover transition duration-300 backdrop-blur-md"
+                        >
+                            See all
+                        </button>
+                    </Link>
                 </div>
                 <div className="relative overflow-hidden">
                     <img
