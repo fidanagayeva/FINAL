@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function PlntsLife() {
     return (
         <div className="relative flex flex-wrap p-4 sm:p-10 md:p-16 lg:p-20 mt-10 mb-[30rem]">
@@ -5,10 +7,12 @@ export default function PlntsLife() {
                 <h1 className="text-left text-customText font-victor-serif text-4xl sm:text-5xl lg:text-6xl lg:text-[64px]">
                     PLNTS <span className="italic">for life</span>
                 </h1>
-                <button className="px-6 py-2 mt-6 text-customText hover:text-white border border-customText rounded-3xl 
+                <Link href="/houseplants">
+                    <button className="px-6 py-2 mt-6 text-customText hover:text-white border border-customText rounded-3xl 
                               hover:bg-customHover hover:border-customHover transition duration-300 backdrop-blur-md">
-                    Shop all our PLNTS
-                </button>
+                        Shop all our PLNTS
+                    </button>
+                </Link>
                 <p className="mt-10 sm:mt-16 md:mt-24 lg:mt-32 text-customText">
                     Whether you are a seasoned plant lover or just starting out on <br /> your green journey,
                     we are here to help you care for your green friends. Each plant has its own unique
