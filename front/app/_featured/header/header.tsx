@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { FaChevronDown, FaBars, FaChevronUp } from 'react-icons/fa';
+import { FaChevronDown, FaBars} from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { CartSidebar } from '../sidebar/CartSidebar';
 import { Sidebar } from '../sidebar/Sidebar';
