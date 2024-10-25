@@ -10,6 +10,7 @@ const plntscardRoutes = require("./routes/plntscards");
 const houseCardRoutes = require('./routes/housecards');
 const potsCardRoutes = require('./routes/potscards');
 const careCardRoutes = require('./routes/carecards');
+const accessoriesCardRoutes = require('./routes/accessoriescards');
 
 const app = express();
 const path = require("path");
@@ -30,6 +31,7 @@ app.use("/api/plntscards", plntscardRoutes);
 app.use('/housecards', houseCardRoutes);
 app.use('/potscards', potsCardRoutes);
 app.use('/carecards', careCardRoutes);
+app.use('/accessoriescards', accessoriesCardRoutes);
 
 const port = process.env.PORT || 3001; 
 app.listen(port, () => console.log(`Server running on port ${port}`));
