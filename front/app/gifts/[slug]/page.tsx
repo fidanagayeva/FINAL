@@ -6,6 +6,7 @@ import { Info } from "../../_components/Info/index";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import AddCart from "@/app/_featured/sidebar/AddCart";
+import DetailCards from "@/app/_components/DetailCards";
 
 const StarIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5 filled" fill="#134A21" viewBox="0 0 20 20">
@@ -219,6 +220,7 @@ export default function DetailGifts() {
                         toggleSidebar={() => setIsSidebarOpen(false)}
                     />
                 )}
+                <DetailCards/>
             </Layout>
         </div>
     );
