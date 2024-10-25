@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../_featured/layout/layout';
-import { Info } from '../_components/Info';
+import  Info  from '../_components/Info';
 import ReadMore from "../_components/ReadMore";
 import Houseplntscards from '../_components/Houseplntscards';
 import HouseText from '../_components/HouseText';

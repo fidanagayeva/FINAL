@@ -1,5 +1,6 @@
 import Layout from "../_featured/layout/layout";
-import {Info} from "../_components/Info";
+import Info from "../_components/Info";
+import Infobg from "../_components/Infobg";
 import PLNTS from "../_components/PLNTS";
 import HPCA from "../_components/HPCA";
 import ReleasesCards from "../_components/ReleasesCards";
@@ -18,6 +19,7 @@ export default function HomePage() {
       <HPCA />
       <ReleasesCards/>
       <PlntsLife/>
+      <Infobg/>
       <ReadMore />
       </Layout>
     </div>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Layout from "../_featured/layout/layout";
-import { Info } from "../_components/Info";
+import  Info  from "../_components/Info";
 
 const AuthPage = () => {
     const [signupData, setSignupData] = useState({

@@ -1,5 +1,5 @@
 import Layout from "../_featured/layout/layout";
-import {Info} from "../_components/Info";
+import Info from "../_components/Info";
 import Overview from "../_components/Overview";
 
 export default function Account() {

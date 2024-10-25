@@ -4,7 +4,7 @@ import { TbTrash } from 'react-icons/tb';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Layout from '../_featured/layout/layout';
-import { Info } from '../_components/Info';
+import  Info  from '../_components/Info';
 
 interface CartItem {
     _id: string;

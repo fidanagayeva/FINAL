@@ -1,5 +1,5 @@
 import Layout from '../_featured/layout/layout';
-import { Info } from '../_components/Info';
+import  Info  from '../_components/Info';
 import Admintab from '../_components/Admintab';
 import ReadMore from "../_components/ReadMore";
 

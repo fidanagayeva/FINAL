@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../_featured/layout/layout';
-import { Info } from '../_components/Info';
+import  Info  from '../_components/Info';
 import Gift from '../_components/Gift';
 import GiftCards from '../_components/GiftCards';
 import ReadMore from "../_components/ReadMore";

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Layout from "../../_featured/layout/layout";
-import { Info } from "../../_components/Info/index";
+import  Info  from "../../_components/Info/index";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import AddCart from "@/app/_featured/sidebar/AddCart";
