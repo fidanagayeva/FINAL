@@ -23,6 +23,29 @@ const HeartIcon = ({ onClick }) => (
     </svg>
 );
 
+const Modal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded shadow-md">
+                <h2 className="text-3xl font-victor-serif font-bold text-customText">Log In</h2>
+                <p className="mt-2">You need to be logged in to add products to your wishlist.</p>
+                <div className="flex justify-between items-center mt-4">
+                    <button onClick={onClose} className="px-4 py-2 bg-customText text-white rounded-3xl">
+                        Close
+                    </button>
+                    <p className="flex">
+                        <Link href="/authpage" className="text-customText underline hover:text-customHover hover:border-customHover">
+                            Create one here!
+                        </Link>
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 interface DetailCard {
     _id: string;
     title: string;
@@ -37,6 +60,7 @@ interface DetailCard {
 
 export default function ReleasesCards() {
     const [houseCards, setHouseCards] = useState<DetailCard[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchHouseCards = async () => {
@@ -52,12 +76,16 @@ export default function ReleasesCards() {
         fetchHouseCards();
     }, []);
 
-    const handleCardClick = (id: string) => {
-        console.log("Card clicked:", id);
+    const handleAddToWishlist = (card: DetailCard) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setIsModalOpen(true);
+            return;
+        }
     };
 
-    const handleAddToWishlist = (card: DetailCard) => {
-        console.log("Added to wishlist:", card);
+    const closeModal = () => {
+        setIsModalOpen(false);
     };
 
     return (
@@ -78,9 +106,7 @@ export default function ReleasesCards() {
                         className="w-[26rem] h-[36rem] object-cover"
                         alt="Centered Plant"
                     />
-                    <div
-                        className="absolute top-[8.5rem] right-[7rem] w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-md z-20"
-                    >
+                    <div className="absolute top-[8.5rem] right-[7rem] w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-md z-20">
                         <HeartIcon />
                     </div>
                 </div>
@@ -91,7 +117,6 @@ export default function ReleasesCards() {
                     <div
                         key={card._id}
                         className="relative overflow-hidden transition-transform cursor-pointer"
-                        onClick={() => handleCardClick(card._id)}
                     >
                         <div className="relative group">
                             <div className="overflow-hidden mt-4">
@@ -109,7 +134,7 @@ export default function ReleasesCards() {
                                     handleAddToWishlist(card);
                                 }}
                             >
-                                <HeartIcon onClick={() => console.log("Heart clicked!")} />
+                                <HeartIcon />
                             </div>
 
                             <div className="absolute inset-0 bg-black bg-opacity-15 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 z-10"></div>
@@ -142,6 +167,8 @@ export default function ReleasesCards() {
                     </Link>
                 </div>
             </div>
+
+            <Modal isOpen={isModalOpen} onClose={closeModal} />
         </div>
     );
 }
