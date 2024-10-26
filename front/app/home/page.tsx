@@ -9,6 +9,7 @@ import PlntsLife from "../_components/PlntsLife";
 import ReadMore from "../_components/ReadMore";
 import Plantofthemonth from "../_components/Plantofthemonth";
 import CareWatering from "../_components/CareWatering";
+import InstaCards from "../_components/InstaCards";
 
 
 export default function HomePage() {
@@ -24,6 +25,7 @@ export default function HomePage() {
       <Infobg/>
       <Plantofthemonth/>
       <CareWatering/>
+      <InstaCards/>
       <ReadMore />
       </Layout>
     </div>
