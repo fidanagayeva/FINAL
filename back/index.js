@@ -12,6 +12,7 @@ const potsCardRoutes = require('./routes/potscards');
 const careCardRoutes = require('./routes/carecards');
 const accessoriesCardRoutes = require('./routes/accessoriescards');
 const detailCardRoutes = require('./routes/detailcards');
+const instcardRoutes = require('./routes/instcards');
 
 const app = express();
 const path = require("path");
@@ -34,6 +35,7 @@ app.use('/potscards', potsCardRoutes);
 app.use('/carecards', careCardRoutes);
 app.use('/accessoriescards', accessoriesCardRoutes);
 app.use('/detailcards', detailCardRoutes);
+app.use('/cards', instcardRoutes);
 
 const port = process.env.PORT || 3001; 
 app.listen(port, () => console.log(`Server running on port ${port}`));
