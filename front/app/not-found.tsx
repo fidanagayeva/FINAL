@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Layout from './_featured/layout/layout';
-import {Info} from './_components/Info'
+import Info from './_components/Info'
 
 export default function NotFound() {
     return (

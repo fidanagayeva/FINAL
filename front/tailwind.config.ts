@@ -24,6 +24,7 @@ const config: Config = {
         customHiclr:"#A9AE9A",
         customBorderclr:"#e4e0d8",
         customNewBg:"#EADAC4",
+        customCareBg:"#A9AE9A",
       },
       fontFamily: {
         'victor-serif': ['"Victor Serif"', 'serif'],

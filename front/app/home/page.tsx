@@ -8,6 +8,7 @@ import PlntsText from "../_components/PlntsText";
 import PlntsLife from "../_components/PlntsLife";
 import ReadMore from "../_components/ReadMore";
 import Plantofthemonth from "../_components/Plantofthemonth";
+import CareWatering from "../_components/CareWatering";
 
 
 export default function HomePage() {
@@ -22,6 +23,7 @@ export default function HomePage() {
       <PlntsLife/>
       <Infobg/>
       <Plantofthemonth/>
+      <CareWatering/>
       <ReadMore />
       </Layout>
     </div>
