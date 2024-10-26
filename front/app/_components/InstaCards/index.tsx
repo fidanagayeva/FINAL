@@ -1,9 +1,9 @@
 "use client";
 
-import Link from 'next/link'; 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { PiInstagramLogoLight } from "react-icons/pi";
-import { LiaChevronRightSolid } from 'react-icons/lia'; 
+import { LiaChevronRightSolid, LiaChevronLeftSolid } from 'react-icons/lia';
 
 interface Card {
     id: number;
@@ -13,6 +13,8 @@ interface Card {
 
 export default function InstaCards() {
     const [cards, setCards] = useState<Card[]>([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const itemsToShow = 3;
 
     useEffect(() => {
         const fetchCards = async () => {
@@ -28,28 +30,57 @@ export default function InstaCards() {
         fetchCards();
     }, []);
 
+    const nextSlide = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % (cards.length));
+    };
+
+    const prevSlide = () => {
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + cards.length) % (cards.length));
+    };
+
     return (
-        <div className="p-6">
-            <div className="flex justify-end items-center mb-6 mr-12 text-customText hover:text-customHover transition duration-300 cursor-pointer">
+        <div className="relative">
+            <div className="flex justify-end items-center my-6 mr-12 text-customText hover:text-customHover transition duration-300 cursor-pointer">
                 <Link href="https://www.instagram.com/plnts_com/#" target="_blank" className="flex items-center">
-                    < PiInstagramLogoLight className="mr-2 text-2xl" />
+                    <PiInstagramLogoLight className="mr-2 text-2xl" />
                     <span className="text-lg">Join our community!</span>
                     <LiaChevronRightSolid className="text-xl ml-2" />
                 </Link>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-4"> 
-                {cards.map((card) => (
-                    <div key={card.id} className="relative overflow-hidden transition-transform cursor-pointer flex flex-col items-start">
-                        <Link href={card.instagramLink} target="_blank"> 
-                            <img
-                                src={card.image}
-                                alt={`Instagram link for ${card.instagramLink}`}
-                                className="w-[23.75rem] h-[23.75rem] object-cover transition-transform duration-300 ease-in-out transform hover:scale-110"
-                            />
-                        </Link>
+            <div className="relative w-full">
+                <div className="flex overflow-hidden relative">
+                    <div className="flex transition-transform duration-300 gap-2" style={{ transform: `translateX(-${(currentIndex * (100 / itemsToShow))}%)` }}>
+                        {cards.concat(cards).map((card) => (
+                            <div key={card.id} className="relative flex-none w-[calc(100%/4)] h-[23.75rem]">
+                                <Link href={card.instagramLink} target="_blank">
+                                    <img
+                                        src={card.image}
+                                        alt={`Instagram link for ${card.instagramLink}`}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-black opacity-0 transition-opacity duration-300 hover:opacity-30"></div>
+                                </Link>
+                            </div>
+                        ))}
                     </div>
-                ))}
+                </div>
+                <div className="flex flex-col items-center my-6">
+                    <div className="flex items-center">
+                        <button className="bg-background rounded-full p-2 hover:bg-customHover border border-customText hover:border-customHover" onClick={prevSlide}>
+                            <LiaChevronLeftSolid className="text-customText hover:text-background" />
+                        </button>
+                        <div className="flex mx-4">
+                            {cards.map((_, index) => (
+                                <div key={index} className={`h-1 w-8 mx-1 ${index === currentIndex ? 'bg-customText' : 'bg-[#D6D3D1]'}`}></div>
+                            ))}
+                        </div>
+                        <button className="bg-background rounded-full p-2 hover:bg-customHover border border-customText hover:border-customHover" onClick={nextSlide}>
+                            <LiaChevronRightSolid className="text-customText hover:text-background" />
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
     );
