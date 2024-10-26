@@ -52,7 +52,7 @@ export default function InstaCards() {
                 <div className="flex overflow-hidden relative">
                     <div className="flex transition-transform duration-300 gap-2" style={{ transform: `translateX(-${(currentIndex * (100 / itemsToShow))}%)` }}>
                         {cards.concat(cards).map((card) => (
-                            <div key={card.id} className="relative flex-none w-[calc(100%/4)] h-[23.75rem]">
+                            <div key={card.id} className="relative flex-none w-full h-[23.75rem] sm:w-[calc(100%/2)] md:w-[calc(100%/3)] lg:w-[calc(100%/4)]">
                                 <Link href={card.instagramLink} target="_blank">
                                     <img
                                         src={card.image}
@@ -80,7 +80,6 @@ export default function InstaCards() {
                         </button>
                     </div>
                 </div>
-
             </div>
         </div>
     );
