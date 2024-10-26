@@ -536,7 +536,7 @@ export const Header = () => {
             </Link>
           </div>
 
-          <div className="flex space-x-6 items-center">
+          <div className="flex space-x-6 items-center mr-[-3.5rem]">
             <a href="#" className="text-customText text-[1.25rem] font-victor-serif hover:text-customHover">
               Inspiration
             </a>
