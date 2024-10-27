@@ -10,6 +10,7 @@ import ReadMore from "../_components/ReadMore";
 import Plantofthemonth from "../_components/Plantofthemonth";
 import CareWatering from "../_components/CareWatering";
 import InstaCards from "../_components/InstaCards";
+import YellowSwiper from "../_components/YellowSwiper";
 
 
 export default function HomePage() {
@@ -26,6 +27,7 @@ export default function HomePage() {
       <Plantofthemonth/>
       <CareWatering/>
       <InstaCards/>
+      <YellowSwiper/>
       <ReadMore />
       </Layout>
     </div>
