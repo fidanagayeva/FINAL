@@ -11,6 +11,7 @@ import Plantofthemonth from "../_components/Plantofthemonth";
 import CareWatering from "../_components/CareWatering";
 import InstaCards from "../_components/InstaCards";
 import YellowSwiper from "../_components/YellowSwiper";
+import Baby from "../_components/Baby";
 
 
 export default function HomePage() {
@@ -29,6 +30,7 @@ export default function HomePage() {
       <InstaCards/>
       <YellowSwiper/>
       <Infobg/>
+      <Baby/>
       <ReadMore />
       </Layout>
     </div>
