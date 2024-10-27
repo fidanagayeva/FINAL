@@ -23,30 +23,7 @@ const HeartIcon = ({ onClick }) => (
     </svg>
 );
 
-const Modal = ({ isOpen, onClose }) => {
-    if (!isOpen) return null;
-
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded shadow-md">
-                <h2 className="text-3xl font-victor-serif font-bold text-customText">Log In</h2>
-                <p className="mt-2">You need to be logged in to add products to your wishlist.</p>
-                <div className="flex justify-between items-center mt-4">
-                    <button onClick={onClose} className="px-4 py-2 bg-customText text-white rounded-3xl">
-                        Close
-                    </button>
-                    <p className="flex">
-                        <Link href="/authpage" className="text-customText underline hover:text-customHover hover:border-customHover">
-                            Create one here!
-                        </Link>
-                    </p>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-interface DetailCard {
+interface HouseCard {
     _id: string;
     title: string;
     description?: string;
@@ -59,14 +36,14 @@ interface DetailCard {
 }
 
 export default function ReleasesCards() {
-    const [houseCards, setHouseCards] = useState<DetailCard[]>([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [houseCards, setHouseCards] = useState<HouseCard[]>([]);
+    const [wishlist, setWishlist] = useState<HouseCard[]>([]);
 
     useEffect(() => {
         const fetchHouseCards = async () => {
             try {
                 const response = await fetch("http://localhost:3001/housecards");
-                const data: DetailCard[] = await response.json();
+                const data: HouseCard[] = await response.json();
                 setHouseCards(data);
             } catch (error) {
                 console.error("Error fetching house cards:", error);
@@ -76,16 +53,17 @@ export default function ReleasesCards() {
         fetchHouseCards();
     }, []);
 
-    const handleAddToWishlist = (card: DetailCard) => {
+    const handleAddToWishlist = (card: HouseCard) => {
         const token = localStorage.getItem('token');
         if (!token) {
-            setIsModalOpen(true);
+            alert('Zəhmət olmasa, wishlist-ə əlavə etmək üçün daxil olun.');
             return;
         }
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
+        setWishlist((prev) => {
+            const updatedWishlist = [...prev, card];
+            localStorage.setItem('wishlistItems', JSON.stringify(updatedWishlist));
+            return updatedWishlist;
+        });
     };
 
     return (
@@ -131,7 +109,7 @@ export default function ReleasesCards() {
                                 className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md z-20"
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    handleAddToWishlist(card);
+                                    handleAddToWishlist(card); 
                                 }}
                             >
                                 <HeartIcon />
@@ -167,8 +145,6 @@ export default function ReleasesCards() {
                     </Link>
                 </div>
             </div>
-
-            <Modal isOpen={isModalOpen} onClose={closeModal} />
         </div>
     );
 }

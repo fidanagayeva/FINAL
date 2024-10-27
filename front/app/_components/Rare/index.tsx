@@ -32,7 +32,7 @@ export default function Rare() {
                             <img
                                 src="https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F4_7c643d03d7.png&w=320&q=75"
                                 alt=""
-                                className="object-cover w-[14rem] md:w-[18rem] lg:w-[20rem] h-[17rem] md:h-[22rem] lg:h-[24rem] mt-[-4rem] md:mt-[-4rem] lg:mt-[-10rem]"
+                                className="object-cover w-[14rem] md:w-[18rem] lg:w-[20rem] h-[17rem] md:h-[22rem] lg:h-[24rem] mt-[-4rem] md:mt-[-4rem] lg:mt-[-13rem]"
                             />
                             <div className="absolute bottom-4 left-4 text-left text-customRareText">
                                 <h2 className="text-lg md:text-xl lg:text-2xl font-bold">Monstera</h2>
