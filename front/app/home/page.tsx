@@ -28,6 +28,7 @@ export default function HomePage() {
       <CareWatering/>
       <InstaCards/>
       <YellowSwiper/>
+      <Infobg/>
       <ReadMore />
       </Layout>
     </div>
