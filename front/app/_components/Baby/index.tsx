@@ -15,7 +15,7 @@ export default function Baby() {
                 />
             </div>
 
-            <div className="w-full md:w-[60%] bg-customBaby text-white flex flex-col items-center p-6 md:px-12 md:py-14 space-y-8">
+            <div className="w-full md:w-[60%] bg-customBaby text-customBabyText flex flex-col items-center p-6 md:px-12 md:py-14 space-y-8">
                 <img
                     src="https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2FBaby_PLNTS_rose_a1b8ae50a5.png&w=1920&q=75"
                     alt=""
@@ -31,7 +31,7 @@ export default function Baby() {
                             you can enjoy your plant for a very long time.
                         </p>
                         <Link href="/care">
-                        <button className="mt-4 md:mt-6 px-6 ml-10 mb-20 py-2 border border-white text-white rounded-full hover:bg-white hover:text-[#99452D] transition duration-300">
+                        <button className="mt-4 md:mt-6 px-6 ml-10 mb-20 py-2 border border-customBabyText text-customBabyText rounded-full hover:bg-customBabyText hover:text-customBaby transition duration-300">
                             Shop all BabyPLNTS
                         </button>
                         </Link>
@@ -44,12 +44,12 @@ export default function Baby() {
                                 alt=""
                                 className="object-cover w-[14rem] md:w-[18rem] lg:w-[20rem] h-[17rem] md:h-[22rem] lg:h-[24rem] mt-[-4rem] md:mt-[-4rem] lg:mt-[-7rem]"
                             />
-                            <div className="absolute bottom-4 left-4 text-left text-white">
+                            <div className="absolute bottom-4 left-4 text-left text-customBabyText">
                                 <h2 className="text-lg md:text-xl lg:text-2xl font-bold">Baby Pilea</h2>
                                 <p className="text-xs md:text-sm">Moon Valley</p>
                                 <p className="text-xs md:text-sm">€5.25</p>
                                 <Link href="/care">
-                                <button className="mt-2 px-4 py-1 border border-white text-white rounded-full text-xs md:text-sm hover:bg-white hover:text-[#99452D] transition duration-300">
+                                <button className="mt-2 px-4 py-1 border border-customBabyText text-customBabyText rounded-full text-xs md:text-sm hover:bg-customBabyText hover:text-customBaby transition duration-300">
                                     Shop now
                                 </button>
                                 </Link>
@@ -66,7 +66,7 @@ export default function Baby() {
                                 alt=""
                                 className="object-cover w-[12rem] md:w-[13rem] lg:w-[14.5rem] h-[12rem] md:h-[13rem] lg:h-[14.5rem] mt-[-3rem] md:mt-[-4rem] lg:mt-[-7rem]"
                             />
-                            <PiArrowBendDoubleUpRightThin className="absolute bottom-[-2rem] md:bottom-auto md:left-auto ml-[17rem] md:ml-[20rem] text-4xl md:text-5xl lg:text-6xl text-white" />
+                            <PiArrowBendDoubleUpRightThin className="absolute bottom-[-2rem] md:bottom-auto md:left-auto ml-[17rem] md:ml-[20rem] text-4xl md:text-5xl lg:text-6xl text-customBabyText" />
                         </div>
                     </div>
 

@@ -12,6 +12,7 @@ import CareWatering from "../_components/CareWatering";
 import InstaCards from "../_components/InstaCards";
 import YellowSwiper from "../_components/YellowSwiper";
 import Baby from "../_components/Baby";
+import Rare from "../_components/Rare";
 
 
 export default function HomePage() {
@@ -31,6 +32,7 @@ export default function HomePage() {
       <YellowSwiper/>
       <Infobg/>
       <Baby/>
+      <Rare/>
       <ReadMore />
       </Layout>
     </div>

@@ -25,7 +25,10 @@ const config: Config = {
         customBorderclr:"#e4e0d8",
         customNewBg:"#EADAC4",
         customCareBg:"#A9AE9A",
-        customBaby:"#99452D"
+        customBaby:"#99452D",
+        customRare:"#1E424A",
+        customBabyText:"#E7D4CC",
+        customRareText:"#9CAEB3",
       },
       fontFamily: {
         'victor-serif': ['"Victor Serif"', 'serif'],
