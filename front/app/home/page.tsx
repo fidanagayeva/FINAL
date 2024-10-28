@@ -13,6 +13,7 @@ import InstaCards from "../_components/InstaCards";
 import YellowSwiper from "../_components/YellowSwiper";
 import Baby from "../_components/Baby";
 import Rare from "../_components/Rare";
+import Packing from "../_components/Packing";
 
 
 export default function HomePage() {
@@ -33,6 +34,7 @@ export default function HomePage() {
       <Infobg/>
       <Baby/>
       <Rare/>
+      <Packing/>
       <ReadMore />
       </Layout>
     </div>
