@@ -31,13 +31,13 @@ export default function Baby() {
                             you can enjoy your plant for a very long time.
                         </p>
                         <Link href="/care">
-                        <button className="mt-4 md:mt-6 px-6 ml-10 mb-20 py-2 border border-customBabyText text-customBabyText rounded-full hover:bg-customBabyText hover:text-customBaby transition duration-300">
-                            Shop all BabyPLNTS
-                        </button>
+                            <button className="mt-4 md:mt-6 px-6 ml-10 mb-20 py-2 border border-customBabyText text-customBabyText rounded-full hover:bg-customBabyText hover:text-customBaby transition duration-300">
+                                Shop all BabyPLNTS
+                            </button>
                         </Link>
                     </div>
 
-                    <div className="w-full md:w-1/2 flex justify-center items-center">
+                    <div className="w-full md:w-1/2 flex justify-center items-center mb-20 md:mb-0">
                         <div className="relative">
                             <img
                                 src="https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F2_d8cada1bef.png&w=320&q=75"
@@ -49,9 +49,9 @@ export default function Baby() {
                                 <p className="text-xs md:text-sm">Moon Valley</p>
                                 <p className="text-xs md:text-sm">€5.25</p>
                                 <Link href="/care">
-                                <button className="mt-2 px-4 py-1 border border-customBabyText text-customBabyText rounded-full text-xs md:text-sm hover:bg-customBabyText hover:text-customBaby transition duration-300">
-                                    Shop now
-                                </button>
+                                    <button className="mt-2 px-4 py-1 border border-customBabyText text-customBabyText rounded-full text-xs md:text-sm hover:bg-customBabyText hover:text-customBaby transition duration-300">
+                                        Shop now
+                                    </button>
                                 </Link>
                             </div>
                         </div>
@@ -66,7 +66,9 @@ export default function Baby() {
                                 alt=""
                                 className="object-cover w-[12rem] md:w-[13rem] lg:w-[14.5rem] h-[12rem] md:h-[13rem] lg:h-[14.5rem] mt-[-3rem] md:mt-[-4rem] lg:mt-[-7rem]"
                             />
-                            <PiArrowBendDoubleUpRightThin className="absolute bottom-[-2rem] md:bottom-auto md:left-auto ml-[17rem] md:ml-[20rem] text-4xl md:text-5xl lg:text-6xl text-customBabyText" />
+                            <PiArrowBendDoubleUpRightThin
+                                className="absolute bottom-[-2rem] md:bottom-auto md:left-auto ml-[17rem] md:ml-[20rem] text-4xl md:text-5xl lg:text-6xl text-customBabyText hidden md:block"
+                            />
                         </div>
                     </div>
 

@@ -78,7 +78,7 @@ export default function GiftCards() {
     };
 
     useEffect(() => {
-        fetchGiftcards(currentPage); 
+        fetchGiftcards(currentPage);
     }, [currentPage, filters]);
 
     const handleNextPage = () => {
@@ -98,7 +98,7 @@ export default function GiftCards() {
     };
 
     const handleAddToWishlist = (giftcard: GiftCard) => {
-        const token = localStorage.getItem("token"); 
+        const token = localStorage.getItem("token");
         if (!token) {
             alert("You are not logged in. Please log in to add items to your wishlist.");
             return;
@@ -116,7 +116,7 @@ export default function GiftCards() {
             const newValues = checked
                 ? [...prevFilters[filterType], value]
                 : prevFilters[filterType].filter((item) => item !== value);
-    
+
             return { ...prevFilters, [filterType]: newValues };
         });
     };
@@ -134,23 +134,25 @@ export default function GiftCards() {
         <div className="container mx-auto p-7">
             <div className="flex flex-col items-end p-2">
                 <div className="flex flex-col md:flex-row items-end gap-2 mb-2 w-full justify-end mt-14 md:mt-0">
-                    <button
-                        className="border border-customText font-bold text-customText px-4 py-2 flex items-center"
-                        onClick={() => setIsSidebarOpen(true)}
-                    >
-                        Filter
-                        <VscListFilter className="ml-2" />
-                    </button>
-                    <div className="relative w-full md:w-auto">
-                        <select className="border font-bold border-customText bg-background text-customText px-4 py-2">
-                            <option value="recommended">Recommended sorting</option>
-                            <option value="name-asc">Name: ascending</option>
-                            <option value="name-desc">Name: descending</option>
-                            <option value="price-asc">Price: low to high</option>
-                            <option value="price-desc">Price: high to low</option>
-                            <option value="relevance-asc">Relevance: ascending</option>
-                            <option value="relevance-desc">Relevance: descending</option>
-                        </select>
+                    <div className="flex flex-col md:flex-row w-full md:w-auto justify-end items-center">
+                        <button
+                            className="border border-customText font-bold text-customText  mr-4 px-4 py-2 flex items-center"
+                            onClick={() => setIsSidebarOpen(true)}
+                        >
+                            Filter
+                            <VscListFilter className="ml-2" />
+                        </button>
+                        <div className="relative w-full md:w-auto mt-2 md:mt-0">
+                            <select className="border font-bold border-customText bg-background text-customText px-4 py-2">
+                                <option value="recommended">Recommended sorting</option>
+                                <option value="name-asc">Name: ascending</option>
+                                <option value="name-desc">Name: descending</option>
+                                <option value="price-asc">Price: low to high</option>
+                                <option value="price-desc">Price: high to low</option>
+                                <option value="relevance-asc">Relevance: ascending</option>
+                                <option value="relevance-desc">Relevance: descending</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <p className="text-customText text-sm text-right">Showing 1-20 of 54 results</p>
@@ -589,7 +591,7 @@ export default function GiftCards() {
                                         className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md z-20"
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            handleAddToWishlist(giftcard); 
+                                            handleAddToWishlist(giftcard);
                                         }}
                                     >
                                         <HeartIcon />

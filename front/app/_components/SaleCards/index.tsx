@@ -77,10 +77,10 @@ export default function SaleCards() {
             return acc;
           }, {})
       ).toString();
-  
+
       const response = await axios.get(`http://localhost:3001/api/salecards?page=${page}&${query}`);
       setSalecards(response.data.salecards || []);
-      setTotalPages(response.data.totalPages); 
+      setTotalPages(response.data.totalPages);
     } catch (err: any) {
       setError('Kart məlumatları alınmadı.');
       console.error('Error fetching salecards:', err);
@@ -90,7 +90,7 @@ export default function SaleCards() {
   };
 
   useEffect(() => {
-    fetchSalecards(currentPage); 
+    fetchSalecards(currentPage);
   }, [currentPage, filters]);
 
   const handleAddToWishlist = (card: Salecard) => {
@@ -111,12 +111,12 @@ export default function SaleCards() {
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };
-  
+
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prevPage) => prevPage - 1);
     }
-  };  
+  };
 
   const handleCardClick = (id: string) => {
     router.push(`/sale/${id}`);
@@ -144,15 +144,15 @@ export default function SaleCards() {
   return (
     <div className="container mx-auto p-7">
       <div className="flex flex-col items-end p-2">
-        <div className="flex flex-col md:flex-row items-end gap-2 mb-2 w-full justify-end mt-14 md:mt-0">
+        <div className="flex flex-col md:flex-row w-full md:w-auto justify-end items-center">
           <button
-            className="border border-customText font-bold text-customText px-4 py-2 flex items-center"
+            className="border border-customText font-bold text-customText  mr-4 px-4 py-2 flex items-center"
             onClick={() => setIsSidebarOpen(true)}
           >
             Filter
             <VscListFilter className="ml-2" />
           </button>
-          <div className="relative w-full md:w-auto">
+          <div className="relative w-full md:w-auto mt-2 md:mt-0">
             <select className="border font-bold border-customText bg-background text-customText px-4 py-2">
               <option value="recommended">Recommended sorting</option>
               <option value="name-asc">Name: ascending</option>
@@ -400,7 +400,7 @@ export default function SaleCards() {
               </h3>
               {activeAccordion === 6 && (
                 <div className="flex flex-col mt-2 space-y-2">
-                  {['Round','Cilinder'].map(shape => (
+                  {['Round', 'Cilinder'].map(shape => (
                     <label key={shape} className="flex items-center justify-between cursor-pointer">
                       <span className="text-customText">{shape}</span>
                       <span className="relative">

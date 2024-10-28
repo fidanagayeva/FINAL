@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Layout from "../../_featured/layout/layout";
-import  Info  from "../../_components/Info/index";
+import Info from "../../_components/Info/index";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import AddCart from "@/app/_featured/sidebar/AddCart";
@@ -107,7 +107,7 @@ export default function DetailGifts() {
     }, []);
 
     const addToCart = () => {
-        const token = localStorage.getItem("token"); 
+        const token = localStorage.getItem("token");
         if (!token) {
             alert("You need to be logged in to add items to your cart.");
             return;
@@ -117,7 +117,7 @@ export default function DetailGifts() {
         const updatedCart = [...cartItems, newItem];
         setCartItems(updatedCart);
         localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-        setIsSidebarOpen(true); 
+        setIsSidebarOpen(true);
     };
 
     return (
@@ -140,10 +140,10 @@ export default function DetailGifts() {
                                 />
                             </div>
                         </div>
-                        <div className="w-1/2">
-                            <h1 className="flex justify-between items-center text-5xl font-victor-serif text-customText mb-4">
+                        <div className="w-full md:w-1/2">
+                            <h1 className="flex justify-between items-center text-3xl md:text-5xl font-victor-serif text-customText mb-4">
                                 <span>{giftcard?.title}</span>
-                                <div className="flex items-center justify-center w-12 h-12 border-[1px] border-customText rounded-full">
+                                <div className="flex items-center justify-center w-10 h-10 border-[1px] border-customText rounded-full">
                                     <HeartIcon />
                                 </div>
                             </h1>
@@ -170,13 +170,13 @@ export default function DetailGifts() {
                                 <p className="text-base text-customText">Giftcard ({giftcard?.size})</p>
 
                                 <div className="flex flex-col md:flex-row items-center mt-4 w-full">
-                                    <div className="flex items-center w-[7rem] bg-white p-2">
+                                    <div className="flex items-center w-full sm:w-[7rem] bg-white p-2">
                                         <button onClick={decreaseQuantity} className="px-3 py-1">-</button>
                                         <span className="mx-2 text-lg">{quantity}</span>
                                         <button onClick={increaseQuantity} className="px-3 py-1">+</button>
                                     </div>
 
-                                    <div className="ml-auto mb-[-3.5rem] text-customText text-right">
+                                    <div className="ml-auto text-customText text-right mt-2 md:mt-0">
                                         <p className="text-lg">€{totalPrice.toFixed(2)}</p>
                                         <p>Total: €{totalPrice.toFixed(2)}</p>
                                     </div>
@@ -220,7 +220,7 @@ export default function DetailGifts() {
                         toggleSidebar={() => setIsSidebarOpen(false)}
                     />
                 )}
-                <DetailCards/>
+                <DetailCards />
             </Layout>
         </div>
     );

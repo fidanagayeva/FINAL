@@ -2,27 +2,26 @@ import Link from 'next/link';
 
 export default function PlntsLife() {
     return (
-        <div className="relative flex flex-wrap p-4 sm:p-10 md:p-16 lg:p-20 mt-10 mb-[30rem]">
-            <div className="w-full lg:w-[45%] pr-4">
-                <h1 className="text-left text-customText font-victor-serif text-4xl sm:text-5xl lg:text-6xl lg:text-[64px]">
+        <div className="relative flex flex-wrap p-4 sm:p-10 md:p-16 lg:p-20 mt-10 mb-10 lg:mb-[30rem]">
+            <div className="w-full lg:w-[45%] pr-4 flex flex-col items-center lg:items-start">
+                <h1 className="text-center lg:text-left text-customText font-victor-serif text-4xl sm:text-5xl lg:text-6xl lg:text-[64px]">
                     PLNTS <span className="italic">for life</span>
                 </h1>
                 <Link href="/houseplants">
                     <button className="px-6 py-2 mt-6 text-customText hover:text-white border border-customText rounded-3xl 
-                              hover:bg-customHover hover:border-customHover transition duration-300 backdrop-blur-md">
+                          hover:bg-customHover hover:border-customHover transition duration-300 backdrop-blur-md">
                         Shop all our PLNTS
                     </button>
                 </Link>
-                <p className="mt-10 sm:mt-16 md:mt-24 lg:mt-32 text-customText">
+                <p className="mt-6 sm:mt-10 md:mt-16 lg:mt-24 text-center lg:text-left text-customText">
                     Whether you are a seasoned plant lover or just starting out on <br /> your green journey,
                     we are here to help you care for your green friends. Each plant has its own unique
                     needs, so understanding their specific care requirements is crucial to their well-being.
                 </p>
-                <a href="#" className="mt-4 text-customText font-bold inline-block hover:text-customHover">
+                <a href="#" className="mt-2 text-customText font-bold inline-block hover:text-customHover text-center lg:text-left">
                     Discover our plant care guides &rarr;
                 </a>
             </div>
-
             <div className="w-full lg:w-[55%] relative mt-8 lg:mt-0">
                 <img
                     src="https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2FPLNTS_for_life_background_67f551596d.jpg&w=828&q=75"
@@ -31,7 +30,7 @@ export default function PlntsLife() {
                 />
             </div>
 
-            <div className="absolute left-0 mt-[30rem] lg:mt-[41rem] translate-y-[-50%] flex flex-col lg:flex-row">
+            <div className="absolute left-0 mt-10 lg:mt-[41rem] translate-y-[-50%] flex flex-col lg:flex-row">
                 <div className="relative w-full lg:w-[20.375rem] h-[20rem] lg:h-[27.5rem] mb-8 lg:mb-0 hidden lg:block">
                     <img
                         src="https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2FStep_1_053834698a.png&w=384&q=75"
@@ -73,6 +72,7 @@ export default function PlntsLife() {
                         </svg>
                     </span>
                 </div>
+
                 <div>
                     <span className="absolute bottom-[-1.5rem] right-[1.5rem] flex items-center text-4xl lg:text-[50px] text-customHover font-chicle">
                         3

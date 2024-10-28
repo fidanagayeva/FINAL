@@ -21,13 +21,13 @@ export default function Rare() {
                             Rare plants are the real gems from our online shop. This is the place where you can find the most special plant species and special varieties from all over the world. These plants are so special that there are often very few in stock. So be quick… Are you a true plant geek and do you want to turn your house into a real green jungle? Then choose our rare plants!
                         </p>
                         <Link href="/care">
-                        <button className="mt-4 md:mt-6 px-6 ml-10 mb-32 py-2 border border-customRareText text-customRareText rounded-full hover:bg-customRareText hover:text-customRare transition duration-300">
-                            Shop all RarePLNTS
-                        </button>
+                            <button className="mt-4 md:mt-6 px-6 ml-10 mb-32 py-2 border border-customRareText text-customRareText rounded-full hover:bg-customRareText hover:text-customRare transition duration-300">
+                                Shop all RarePLNTS
+                            </button>
                         </Link>
                     </div>
 
-                    <div className="w-full md:w-1/2 flex justify-center items-center">
+                    <div className="w-full md:w-1/2 flex justify-center items-center mb-20 md:mb-0">
                         <div className="relative">
                             <img
                                 src="https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F4_7c643d03d7.png&w=320&q=75"
@@ -39,9 +39,9 @@ export default function Rare() {
                                 <p className="text-xs md:text-sm">Thai Constellation</p>
                                 <p className="text-xs md:text-sm">€59.95</p>
                                 <Link href="/care">
-                                <button className="mt-2 px-4 py-1 border border-customRareText text-customRareText rounded-full text-xs md:text-sm hover:bg-customRareText hover:text-customRare transition duration-300">
-                                    Shop now
-                                </button>
+                                    <button className="mt-2 px-4 py-1 border border-customRareText text-customRareText rounded-full text-xs md:text-sm hover:bg-customRareText hover:text-customRare transition duration-300">
+                                        Shop now
+                                    </button>
                                 </Link>
                             </div>
                         </div>
@@ -56,13 +56,13 @@ export default function Rare() {
                                 alt=""
                                 className="object-cover w-[12rem] md:w-[13rem] lg:w-[14.5rem] h-[12rem] md:h-[13rem] lg:h-[14.5rem] mt-[-3rem] md:mt-[-4rem] lg:mt-[-7rem]"
                             />
-                            <PiArrowBendDoubleUpRightThin className="absolute bottom-[-2rem] md:bottom-auto md:left-auto ml-[17rem] md:ml-[20rem] text-4xl md:text-5xl lg:text-6xl text-customRareText" />
+                            <PiArrowBendDoubleUpRightThin className="absolute bottom-[-2rem] md:bottom-auto md:left-auto ml-[17rem] md:ml-[20rem] text-4xl md:text-5xl lg:text-6xl text-customRareText hidden md:block" />
                         </div>
                     </div>
 
                     <div className="w-full md:w-1/2">
                         <p className="text-xs md:text-sm lg:text-base mx-4 md:mx-0 lg:mr-[8rem] text-center md:text-left leading-relaxed">
-                          Variegation is extremely rare, as it is a difficult process to create genetic mutations!
+                            Variegation is extremely rare, as it is a difficult process to create genetic mutations!
                         </p>
                     </div>
                 </div>

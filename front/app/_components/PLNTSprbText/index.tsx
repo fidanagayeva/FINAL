@@ -2,11 +2,11 @@ export default function PLNTSprb() {
     return (
         <div className="flex flex-col items-center my-10 text-customText mx-auto">
             <div className="text-center mb-4 w-full max-w-[48rem]">
-                <h1 className="text-[3.3rem] text-start font-victor-serif font-semibold leading-tight">
+                <h1 className="text-[3.3rem] font-victor-serif font-semibold leading-tight text-center md:text-start">
                     Plant problems? PLNTS Doctor to the rescue!
                 </h1>
             </div>
-            <div className="text-start mb-4 max-w-[48rem]">
+            <div className=" mb-4 max-w-[48rem] text-center md:text-start">
                 Is your beauty showing some signs that she isn't not so happy anymore? Think about drooping or yellow leaves, maybe even some weird, unfamiliar spots on her foliage? Hopefully our wise PLNTS Doctor can help you with that, so your beauty can recover and become bigger and stronger than ever! To identify the different diseases or bugs, we've set up an itchy image list under 'diseases & pests' to help you recognize these annoying bugs of course with helpful tips to save your green bestie!
             </div>
 

@@ -4,7 +4,7 @@ import { TbTrash } from 'react-icons/tb';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Layout from '../_featured/layout/layout';
-import  Info  from '../_components/Info';
+import Info from '../_components/Info';
 
 interface CartItem {
     _id: string;
@@ -75,9 +75,9 @@ export default function Cart() {
         <Layout>
             <Info />
             <div className="bg-white p-4 my-16 mx-28">
-                <h2 className="text-customText text-5xl font-semibold font-victor-serif flex justify-start items-center">
+                <h2 className="text-customText text-3xl sm:text-5xl font-semibold font-victor-serif flex flex-col sm:flex-row justify-center sm:justify-start items-center">
                     Hi {firstName}!
-                    <span className="ml-2">This is your shopping cart</span>
+                    <span className="ml-0 sm:ml-2 mt-2 sm:mt-0">This is your shopping cart</span>
                 </h2>
                 <p className='mt-10 text-customText mb-4'>Add another €{remainingAmount.toFixed(2)} and your shipment is free*</p>
                 <div className="relative w-full bg-gray-200 h-2 rounded-full">
@@ -89,13 +89,13 @@ export default function Cart() {
                 {remainingAmount <= 0 && (
                     <p className="text-customText mt-4">Your order ships free!* ✓</p>
                 )}
-
-                <div className="flex justify-between font-bold my-4 mx-6 text-customText">
-                    <span>Product</span>
-                    <span className='ml-[14rem]'>Size</span>
-                    <span>Quantity</span>
-                    <span>Price</span>
+                <div className="flex flex-col md:flex-row justify-between font-bold my-4 mx-4 sm:mx-6 text-customText">
+                    <span className="mb-2 md:mb-0">Product</span>
+                    <span className="hidden md:block ml-[14rem]">Size</span>
+                    <span className="mb-2 md:mb-0">Quantity</span>
+                    <span className="mb-2 md:mb-0">Price</span>
                 </div>
+
                 <hr className="border-t border-customText mb-2" />
 
                 <div className="p-4">
@@ -152,16 +152,16 @@ export default function Cart() {
 
                     <hr className="border-t border-customText my-4" />
 
-                    <div className="flex flex-col items-start mb-4">
-                    <Link href="/pages" passHref>
-                        <button
-                            onClick={handleContinueToPayment}
-                            className="w-[15rem] bg-customText rounded-3xl hover:bg-customHover text-white py-2"
-                        >
-                            Continue to payment
-                        </button>
-                    </Link>
-                        <p className="flex items-center text-customText hover:text-customHover cursor-pointer mt-2 ml-4">
+                    <div className="flex flex-col items-center md:items-start mb-4">
+                        <Link href="/pages" passHref>
+                            <button
+                                onClick={handleContinueToPayment}
+                                className="w-full sm:w-[15rem] bg-customText rounded-3xl hover:bg-customHover text-white py-2"
+                            >
+                                Continue to payment
+                            </button>
+                        </Link>
+                        <p className="flex items-center text-customText hover:text-customHover cursor-pointer mt-2 text-center md:text-left">
                             <span className="mr-1">&#8592;</span>
                             Continue shopping
                         </p>

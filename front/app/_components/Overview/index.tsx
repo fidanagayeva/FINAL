@@ -108,11 +108,6 @@ export default function Overview() {
               <span className="font-bold">Oops!</span> something went wrong!
             </p>
             <p className="mb-8 text-customText">You have not selected any favourites yet.</p>
-
-            <h3 className="text-[2rem] font-victor-serif text-customText mb-4">Recently viewed items</h3>
-            <div className="flex items-center justify-center bg-[#f8f5ec] border border-customText p-10">
-              <p className="text-customText">No recently viewed items</p>
-            </div>
           </div>
         );
       case 'personalDetails':
@@ -466,12 +461,12 @@ export default function Overview() {
           </ul>
         </div>
       ) : (
-        <div className="flex min-h-screen w-full bg-background">
-          <div className="w-1/2 flex flex-col justify-center p-10 mb-[20rem]">
-            <div className="font-victor-serif font-bold text-customText text-[4rem]">
+        <div className="flex flex-col md:flex-row min-h-screen w-full bg-background">
+          <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-10 mb-10 md:mb-0">
+            <div className="font-victor-serif font-bold text-customText text-[3rem] md:text-[4rem]">
               Your PLNTS account
             </div>
-            <h2 className="mb-8 mt-[3rem] text-customText font-bold md:mb-6">Log in with email</h2>
+            <h2 className="mb-4 mt-6 text-customText font-bold">Log in with email</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-[0.9rem] text-customText mb-1" htmlFor="email">
@@ -493,18 +488,18 @@ export default function Overview() {
                   className="w-full p-3 bg-white border-2 border-customBorderclr focus:outline-none"
                 />
               </div>
-              {errorMessage && <p className="customtextRed text-sm mb-4">{errorMessage}</p>}
+              {errorMessage && <p className="text-red-500 text-sm mb-4">{errorMessage}</p>}
               <div className="flex items-center justify-between">
-                <button className="bg-customText text-white py-2 px-4 rounded-3xl w-[17rem]" type="submit">
+                <button className="bg-customText text-white py-2 px-4 rounded-3xl w-full md:w-[17rem]" type="submit">
                   Log in
                 </button>
               </div>
             </form>
           </div>
 
-          <div className="w-[1px] mt-44 mb-20 bg-gray-400"></div>
+          <div className="w-[1px] mt-6 mb-10 md:mt-44 md:mb-20 bg-gray-400 hidden md:block"></div>
 
-          <div className="w-1/2 flex items-center justify-center p-10">
+          <div className="w-full md:w-1/2 flex items-center justify-center p-6">
             <p className="text-center">
               No account yet?{' '}
               <button

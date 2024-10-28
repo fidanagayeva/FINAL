@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { FaChevronDown, FaBars} from 'react-icons/fa';
+import { FaChevronDown, FaBars } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { CartSidebar } from '../sidebar/CartSidebar';
 import { Sidebar } from '../sidebar/Sidebar';
@@ -318,11 +318,18 @@ export const Header = () => {
             <div className="relative">
               <a
                 href="#"
-                onClick={() => toggleDropdown('dropdown2')}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push('/pots');
+                }}
                 className="text-customText text-[1.25rem] font-victor-serif flex items-center hover:text-customHover"
               >
                 Pots
                 <FaChevronDown
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleDropdown('dropdown2');
+                  }}
                   className={`ml-1 text-[0.875rem] transition-transform duration-300 ${activeDropdown === 'dropdown2' ? 'rotate-180' : 'rotate-0'
                     }`}
                 />
@@ -391,11 +398,18 @@ export const Header = () => {
             <div className="relative">
               <a
                 href="#"
-                onClick={() => toggleDropdown('dropdown3')}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push('/care');
+                }}
                 className="text-customText text-[1.25rem] font-victor-serif flex items-center hover:text-customHover"
               >
                 Care
                 <FaChevronDown
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleDropdown('dropdown3');
+                  }}
                   className={`ml-1 text-[0.875rem] transition-transform duration-300 ${activeDropdown === 'dropdown3' ? 'rotate-180' : 'rotate-0'
                     }`}
                 />
@@ -461,11 +475,18 @@ export const Header = () => {
             <div className="relative">
               <a
                 href="#"
-                onClick={() => toggleDropdown('dropdown4')}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push('/accessories');
+                }}
                 className="text-customText text-[1.25rem] font-victor-serif flex items-center hover:text-customHover"
               >
                 Accessories
                 <FaChevronDown
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleDropdown('dropdown4');
+                  }}
                   className={`ml-1 text-[0.875rem] transition-transform duration-300 ${activeDropdown === 'dropdown4' ? 'rotate-180' : 'rotate-0'
                     }`}
                 />

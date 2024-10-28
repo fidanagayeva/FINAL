@@ -130,8 +130,7 @@ export default function DetailSale() {
                         <div className="relative w-full md:w-1/2 pr-0 md:pr-4 overflow-hidden">
                             <div className="w-full h-[20rem] md:w-[29rem] md:h-[33rem] overflow-hidden">
                                 <img
-                                    src={salecard?.image || "/placeholder-image.png"}
-                                    alt={salecard?.title || "Product Image"}
+                                    src={salecard?.image}
                                     className="w-full h-full object-cover transition-transform duration-300 ease-in-out transform hover:scale-110"
                                 />
                             </div>
@@ -141,10 +140,10 @@ export default function DetailSale() {
                                 </div>
                             )}
                         </div>
-                        <div className="w-1/2">
-                            <h1 className="flex justify-between items-center text-5xl font-victor-serif text-customText mb-4">
+                        <div className="w-full md:w-1/2">
+                            <h1 className="flex justify-between items-center text-3xl md:text-5xl font-victor-serif text-customText mb-4">
                                 <span>{salecard?.title}</span>
-                                <div className="flex items-center justify-center w-12 h-12 border-[1px] border-customText rounded-full">
+                                <div className="flex items-center justify-center w-10 h-10 border-[1px] border-customText rounded-full">
                                     <HeartIcon />
                                 </div>
                             </h1>
@@ -174,12 +173,12 @@ export default function DetailSale() {
                                 <hr className="border-customText mb-4" />
                                 <p className="text-base text-customText">Salecard ({salecard?.size})</p>
                                 <div className="flex flex-col md:flex-row items-center mt-4 w-full">
-                                    <div className="flex items-center w-[7rem] bg-white p-2">
+                                    <div className="flex items-center w-full sm:w-[7rem] bg-white p-2">
                                         <button onClick={decreaseQuantity} className="px-3 py-1">-</button>
                                         <span className="mx-2 text-lg">{quantity}</span>
                                         <button onClick={increaseQuantity} className="px-3 py-1">+</button>
                                     </div>
-                                    <div className="ml-auto mb-[-3.5rem] text-customText text-right">
+                                    <div className="ml-auto text-customText text-right mt-2 md:mt-0">
                                         <p className="text-lg">€{totalPrice.toFixed(2)}</p>
                                         <p>Total: €{totalPrice.toFixed(2)}</p>
                                     </div>
