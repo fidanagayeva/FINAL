@@ -558,9 +558,9 @@ export const Header = () => {
           </div>
 
           <div className="flex space-x-6 items-center mr-[-3.5rem]">
-            <a href="#" className="text-customText text-[1.25rem] font-victor-serif hover:text-customHover">
+            <Link href="/blog" className="text-customText text-[1.25rem] font-victor-serif hover:text-customHover">
               Inspiration
-            </a>
+            </Link>
             <Link href="/plnts" className="text-customText text-[1.25rem] font-victor-serif hover:text-customHover">
               PLNTS Doctor
             </Link>
