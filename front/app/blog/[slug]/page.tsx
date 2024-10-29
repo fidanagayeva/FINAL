@@ -32,27 +32,31 @@ export default function InspirationDetail() {
     }
   }, [slug]);
 
-
   if (!inspiration) {
-    return null;
+    return null; 
   }
+
+  const repeatedItems = inspiration.titles.map((title, index) => ({
+    title,
+    text: inspiration.texts[index],
+    optionalImages: inspiration.optionalImages.slice(index * 2, index * 2 + 2), 
+  }));
 
   return (
     <Layout>
       <Info />
       <div className="p-10">
-        <h1 className="text-4xl font-bold">{inspiration.titles[0]}</h1>
-        <img src={inspiration.mainImage} alt={inspiration.titles[0]} className="mt-5 w-full h-auto object-cover" />
-        <div className="mt-5">
-          {inspiration.texts.map((text, index) => (
-            <p key={index} className="mb-3">{text}</p>
-          ))}
-        </div>
-        <div className="grid grid-cols-2 gap-4 mt-5">
-          {inspiration.optionalImages.map((image, index) => (
-            <img key={index} src={image} alt={`Optional ${index + 1}`} className="w-full h-auto object-cover" />
-          ))}
-        </div>
+        {repeatedItems.map((item, index) => (
+          <div key={index} className="mb-10"> 
+            <h1 className="text-4xl font-bold">{item.title}</h1>
+            <p className="mt-2 mb-5">{item.text}</p>
+            <div className="grid grid-cols-2 gap-4">
+              {item.optionalImages.map((image, imgIndex) => (
+                <img key={imgIndex} src={image} alt={`Optional ${imgIndex + 1}`} className="w-full h-auto object-cover" />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </Layout>
   );
