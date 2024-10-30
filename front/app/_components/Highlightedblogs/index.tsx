@@ -42,7 +42,7 @@ export default function HighlightedBlogs() {
               alt={item.titles[0]}
               className="w-[23rem] h-[20rem] object-cover"
             />
-            <div className="absolute bottom-4 left-4 px-3 py-1 rounded">
+            <div className="absolute bottom-4 left-4 px-3 py-1">
               <h2 className="text-white text-sm md:text-xl font-bold">
                 {item.titles[0]}
               </h2>
