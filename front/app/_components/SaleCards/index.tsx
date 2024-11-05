@@ -96,7 +96,7 @@ export default function SaleCards() {
   const handleAddToWishlist = (card: Salecard) => {
     const token = localStorage.getItem('token');
     if (!token) {
-      alert('Zəhmət olmasa, wishlist-ə əlavə etmək üçün daxil olun.');
+      alert('You are not logged in. Please log in to add items to your wishlist.');
       return;
     }
     setWishlist((prev) => {
