@@ -1,14 +1,19 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { FaStar } from 'react-icons/fa';
-import { useRouter } from 'next/navigation';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-import { VscListFilter } from 'react-icons/vsc';
-import { AiOutlineClose } from 'react-icons/ai';
-import { FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { FaStar } from "react-icons/fa";
+import { useRouter, useSearchParams } from "next/navigation";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { VscListFilter } from "react-icons/vsc";
+import { AiOutlineClose } from "react-icons/ai";
+import {
+    FaChevronDown,
+    FaChevronUp,
+    FaChevronLeft,
+    FaChevronRight,
+} from "react-icons/fa";
 
 interface GiftCard {
     _id: string;
@@ -41,11 +46,11 @@ export default function GiftCards() {
     const [giftcards, setGiftcards] = useState<GiftCard[]>([]);
     const [wishlist, setWishlist] = useState<GiftCard[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+    const [error, setError] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [activeAccordion, setActiveAccordion] = useState(null);
+    const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
     const [filters, setFilters] = useState({
         size: [],
         characteristics: [],
@@ -61,17 +66,37 @@ export default function GiftCards() {
     });
 
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const initialFilters = { ...filters };
+        searchParams.forEach((value, key) => {
+            if (key === "page") {
+                setCurrentPage(Number(value));
+            } else if (filters.hasOwnProperty(key)) {
+                initialFilters[key] = value.split(",");
+            }
+        });
+        setFilters(initialFilters);
+    }, []);
 
     const fetchGiftcards = async (page: number) => {
         setLoading(true);
         try {
-            const params = new URLSearchParams({ page: String(page), ...filters });
-            const response = await axios.get(`http://localhost:3001/api/giftcards?${params}`);
+            const params = new URLSearchParams({ page: String(page) });
+            Object.keys(filters).forEach((key) => {
+                if (filters[key].length > 0) {
+                    params.append(key, filters[key].join(","));
+                }
+            });
+            const response = await axios.get(
+                `http://localhost:3001/api/giftcards?${params}`
+            );
             setGiftcards(response.data.giftcards);
             setTotalPages(response.data.totalPages);
         } catch (error) {
-            console.error('Error fetching giftcards:', error);
-            setError('Error fetching giftcards.');
+            console.error("Error fetching giftcards:", error);
+            setError("Error fetching giftcards.");
         } finally {
             setLoading(false);
         }
@@ -81,15 +106,26 @@ export default function GiftCards() {
         fetchGiftcards(currentPage);
     }, [currentPage, filters]);
 
+    useEffect(() => {
+        const params = new URLSearchParams();
+        params.set("page", String(currentPage));
+        Object.keys(filters).forEach((key) => {
+            if (filters[key].length > 0) {
+                params.set(key, filters[key].join(","));
+            }
+        });
+        router.push(`/gifts?${params.toString()}`, { shallow: true });
+    }, [filters, currentPage]);
+
     const handleNextPage = () => {
         if (currentPage < totalPages) {
-            setCurrentPage(prevPage => prevPage + 1);
+            setCurrentPage((prevPage) => prevPage + 1);
         }
     };
 
     const handlePreviousPage = () => {
         if (currentPage > 1) {
-            setCurrentPage(prevPage => prevPage - 1);
+            setCurrentPage((prevPage) => prevPage - 1);
         }
     };
 
@@ -105,7 +141,7 @@ export default function GiftCards() {
         }
         setWishlist((prev) => {
             const updatedWishlist = [...prev, giftcard];
-            localStorage.setItem('wishlistItems', JSON.stringify(updatedWishlist));
+            localStorage.setItem("wishlistItems", JSON.stringify(updatedWishlist));
             return updatedWishlist;
         });
     };
@@ -116,17 +152,15 @@ export default function GiftCards() {
             const newValues = checked
                 ? [...prevFilters[filterType], value]
                 : prevFilters[filterType].filter((item) => item !== value);
-
             return { ...prevFilters, [filterType]: newValues };
         });
     };
-
 
     const closeSidebar = () => {
         setIsSidebarOpen(false);
     };
 
-    const toggleAccordion = (index) => {
+    const toggleAccordion = (index: number) => {
         setActiveAccordion(activeAccordion === index ? null : index);
     };
 
@@ -155,25 +189,35 @@ export default function GiftCards() {
                         </div>
                     </div>
                 </div>
-                <p className="text-customText text-sm text-right">Showing 1-20 of 54 results</p>
+                <p className="text-customText text-sm text-right">
+                    Showing 1-20 of 54 results
+                </p>
 
                 {isSidebarOpen && (
                     <div
                         className="fixed inset-0 bg-black bg-opacity-50 z-50"
                         onClick={closeSidebar}
-                        style={{ pointerEvents: 'auto' }}
+                        style={{ pointerEvents: "auto" }}
                     ></div>
                 )}
 
-                <div className={`fixed top-0 right-0 w-[27rem] h-full bg-white shadow-lg z-50 transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300`}>
+                <div
+                    className={`fixed top-0 right-0 w-[27rem] h-full bg-white shadow-lg z-50 transform ${isSidebarOpen ? "translate-x-0" : "translate-x-full"
+                        } transition-transform duration-300`}
+                >
                     <button className="absolute top-7 right-4" onClick={closeSidebar}>
                         <AiOutlineClose className="text-customText w-4 h-4" />
                     </button>
-                    <h2 className="p-4 text-4xl text-customText font-victor-serif">Filter Plant Gifts</h2>
-                    <hr className='bg-customText w-[full] mb-3 ml-4 mr-4 h-[0.15rem]' />
+                    <h2 className="p-4 text-4xl text-customText font-victor-serif">
+                        Filter Plant Gifts
+                    </h2>
+                    <hr className="bg-customText w-[full] mb-3 ml-4 mr-4 h-[0.15rem]" />
                     <div className="overflow-y-auto h-[calc(100%-60px)]">
                         <div className="px-4 py-2">
-                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(0)}>
+                            <h3
+                                className="font-semibold text-customText flex justify-between items-center cursor-pointer"
+                                onClick={() => toggleAccordion(0)}
+                            >
                                 Size
                                 {activeAccordion === 0 ? (
                                     <FaChevronUp className="transition-transform duration-300 text-customText" />
@@ -183,16 +227,21 @@ export default function GiftCards() {
                             </h3>
                             {activeAccordion === 0 && (
                                 <div className="flex space-x-2 mt-2">
-                                    {['S', 'M', 'L'].map(size => (
+                                    {["S", "M", "L"].map((size) => (
                                         <label key={size} className="block cursor-pointer">
                                             <input
                                                 type="checkbox"
                                                 value={size}
                                                 checked={filters.size.includes(size)}
-                                                onChange={(e) => handleFilterChange(e, 'size')}
+                                                onChange={(e) => handleFilterChange(e, "size")}
                                                 className="hidden"
                                             />
-                                            <span className={`w-9 h-9 rounded-full border border-gray-400 hover:border-customText hover:bg-customText text-gray-400 hover:text-white flex items-center justify-center transition-all duration-300 ${filters.size.includes(size) ? 'bg-customText text-white' : 'bg-white'}`}>
+                                            <span
+                                                className={`w-9 h-9 rounded-full border border-gray-400 hover:border-customText hover:bg-customText text-gray-400 hover:text-white flex items-center justify-center transition-all duration-300 ${filters.size.includes(size)
+                                                    ? "bg-customText text-white"
+                                                    : "bg-white"
+                                                    }`}
+                                            >
                                                 {size}
                                             </span>
                                         </label>
@@ -200,9 +249,12 @@ export default function GiftCards() {
                                 </div>
                             )}
                         </div>
-                        <hr className='bg-customText w-[full] my-4 mx-4 h-[0.11rem]' />
+                        <hr className="bg-customText w-[full] my-4 mx-4 h-[0.11rem]" />
                         <div className="px-4 py-2">
-                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(1)}>
+                            <h3
+                                className="font-semibold text-customText flex justify-between items-center cursor-pointer"
+                                onClick={() => toggleAccordion(1)}
+                            >
                                 Characteristics
                                 {activeAccordion === 1 ? (
                                     <FaChevronUp className="transition-transform duration-300 text-customText" />
@@ -212,22 +264,39 @@ export default function GiftCards() {
                             </h3>
                             {activeAccordion === 1 && (
                                 <div className="flex flex-col mt-2 space-y-2">
-                                    {['Easy', 'Air purifying', 'Pet friendly', 'Hanging plant'].map(char => (
-                                        <label key={char} className="flex items-center justify-between cursor-pointer">
+                                    {[
+                                        "Easy",
+                                        "Air purifying",
+                                        "Pet friendly",
+                                        "Hanging plant",
+                                    ].map((char) => (
+                                        <label
+                                            key={char}
+                                            className="flex items-center justify-between cursor-pointer"
+                                        >
                                             <span className="text-customText">{char}</span>
                                             <span className="relative">
                                                 <input
                                                     type="checkbox"
                                                     value={char}
                                                     checked={filters.characteristics.includes(char)}
-                                                    onChange={(e) => handleFilterChange(e, 'characteristics')}
+                                                    onChange={(e) =>
+                                                        handleFilterChange(e, "characteristics")
+                                                    }
                                                     className="sr-only"
                                                 />
-                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
-                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
-                                ${filters.characteristics.includes(char) ? 'translate-x-5' : 'translate-x-0'}
+                                                <span
+                                                    className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}
+                                                >
+                                                    <span
+                                                        className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.characteristics.includes(char)
+                                                                ? "translate-x-5"
+                                                                : "translate-x-0"
+                                                            }
                                 ml-1 // Add left margin for spacing
-                            `} />
+                            `}
+                                                    />
                                                 </span>
                                             </span>
                                         </label>
@@ -236,10 +305,12 @@ export default function GiftCards() {
                             )}
                         </div>
 
-
-                        <hr className='bg-customText w-[full] my-4 mx-4 h-[0.11rem]' />
+                        <hr className="bg-customText w-[full] my-4 mx-4 h-[0.11rem]" />
                         <div className="px-4 py-2">
-                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(2)}>
+                            <h3
+                                className="font-semibold text-customText flex justify-between items-center cursor-pointer"
+                                onClick={() => toggleAccordion(2)}
+                            >
                                 Color
                                 {activeAccordion === 2 ? (
                                     <FaChevronUp className="transition-transform duration-300 text-customText" />
@@ -249,22 +320,32 @@ export default function GiftCards() {
                             </h3>
                             {activeAccordion === 2 && (
                                 <div className="flex flex-col mt-2 space-y-2">
-                                    {['Orange', 'Black', 'Green', 'Brown'].map(color => (
-                                        <label key={color} className="flex items-center justify-between cursor-pointer">
+                                    {["Orange", "Black", "Green", "Brown"].map((color) => (
+                                        <label
+                                            key={color}
+                                            className="flex items-center justify-between cursor-pointer"
+                                        >
                                             <span className="text-customText">{color}</span>
                                             <span className="relative">
                                                 <input
                                                     type="checkbox"
                                                     value={color}
                                                     checked={filters.color.includes(color)}
-                                                    onChange={(e) => handleFilterChange(e, 'color')}
+                                                    onChange={(e) => handleFilterChange(e, "color")}
                                                     className="sr-only"
                                                 />
-                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
-                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
-                                ${filters.color.includes(color) ? 'translate-x-5' : 'translate-x-0'}
+                                                <span
+                                                    className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}
+                                                >
+                                                    <span
+                                                        className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.color.includes(color)
+                                                                ? "translate-x-5"
+                                                                : "translate-x-0"
+                                                            }
                                 ml-1 // Add left margin for spacing
-                            `} />
+                            `}
+                                                    />
                                                 </span>
                                             </span>
                                         </label>
@@ -273,9 +354,12 @@ export default function GiftCards() {
                             )}
                         </div>
 
-                        <hr className='bg-customText w-[full] my-4 mx-4 h-[0.11rem]' />
+                        <hr className="bg-customText w-[full] my-4 mx-4 h-[0.11rem]" />
                         <div className="px-4 py-2">
-                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(3)}>
+                            <h3
+                                className="font-semibold text-customText flex justify-between items-center cursor-pointer"
+                                onClick={() => toggleAccordion(3)}
+                            >
                                 Location
                                 {activeAccordion === 3 ? (
                                     <FaChevronUp className="transition-transform duration-300 text-customText" />
@@ -285,22 +369,32 @@ export default function GiftCards() {
                             </h3>
                             {activeAccordion === 3 && (
                                 <div className="flex flex-col mt-2 space-y-2">
-                                    {['Sun', 'Partial sun', '(Half) shade'].map(loc => (
-                                        <label key={loc} className="flex items-center justify-between cursor-pointer">
+                                    {["Sun", "Partial sun", "(Half) shade"].map((loc) => (
+                                        <label
+                                            key={loc}
+                                            className="flex items-center justify-between cursor-pointer"
+                                        >
                                             <span className="text-customText">{loc}</span>
                                             <span className="relative">
                                                 <input
                                                     type="checkbox"
                                                     value={loc}
                                                     checked={filters.location.includes(loc)}
-                                                    onChange={(e) => handleFilterChange(e, 'location')}
+                                                    onChange={(e) => handleFilterChange(e, "location")}
                                                     className="sr-only"
                                                 />
-                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
-                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
-                                ${filters.location.includes(loc) ? 'translate-x-5' : 'translate-x-0'}
+                                                <span
+                                                    className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}
+                                                >
+                                                    <span
+                                                        className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.location.includes(loc)
+                                                                ? "translate-x-5"
+                                                                : "translate-x-0"
+                                                            }
                                 ml-1 // Add left margin for spacing
-                            `} />
+                            `}
+                                                    />
                                                 </span>
                                             </span>
                                         </label>
@@ -309,9 +403,12 @@ export default function GiftCards() {
                             )}
                         </div>
 
-                        <hr className='bg-customText w-[full] my-4 mx-4 h-[0.15rem]' />
+                        <hr className="bg-customText w-[full] my-4 mx-4 h-[0.15rem]" />
                         <div className="px-4 py-2">
-                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(4)}>
+                            <h3
+                                className="font-semibold text-customText flex justify-between items-center cursor-pointer"
+                                onClick={() => toggleAccordion(4)}
+                            >
                                 Plant Family
                                 {activeAccordion === 4 ? (
                                     <FaChevronUp className="transition-transform duration-300 text-customText" />
@@ -321,22 +418,46 @@ export default function GiftCards() {
                             </h3>
                             {activeAccordion === 4 && (
                                 <div className="flex flex-col mt-2 space-y-2">
-                                    {['Caladium', 'Calathea', 'Ctenanthe', 'Ficus', 'Monstera', 'Nephrolepis', 'Pilea', 'Peperomia', 'Platycerium', 'Rhaphidophora', 'Sansevieria', 'Strelitzia', 'Stromanthe'].map(plantFamily => (
-                                        <label key={plantFamily} className="flex items-center justify-between cursor-pointer">
+                                    {[
+                                        "Caladium",
+                                        "Calathea",
+                                        "Ctenanthe",
+                                        "Ficus",
+                                        "Monstera",
+                                        "Nephrolepis",
+                                        "Pilea",
+                                        "Peperomia",
+                                        "Platycerium",
+                                        "Rhaphidophora",
+                                        "Sansevieria",
+                                        "Strelitzia",
+                                        "Stromanthe",
+                                    ].map((plantFamily) => (
+                                        <label
+                                            key={plantFamily}
+                                            className="flex items-center justify-between cursor-pointer"
+                                        >
                                             <span className="text-customText">{plantFamily}</span>
                                             <span className="relative">
                                                 <input
                                                     type="checkbox"
                                                     value={plantFamily}
                                                     checked={filters.plantFamily.includes(plantFamily)}
-                                                    onChange={(e) => handleFilterChange(e, 'plantFamily')}
+                                                    onChange={(e) => handleFilterChange(e, "plantFamily")}
                                                     className="sr-only"
                                                 />
-                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
-                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
-                                ${filters.plantFamily.includes(plantFamily) ? 'translate-x-5' : 'translate-x-0'}
+                                                <span
+                                                    className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}
+                                                >
+                                                    <span
+                                                        className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.plantFamily.includes(plantFamily)
+                                                                ? "translate-x-5"
+                                                                : "translate-x-0"
+                                                            }
                                 ml-1 // Add left margin for spacing
-                            `} />
+                            `}
+                                                    />
                                                 </span>
                                             </span>
                                         </label>
@@ -345,9 +466,12 @@ export default function GiftCards() {
                             )}
                         </div>
 
-                        <hr className='bg-customText w-[full] my-4 mx-4 h-[0.11rem]' />
+                        <hr className="bg-customText w-[full] my-4 mx-4 h-[0.11rem]" />
                         <div className="px-4 py-2">
-                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(5)}>
+                            <h3
+                                className="font-semibold text-customText flex justify-between items-center cursor-pointer"
+                                onClick={() => toggleAccordion(5)}
+                            >
                                 Material
                                 {activeAccordion === 5 ? (
                                     <FaChevronUp className="transition-transform duration-300 text-customText" />
@@ -357,31 +481,44 @@ export default function GiftCards() {
                             </h3>
                             {activeAccordion === 5 && (
                                 <div className="flex flex-col mt-2 space-y-2">
-                                    {['Terracotta', 'Eco'].map(material => (
-                                        <label key={material} className="flex items-center justify-between cursor-pointer">
+                                    {["Terracotta", "Eco"].map((material) => (
+                                        <label
+                                            key={material}
+                                            className="flex items-center justify-between cursor-pointer"
+                                        >
                                             <span className="text-customText">{material}</span>
                                             <span className="relative">
                                                 <input
                                                     type="checkbox"
                                                     value={material}
                                                     checked={filters.material.includes(material)}
-                                                    onChange={(e) => handleFilterChange(e, 'material')}
+                                                    onChange={(e) => handleFilterChange(e, "material")}
                                                     className="sr-only"
                                                 />
-                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
-                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
-                                ${filters.material.includes(material) ? 'translate-x-5' : 'translate-x-0'}
+                                                <span
+                                                    className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}
+                                                >
+                                                    <span
+                                                        className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.material.includes(material)
+                                                                ? "translate-x-5"
+                                                                : "translate-x-0"
+                                                            }
                                 ml-1 // Add left margin for spacing
-                            `} />
+                            `}
+                                                    />
                                                 </span>
                                             </span>
                                         </label>
                                     ))}
                                 </div>
                             )}
-                            <hr className='bg-customText w-[full] my-4 h-[0.11rem]' />
+                            <hr className="bg-customText w-[full] my-4 h-[0.11rem]" />
 
-                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(6)}>
+                            <h3
+                                className="font-semibold text-customText flex justify-between items-center cursor-pointer"
+                                onClick={() => toggleAccordion(6)}
+                            >
                                 Shape
                                 {activeAccordion === 6 ? (
                                     <FaChevronUp className="transition-transform duration-300 text-customText" />
@@ -391,31 +528,44 @@ export default function GiftCards() {
                             </h3>
                             {activeAccordion === 6 && (
                                 <div className="flex flex-col mt-2 space-y-2">
-                                    {['Round'].map(shape => (
-                                        <label key={shape} className="flex items-center justify-between cursor-pointer">
+                                    {["Round"].map((shape) => (
+                                        <label
+                                            key={shape}
+                                            className="flex items-center justify-between cursor-pointer"
+                                        >
                                             <span className="text-customText">{shape}</span>
                                             <span className="relative">
                                                 <input
                                                     type="checkbox"
                                                     value={shape}
                                                     checked={filters.shape.includes(shape)}
-                                                    onChange={(e) => handleFilterChange(e, 'shape')}
+                                                    onChange={(e) => handleFilterChange(e, "shape")}
                                                     className="sr-only"
                                                 />
-                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
-                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
-                                ${filters.shape.includes(shape) ? 'translate-x-5' : 'translate-x-0'}
+                                                <span
+                                                    className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}
+                                                >
+                                                    <span
+                                                        className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.shape.includes(shape)
+                                                                ? "translate-x-5"
+                                                                : "translate-x-0"
+                                                            }
                                 ml-1 // Add left margin for spacing
-                            `} />
+                            `}
+                                                    />
                                                 </span>
                                             </span>
                                         </label>
                                     ))}
                                 </div>
                             )}
-                            <hr className='bg-customText w-[full] my-4 h-[0.15rem]' />
+                            <hr className="bg-customText w-[full] my-4 h-[0.15rem]" />
 
-                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(7)}>
+                            <h3
+                                className="font-semibold text-customText flex justify-between items-center cursor-pointer"
+                                onClick={() => toggleAccordion(7)}
+                            >
                                 Standing or Hanging
                                 {activeAccordion === 7 ? (
                                     <FaChevronUp className="transition-transform duration-300 text-customText" />
@@ -425,31 +575,44 @@ export default function GiftCards() {
                             </h3>
                             {activeAccordion === 7 && (
                                 <div className="flex flex-col mt-2 space-y-2">
-                                    {['Standing'].map(standing => (
-                                        <label key={standing} className="flex items-center justify-between cursor-pointer">
+                                    {["Standing"].map((standing) => (
+                                        <label
+                                            key={standing}
+                                            className="flex items-center justify-between cursor-pointer"
+                                        >
                                             <span className="text-customText">{standing}</span>
                                             <span className="relative">
                                                 <input
                                                     type="checkbox"
                                                     value={standing}
                                                     checked={filters.standing.includes(standing)}
-                                                    onChange={(e) => handleFilterChange(e, 'standing')}
+                                                    onChange={(e) => handleFilterChange(e, "standing")}
                                                     className="sr-only"
                                                 />
-                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
-                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
-                                ${filters.standing.includes(standing) ? 'translate-x-5' : 'translate-x-0'}
+                                                <span
+                                                    className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}
+                                                >
+                                                    <span
+                                                        className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.standing.includes(standing)
+                                                                ? "translate-x-5"
+                                                                : "translate-x-0"
+                                                            }
                                 ml-1 // Add left margin for spacing
-                            `} />
+                            `}
+                                                    />
                                                 </span>
                                             </span>
                                         </label>
                                     ))}
                                 </div>
                             )}
-                            <hr className='bg-customText w-[full] my-4 h-[0.11rem]' />
+                            <hr className="bg-customText w-[full] my-4 h-[0.11rem]" />
 
-                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(8)}>
+                            <h3
+                                className="font-semibold text-customText flex justify-between items-center cursor-pointer"
+                                onClick={() => toggleAccordion(8)}
+                            >
                                 Style
                                 {activeAccordion === 8 ? (
                                     <FaChevronUp className="transition-transform duration-300 text-customText" />
@@ -459,31 +622,44 @@ export default function GiftCards() {
                             </h3>
                             {activeAccordion === 8 && (
                                 <div className="flex flex-col mt-2 space-y-2">
-                                    {['Nature', 'Basic', 'Fun'].map(style => (
-                                        <label key={style} className="flex items-center justify-between cursor-pointer">
+                                    {["Nature", "Basic", "Fun"].map((style) => (
+                                        <label
+                                            key={style}
+                                            className="flex items-center justify-between cursor-pointer"
+                                        >
                                             <span className="text-customText">{style}</span>
                                             <span className="relative">
                                                 <input
                                                     type="checkbox"
                                                     value={style}
                                                     checked={filters.style.includes(style)}
-                                                    onChange={(e) => handleFilterChange(e, 'style')}
+                                                    onChange={(e) => handleFilterChange(e, "style")}
                                                     className="sr-only"
                                                 />
-                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
-                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
-                                ${filters.style.includes(style) ? 'translate-x-5' : 'translate-x-0'}
+                                                <span
+                                                    className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}
+                                                >
+                                                    <span
+                                                        className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.style.includes(style)
+                                                                ? "translate-x-5"
+                                                                : "translate-x-0"
+                                                            }
                                 ml-1 // Add left margin for spacing
-                            `} />
+                            `}
+                                                    />
                                                 </span>
                                             </span>
                                         </label>
                                     ))}
                                 </div>
                             )}
-                            <hr className='bg-customText w-[full] my-4 h-[0.15rem]' />
+                            <hr className="bg-customText w-[full] my-4 h-[0.15rem]" />
 
-                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(9)}>
+                            <h3
+                                className="font-semibold text-customText flex justify-between items-center cursor-pointer"
+                                onClick={() => toggleAccordion(9)}
+                            >
                                 Water Care
                                 {activeAccordion === 9 ? (
                                     <FaChevronUp className="transition-transform duration-300 text-customText" />
@@ -493,31 +669,44 @@ export default function GiftCards() {
                             </h3>
                             {activeAccordion === 9 && (
                                 <div className="flex flex-col mt-2 space-y-2">
-                                    {['Weekly', 'Be-weekly'].map(waterCare => (
-                                        <label key={waterCare} className="flex items-center justify-between cursor-pointer">
+                                    {["Weekly", "Be-weekly"].map((waterCare) => (
+                                        <label
+                                            key={waterCare}
+                                            className="flex items-center justify-between cursor-pointer"
+                                        >
                                             <span className="text-customText">{waterCare}</span>
                                             <span className="relative">
                                                 <input
                                                     type="checkbox"
                                                     value={waterCare}
                                                     checked={filters.waterCare.includes(waterCare)}
-                                                    onChange={(e) => handleFilterChange(e, 'waterCare')}
+                                                    onChange={(e) => handleFilterChange(e, "waterCare")}
                                                     className="sr-only"
                                                 />
-                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
-                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
-                                ${filters.waterCare.includes(waterCare) ? 'translate-x-5' : 'translate-x-0'}
+                                                <span
+                                                    className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}
+                                                >
+                                                    <span
+                                                        className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.waterCare.includes(waterCare)
+                                                                ? "translate-x-5"
+                                                                : "translate-x-0"
+                                                            }
                                 ml-1 // Add left margin for spacing
-                            `} />
+                            `}
+                                                    />
                                                 </span>
                                             </span>
                                         </label>
                                     ))}
                                 </div>
                             )}
-                            <hr className='bg-customText w-[full] my-4 h-[0.11rem]' />
+                            <hr className="bg-customText w-[full] my-4 h-[0.11rem]" />
 
-                            <h3 className="font-semibold text-customText flex justify-between items-center cursor-pointer" onClick={() => toggleAccordion(10)}>
+                            <h3
+                                className="font-semibold text-customText flex justify-between items-center cursor-pointer"
+                                onClick={() => toggleAccordion(10)}
+                            >
                                 Room
                                 {activeAccordion === 10 ? (
                                     <FaChevronUp className="transition-transform duration-300 text-customText" />
@@ -527,40 +716,54 @@ export default function GiftCards() {
                             </h3>
                             {activeAccordion === 10 && (
                                 <div className="flex flex-col mt-2 space-y-2">
-                                    {['Bathroom', 'Bedroom', 'Livingroom', 'Office'].map(room => (
-                                        <label key={room} className="flex items-center justify-between cursor-pointer">
-                                            <span className="text-customText">{room}</span>
-                                            <span className="relative">
-                                                <input
-                                                    type="checkbox"
-                                                    value={room}
-                                                    checked={filters.room.includes(room)}
-                                                    onChange={(e) => handleFilterChange(e, 'room')}
-                                                    className="sr-only"
-                                                />
-                                                <span className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}>
-                                                    <span className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
-                                ${filters.room.includes(room) ? 'translate-x-5' : 'translate-x-0'}
+                                    {["Bathroom", "Bedroom", "Livingroom", "Office"].map(
+                                        (room) => (
+                                            <label
+                                                key={room}
+                                                className="flex items-center justify-between cursor-pointer"
+                                            >
+                                                <span className="text-customText">{room}</span>
+                                                <span className="relative">
+                                                    <input
+                                                        type="checkbox"
+                                                        value={room}
+                                                        checked={filters.room.includes(room)}
+                                                        onChange={(e) => handleFilterChange(e, "room")}
+                                                        className="sr-only"
+                                                    />
+                                                    <span
+                                                        className={`flex items-center justify-start w-[2.81rem] h-[1.38rem] bg-background rounded-full border border-customftrgrn transition-transform duration-300`}
+                                                    >
+                                                        <span
+                                                            className={`w-4 h-4 rounded-full bg-customftrgrn transition-all duration-300 
+                                ${filters.room.includes(room)
+                                                                    ? "translate-x-5"
+                                                                    : "translate-x-0"
+                                                                }
                                 ml-1 // Add left margin for spacing
-                            `} />
+                            `}
+                                                        />
+                                                    </span>
                                                 </span>
-                                            </span>
-                                        </label>
-                                    ))}
+                                            </label>
+                                        )
+                                    )}
                                 </div>
                             )}
                         </div>
 
-                        <hr className='bg-customText w-[full] mt-4 mb-10 mx-4 h-[0.11rem]' />
+                        <hr className="bg-customText w-[full] mt-4 mb-10 mx-4 h-[0.11rem]" />
                     </div>
                 </div>
-
             </div>
 
             {loading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {Array.from({ length: 20 }).map((_, index) => (
-                        <div key={index} className="relative overflow-hidden transition-transform">
+                        <div
+                            key={index}
+                            className="relative overflow-hidden transition-transform"
+                        >
                             <Skeleton height={320} />
                             <Skeleton height={20} className="mt-2" />
                             <Skeleton height={15} className="mt-1" />
@@ -601,12 +804,21 @@ export default function GiftCards() {
                                 </div>
 
                                 <div className="text-start relative z-10">
-                                    <h2 className="text-[0.97rem] text-customText font-semibold">{giftcard.title}</h2>
-                                    <p className="text-customText text-[0.95rem] italic">{giftcard.description}</p>
-                                    <p className="text-[0.9rem] text-customText">€{giftcard.price.toFixed(2)}</p>
+                                    <h2 className="text-[0.97rem] text-customText font-semibold">
+                                        {giftcard.title}
+                                    </h2>
+                                    <p className="text-customText text-[0.95rem] italic">
+                                        {giftcard.description}
+                                    </p>
+                                    <p className="text-[0.9rem] text-customText">
+                                        €{giftcard.price.toFixed(2)}
+                                    </p>
                                     <div className="flex justify-start mt-2">
                                         {[...Array(5)].map((_, index) => (
-                                            <FaStar key={index} className="text-customText text-[0.7rem]" />
+                                            <FaStar
+                                                key={index}
+                                                className="text-customText text-[0.7rem]"
+                                            />
                                         ))}
                                     </div>
                                 </div>
@@ -629,7 +841,10 @@ export default function GiftCards() {
                         <button
                             key={index + 1}
                             onClick={() => setCurrentPage(index + 1)}
-                            className={`relative px-3 py-1 mx-1 rounded transition ${currentPage === index + 1 ? 'text-customText' : 'text-black hover:text-customText'}`}
+                            className={`relative px-3 py-1 mx-1 rounded transition ${currentPage === index + 1
+                                ? "text-customText"
+                                : "text-black hover:text-customText"
+                                }`}
                         >
                             {index + 1}
                             {currentPage === index + 1 && (
@@ -650,4 +865,3 @@ export default function GiftCards() {
         </div>
     );
 }
-

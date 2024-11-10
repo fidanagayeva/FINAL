@@ -1,4 +1,4 @@
-const Giftcard = require('../models/giftcards'); 
+const Giftcard = require('../models/giftcards');
 const path = require('path');
 
 exports.createGiftcard = async (req, res) => {
@@ -60,11 +60,12 @@ exports.getGiftcards = async (req, res) => {
   try {
     const { page = 1, size, characteristics, color, location, material, plantFamily, room, shape, standing, style, waterCare } = req.query;
     const limitNumber = 20;
-    const skip = (page - 1) * limitNumber;
+    console.log(`Page variable value is:${page}`);
+    let skip = (page - 1) * limitNumber;
 
     const query = {};
     if (size) {
-      query.size = { $in: size.split(',') }; 
+      query.size = { $in: size.split(',') };
     }
     if (characteristics) {
       query.characteristics = { $in: characteristics.split(',') };
@@ -97,8 +98,11 @@ exports.getGiftcards = async (req, res) => {
       query.waterCare = { $in: waterCare.split(',') };
     }
 
+    if (Object.keys(query).length > 0)
+      skip = 0;
+
     const giftcards = await Giftcard.find(query).skip(skip).limit(limitNumber);
-    const totalGiftcards = await Giftcard.countDocuments(query); 
+    const totalGiftcards = await Giftcard.countDocuments(query);
     const totalPages = Math.ceil(totalGiftcards / limitNumber);
 
     res.status(200).json({ totalPages, currentPage: page, giftcards });

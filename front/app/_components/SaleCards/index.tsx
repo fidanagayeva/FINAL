@@ -1,21 +1,20 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { FaStar } from 'react-icons/fa';
-import { useRouter } from 'next/navigation';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-import { VscListFilter } from 'react-icons/vsc';
-import { AiOutlineClose } from 'react-icons/ai';
-import { FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { FaStar } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { VscListFilter } from "react-icons/vsc";
+import { AiOutlineClose } from "react-icons/ai";
+import { FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-interface Salecard {
+interface SaleCard {
   _id: string;
   title: string;
   description?: string;
   image: string;
-  text1: string;
   price: number;
   price2?: number;
   size: string;
@@ -42,10 +41,10 @@ const HeartIcon = ({ onClick }) => (
 );
 
 export default function SaleCards() {
-  const [salecards, setSalecards] = useState<Salecard[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [wishlist, setWishlist] = useState<Salecard[]>([]);
+  const [salecards, setSalecards] = useState<SaleCard[]>([]);
+  const [wishlist, setWishlist] = useState<SaleCard[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -66,24 +65,37 @@ export default function SaleCards() {
 
   const router = useRouter();
 
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set("page", String(currentPage));
+    Object.keys(filters).forEach((key) => {
+      if (filters[key].length > 0) {
+        params.set(key, filters[key].join(","));
+      }
+    });
+    router.push(`/sale?${params.toString()}`, { shallow: true });
+  }, [filters, currentPage]);
+
   const fetchSalecards = async (page: number) => {
+    setLoading(true);
     try {
-      setLoading(true);
       const query = new URLSearchParams(
         Object.entries(filters)
           .filter(([_, value]) => value.length > 0)
           .reduce((acc, [key, value]) => {
-            acc[key] = value.join(',');
+            acc[key] = value.join(",");
             return acc;
           }, {})
       ).toString();
 
-      const response = await axios.get(`http://localhost:3001/api/salecards?page=${page}&${query}`);
-      setSalecards(response.data.salecards || []);
+      const response = await axios.get(
+        `http://localhost:3001/api/salecards?page=${page}&${query}`
+      );
+      setSalecards(response.data.salecards);
       setTotalPages(response.data.totalPages);
-    } catch (err: any) {
-      setError('Kart məlumatları alınmadı.');
-      console.error('Error fetching salecards:', err);
+    } catch (err) {
+      setError("Card information not received.");
+      console.error("Error fetching salecards:", err);
     } finally {
       setLoading(false);
     }
@@ -93,15 +105,15 @@ export default function SaleCards() {
     fetchSalecards(currentPage);
   }, [currentPage, filters]);
 
-  const handleAddToWishlist = (card: Salecard) => {
-    const token = localStorage.getItem('token');
+  const handleAddToWishlist = (card: SaleCard) => {
+    const token = localStorage.getItem("token");
     if (!token) {
-      alert('You are not logged in. Please log in to add items to your wishlist.');
+      alert("You are not logged in. Please log in to add items to your wishlist.");
       return;
     }
     setWishlist((prev) => {
       const updatedWishlist = [...prev, card];
-      localStorage.setItem('wishlistItems', JSON.stringify(updatedWishlist));
+      localStorage.setItem("wishlistItems", JSON.stringify(updatedWishlist));
       return updatedWishlist;
     });
   };
@@ -132,7 +144,6 @@ export default function SaleCards() {
       const newValues = checked
         ? [...prevFilters[filterType], value]
         : prevFilters[filterType].filter((item) => item !== value);
-
       return { ...prevFilters, [filterType]: newValues };
     });
   };

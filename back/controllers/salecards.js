@@ -1,30 +1,14 @@
 const Salecard = require('../models/salecards');
 
 exports.createSalecard = async (req, res) => {
-  const { 
-    title, 
-    description, 
-    image, 
-    text1, 
-    price, 
-    price2, 
-    size, 
-    sale, 
-    color, 
-    style, 
-    characteristics, 
-    location, 
-    material, 
-    plantFamily, 
-    room, 
-    shape, 
-    standing, 
-    waterCare 
+  const {
+    title,description,image,text1,price,price2,size,sale,color,style,characteristics,location,
+    material,plantFamily,room,shape,standing, waterCare
   } = req.body;
 
   if (!title || !image || !text1 || price === undefined || !size || sale === undefined) {
-    return res.status(400).json({ 
-      message: 'Title, image, text1, price, size, və sale daxil edilməlidir.' 
+    return res.status(400).json({
+      message: 'Title, image, text1, price, size, və sale daxil edilməlidir.'
     });
   }
 
@@ -38,7 +22,7 @@ exports.createSalecard = async (req, res) => {
       price2,
       size,
       sale,
-      color: color || undefined,  
+      color: color || undefined,
       style: style || undefined,
       characteristics: characteristics || undefined,
       location: location || undefined,
@@ -51,9 +35,9 @@ exports.createSalecard = async (req, res) => {
     });
 
     const savedSalecard = await newSalecard.save();
-    res.status(201).json(savedSalecard); 
+    res.status(201).json(savedSalecard);
   } catch (error) {
-    res.status(500).json({ message: error.message }); 
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -61,11 +45,12 @@ exports.getSalecards = async (req, res) => {
   try {
     const { page = 1, size, characteristics, color, location, material, plantFamily, room, shape, standing, style, waterCare } = req.query;
     const limitNumber = 20;
-    const skip = (page - 1) * limitNumber;
+    console.log(`Page variable value is:${page}`);
+    let skip = (page - 1) * limitNumber;
 
     const query = {};
     if (size) {
-      query.size = { $in: size.split(',') }; 
+      query.size = { $in: size.split(',') };
     }
     if (characteristics) {
       query.characteristics = { $in: characteristics.split(',') };
@@ -98,8 +83,12 @@ exports.getSalecards = async (req, res) => {
       query.waterCare = { $in: waterCare.split(',') };
     }
 
+    if (Object.keys(query).length > 0)
+      skip = 0;
+    console.log(query);
+
     const salecards = await Salecard.find(query).skip(skip).limit(limitNumber);
-    const totalSalecards = await Salecard.countDocuments(query); 
+    const totalSalecards = await Salecard.countDocuments(query);
     const totalPages = Math.ceil(totalSalecards / limitNumber);
 
     res.status(200).json({ totalPages, currentPage: page, salecards });
@@ -112,16 +101,16 @@ exports.getSalecards = async (req, res) => {
 
 exports.getSalecardById = async (req, res) => {
   try {
-    const { id } = req.params; 
-    const salecard = await Salecard.findById(id); 
+    const { id } = req.params;
+    const salecard = await Salecard.findById(id);
 
     if (!salecard) {
-      return res.status(404).json({ message: 'Salecard tapılmadı.' });
+      return res.status(404).json({ message: 'Salecard not found' });
     }
 
-    res.status(200).json(salecard); 
+    res.status(200).json(salecard);
   } catch (error) {
-    res.status(500).json({ message: error.message }); 
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -131,10 +120,10 @@ exports.deleteSalecard = async (req, res) => {
     const deletedSalecard = await Salecard.findByIdAndDelete(id);
 
     if (!deletedSalecard) {
-      return res.status(404).json({ message: 'Salecard tapılmadı.' });
+      return res.status(404).json({ message: 'Salecard not found' });
     }
 
-    res.status(200).json({ message: 'Salecard uğurla silindi.' });
+    res.status(200).json({ message: 'Salecard deleted successfully!' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
