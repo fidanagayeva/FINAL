@@ -1,0 +1,41 @@
+{
+  "heading": "Pflanzen, Töpfe, Pflegeprodukte und Zubehör",
+  "readMore": "Mehr lesen",
+  "readLess": "Weniger lesen",
+  "houseplants": {
+    "title": "Zimmerpflanzen",
+    "content1": "Suchen Sie nach der perfekten Pflanze für Ihr Wohnzimmer? Wir haben, was Sie brauchen. In unserem Online-Shop können Sie ganz einfach die schönsten Pflanzen kaufen. In nur wenigen Schritten können Sie Ihre Favoriten bestellen und frisch aus der Gärtnerei direkt zu Ihnen nach Hause liefern lassen.",
+    "content2": "Mit einer Auswahl aus einer Vielzahl von grünen Zimmerpflanzen, luftreinigenden Pflanzen, hängenden Pflanzen, besonderen und beliebten Pflanzen haben wir für jeden etwas dabei.",
+    "content3": "Wählen Sie Ihren Favoriten aus einer Vielzahl von grünen Zimmerpflanzen, luftreinigenden Pflanzen, hängenden Pflanzen, besonderen und beliebten Pflanzen – wir haben für jeden etwas. Bei PLNTS finden Sie eine große Auswahl an Pflanzen, die Ihrem Zuhause neuen Schwung verleihen. Ob Sie einen grünen Daumen haben oder eine pflegeleichte Pflanze suchen: Wir helfen Ihnen gerne, die perfekte PLNTS-Match zu finden!",
+    "specialPlants": "Die besonderen Pflanzen",
+    "popularPlants": "Unsere Top 3 Lieblingspflanzen / Beliebteste Pflanzen",
+    "monstera": {
+      "title": "Monstera",
+      "content": "Die Monstera ist eine schöne tropische Pflanzenfamilie, deren Blätter bei einigen Varianten enorm groß werden können. Dank der großen Blätter ist diese Pflanze ein hervorragender Luftreiniger. Die Monstera-Pflanzenfamilie umfasst viele Arten: von großen Zimmerpflanzen bis zu seltenen Pflanzen. Die Monstera Deliciosa ist eine der bekanntesten Arten. Diese wunderschöne Pflanze stammt aus Mexiko und wird auch 'Schweizer Käsepflanze' genannt. Die Deliciosa ist ein ausgezeichneter Luftreiniger, aber Vorsicht: Diese Pflanze ist etwas giftig für Ihr Haustier."
+    },
+    "calathea": {
+      "title": "Calathea",
+      "content": "Die Calathea-Pflanzenfamilie ist sehr groß. Sie kommen in allen Formen und Größen, jede mit ihren eigenen einzigartigen Eigenschaften. Die Calathea ist sehr pflegeleicht, haustierfreundlich und ein ausgezeichneter Luftreiniger. Die Calathea Zebrina, auch Zebra-Pflanze genannt, ist eine der beliebtesten in der Familie. Die großen grünen Blätter werden von gestreiften Stielen getragen, die erklären, warum diese Pflanze 'Zebra' genannt wird."
+    },
+    "ficus": {
+      "title": "Ficus",
+      "content": "Schönheit und Eleganz. Der Ficus ist eine perfekte Ergänzung für Ihr Zuhause. Ein Ficus ist pflegeleicht, kann aber manchmal ein wenig eigensinnig sein. Geben Sie Ihrem Ficus hin und wieder ein bisschen extra Zuwendung, das wird ihn glücklich machen! In unserem Online-Shop finden Sie den Ficus in allen Formen und Größen. Lernen Sie eine der schönsten Pflanzen der Ficus-Familie kennen: den Ficus Robusta. Diese Pflanze trägt auch einen hübschen Spitznamen. Sie wird auch 'Gummibaum' genannt wegen ihrer ovalen und lederartigen Blätter. Ein robustes, aber elegantes Erscheinungsbild!"
+    },
+    "care": {
+      "title": "Die beste Pflege für Ihre Pflanze",
+      "content": "Haben Sie Ihre Lieblingspflanze gefunden? Zeit, sie zu bestellen und zu Ihnen nach Hause zu liefern! Jede Pflanze ist einzigartig und braucht daher individuelle Pflege. Einige Pflanzen sind sehr pflegeleicht, aber es gibt sicherlich auch einige Pflanzen, die etwas anspruchsvoller sein können. Um Ihrer Pflanze ein langes und glückliches Leben zu ermöglichen, empfehlen wir Ihnen, genau hinzusehen, was Ihr grüner Freund benötigt."
+    },
+    "light": {
+      "title": "Licht",
+      "content": "Es gibt Sonnen- und Schattenliebhaber, und das gilt auch für Pflanzen! Wie viel Licht Ihre Pflanze benötigt, hängt von der Art ab. Einige Pflanzen mögen viel (indirektes) Sonnenlicht, während andere mit etwas Schatten glücklicher sind. Bedenken Sie dies, wenn Sie den perfekten Platz in Ihrem Zuhause für Ihre Pflanze auswählen."
+    },
+    "water": {
+      "title": "Wasser",
+      "content": "Wie viel Wasser Ihre Zimmerpflanze benötigt, variiert je nach Art. Es gibt jedoch einige Faktoren, die Sie berücksichtigen können. Pflanzen benötigen unter bestimmten Bedingungen mehr Wasser, zum Beispiel bei niedriger Luftfeuchtigkeit (Heizung/Klimaanlage), viel Sonneneinstrahlung, höheren Temperaturen und während der Blütezeit. Im Winter ist es auch viel kälter, daher brauchen Pflanzen weniger Wasser."
+    },
+    "nutrition": {
+      "title": "Ernährung",
+      "content": "Neben Licht und Wasser können Ihre Zimmerpflanzen auch ab und zu etwas Zuwendung gebrauchen. Entfernen Sie gelegentlich alle gelben Blätter und die trockenen Blüten. So sieht Ihre Pflanze schöner aus und kann ihre Energie in die lebenden Blätter stecken. Ihre Pflanze freut sich auch über einen Pflanzensprüher! Besprühen Sie die Pflanze regelmäßig, um die Luftfeuchtigkeit zu verbessern, die Blätter sauber zu halten und das Risiko von Schädlingen zu verringern. Schließlich empfehlen wir, der Pflanze einmal alle 1 bis 2 Wochen während der Wachstumsperiode etwas Pflanzennahrung zu geben."
+    }
+  }
+}

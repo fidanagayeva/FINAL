@@ -1,6 +1,9 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
+import i18n from "../../Utils/i18n"
+
 import Link from 'next/link';
 import { FaChevronDown, FaBars } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
@@ -127,7 +130,7 @@ export const Header = () => {
   const [firstName, setFirstName] = useState('');
   const dropdownRef = useRef(null);
   const router = useRouter();
-
+  const { t } = useTranslation();
   const toggleMobileSidebar = () => {
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
   };
@@ -157,21 +160,11 @@ export const Header = () => {
     }
   };
 
-  const handleLanguageChange = (languageCode) => {
-    console.log('Seçilen dil: ', languageCode);
+  const handleLanguageChange = async (languageCode: string) => {
     setSelectedLanguage(languageCode);
     toggleDropdown('languageDropdown');
+    i18n.changeLanguage(languageCode);
   };
-
-  useEffect(() => {
-    console.log('Yüklenen dil kodu:', selectedLanguage);
-    import(`../../translations/${selectedLanguage}.json`)
-      .then((module) => {
-        console.log('Yüklenen çeviriler:', module.default);
-        setTranslations(module.default);
-      })
-      .catch((err) => console.error('Çeviri dosyası yüklenemedi:', err));
-  }, [selectedLanguage]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -557,7 +550,7 @@ export const Header = () => {
             </Link>
           </div>
 
-          <div className="flex space-x-6 items-center mr-[-3.5rem]">
+          <div className="flex space-x-6 items-center ">
             <Link href="/blog" className="text-customText text-[1.25rem] font-victor-serif hover:text-customHover">
               Inspiration
             </Link>
@@ -594,14 +587,6 @@ export const Header = () => {
                 ))}
               </div>
             )}
-
-            <h1>{translations.greeting}</h1>
-            <a
-              href="#"
-              className="text-customText text-[1.25rem] font-victor-serif hover:text-customHover"
-            >
-              {translations.gifts}
-            </a>
           </div>
         </nav>
       </header>
