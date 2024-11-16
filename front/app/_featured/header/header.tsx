@@ -3,7 +3,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import i18n from "../../utils/i18n"
-
 import Link from 'next/link';
 import { FaChevronDown, FaBars } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';

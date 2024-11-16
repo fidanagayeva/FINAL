@@ -157,6 +157,7 @@ export default function AuthPage() {
                                         required
                                         className="w-full p-3 bg-white border-2 border-customBorderclr focus:outline-none"
                                     />
+                                    {error && <p className="text-sm text-customHoverPLNTS mt-1 font-chicle">{error}</p>}
                                 </div>
                                 <div className="w-full md:w-1/2">
                                     <label className="block text-[0.9rem] text-customText mb-1">Confirm Password</label>
@@ -250,7 +251,7 @@ export default function AuthPage() {
                     </div>
                 )}
             </div>
-            </div>
+        </div>
     );
 };
 
