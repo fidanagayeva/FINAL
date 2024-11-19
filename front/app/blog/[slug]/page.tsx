@@ -102,15 +102,14 @@ export default function InspirationDetail() {
             className="flex justify-center items-center px-4 sm:px-6 md:px-10 lg:px-0"
           >
             {inspiration.optionalImages.map((image, index) => (
-              <SwiperSlide
-                key={index}
-                className="flex justify-center items-center"
-              >
-                <img
-                  src={image}
-                  alt={`Carousel Image ${index + 1}`}
-                  className="w-full max-w-[20rem] sm:max-w-[30rem] h-auto object-cover mb-10"
-                />
+              <SwiperSlide key={index} className="flex justify-center items-center">
+                <div className="flex justify-center items-center w-full">
+                  <img
+                    src={image}
+                    alt={`Carousel Image ${index + 1}`}
+                    className="w-full max-w-[20rem] sm:max-w-[30rem] h-auto object-cover mb-10"
+                  />
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>

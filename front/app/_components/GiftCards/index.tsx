@@ -50,6 +50,7 @@ export default function GiftCards() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [sortedData, setSortedData] = useState<GiftCard[]>([]);
     const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
     const [filters, setFilters] = useState({
         size: [],
@@ -67,6 +68,23 @@ export default function GiftCards() {
 
     const router = useRouter();
     const searchParams = useSearchParams();
+
+    const handleSortChange = (e) => {
+        const selectedOption = e.target.value;
+
+        if (selectedOption === "default") {
+            fetchGiftcards(currentPage);
+            return;
+        }
+
+        let sortedArray = [...giftcards];
+        if (selectedOption === "a-z") {
+            sortedArray.sort((a, b) => a.title.localeCompare(b.title));
+        } else if (selectedOption === "z-a") {
+            sortedArray.sort((a, b) => b.title.localeCompare(a.title));
+        }
+        setGiftcards(sortedArray);
+    };
 
     useEffect(() => {
         const initialFilters = { ...filters };
@@ -176,22 +194,23 @@ export default function GiftCards() {
                             Filter
                             <VscListFilter className="ml-2" />
                         </button>
-                        <div className="relative w-full md:w-auto mt-2 md:mt-0">
-                            <select className="border font-bold border-customText bg-background text-customText px-4 py-2">
-                                <option value="recommended">Recommended sorting</option>
-                                <option value="name-asc">Name: ascending</option>
-                                <option value="name-desc">Name: descending</option>
-                                <option value="price-asc">Price: low to high</option>
-                                <option value="price-desc">Price: high to low</option>
-                                <option value="relevance-asc">Relevance: ascending</option>
-                                <option value="relevance-desc">Relevance: descending</option>
+                        <div className="relative w-full md:w-auto mt-2 md:mt-0 flex md:justify-end justify-center">
+                            <select
+                                className="border font-bold border-customText bg-background text-customText px-4 py-2"
+                                onChange={handleSortChange}
+                            >
+                                <option value="default">Sorting</option>
+                                <option value="a-z">A-Z</option>
+                                <option value="z-a">Z-A</option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <p className="text-customText text-sm text-right">
-                    Showing 1-20 of 54 results
-                </p>
+                <div className="w-full flex justify-center md:justify-end">
+                    <p className="text-customText text-sm">
+                        Showing 1-20 of 54 results
+                    </p>
+                </div>
 
                 {isSidebarOpen && (
                     <div

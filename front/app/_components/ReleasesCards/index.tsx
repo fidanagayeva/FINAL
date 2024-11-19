@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FaStar } from 'react-icons/fa';
-import Link from 'next/link';
+import { FaStar } from "react-icons/fa";
+import Link from "next/link";
 
 const HeartIcon = ({ onClick }) => (
     <svg
@@ -38,6 +38,7 @@ interface HouseCard {
 export default function ReleasesCards() {
     const [houseCards, setHouseCards] = useState<HouseCard[]>([]);
     const [wishlist, setWishlist] = useState<HouseCard[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchHouseCards = async () => {
@@ -54,20 +55,46 @@ export default function ReleasesCards() {
     }, []);
 
     const handleAddToWishlist = (card: HouseCard) => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         if (!token) {
-            alert('You are not logged in. Please log in to add items to your wishlist.');
+            setIsModalOpen(true);
             return;
         }
         setWishlist((prev) => {
             const updatedWishlist = [...prev, card];
-            localStorage.setItem('wishlistItems', JSON.stringify(updatedWishlist));
+            localStorage.setItem("wishlistItems", JSON.stringify(updatedWishlist));
             return updatedWishlist;
         });
     };
 
     return (
         <div className="flex flex-col md:flex-row p-4 md:p-20">
+            {isModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-6 max-w-sm w-full">
+                        <h2 className="text-xl font-semibold text-customText mb-4">
+                            Not Logged In
+                        </h2>
+                        <p className="text-customText mb-6">
+                            You need to log in to add items to your wishlist.
+                        </p>
+                        <div className="flex justify-end gap-4">
+                            <button
+                                className="px-4 py-2 w-full text-customText hover:text-white border border-customText rounded-3xl hover:bg-customHover hover:border-customHover transition duration-300 backdrop-blur-md"
+                                onClick={() => setIsModalOpen(false)}
+                            >
+                                Close
+                            </button>
+                            <button
+                                className="px-4 py-2 w-full text-customText hover:text-white border border-customText rounded-3xl hover:bg-customHover hover:border-customHover transition duration-300 backdrop-blur-md"
+                                onClick={() => window.location.href = '/authpage'}
+                            >
+                                Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             <div className="relative mr-10 w-full md:w-1/2 mb-4 md:mb-0">
                 <img
                     src="https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2FPhilodendron_background_b5ef215490.jpg&w=640&q=75"
@@ -109,7 +136,7 @@ export default function ReleasesCards() {
                                 className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md z-20"
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    handleAddToWishlist(card); 
+                                    handleAddToWishlist(card);
                                 }}
                             >
                                 <HeartIcon />
@@ -119,17 +146,28 @@ export default function ReleasesCards() {
                         </div>
 
                         <div className="text-start relative z-10">
-                            <h2 className="text-[0.97rem] text-customText font-semibold">{card.title}</h2>
-                            <p className="text-customText text-[0.95rem] italic">{card.description}</p>
+                            <h2 className="text-[0.97rem] text-customText font-semibold">
+                                {card.title}
+                            </h2>
+                            <p className="text-customText text-[0.95rem] italic">
+                                {card.description}
+                            </p>
                             <div className="flex items-center gap-2">
-                                <p className="text-customText line-through">€{card.price.toFixed(2)}</p>
+                                <p className="text-customText line-through">
+                                    €{card.price.toFixed(2)}
+                                </p>
                                 {card.price2 && (
-                                    <p className="text-customPLNTS">€{card.price2.toFixed(2)}</p>
+                                    <p className="text-customPLNTS">
+                                        €{card.price2.toFixed(2)}
+                                    </p>
                                 )}
                             </div>
                             <div className="flex justify-start mt-2">
                                 {[...Array(5)].map((_, index) => (
-                                    <FaStar key={index} className="text-customText text-[0.7rem]" />
+                                    <FaStar
+                                        key={index}
+                                        className="text-customText text-[0.7rem]"
+                                    />
                                 ))}
                             </div>
                         </div>
@@ -138,8 +176,7 @@ export default function ReleasesCards() {
 
                 <div className="col-span-3 flex justify-center mt-6">
                     <Link href="/houseplants">
-                        <button className="px-6 py-2 w-[20rem] text-customText hover:text-white border border-customText rounded-3xl 
-                        hover:bg-customHover hover:border-customHover transition duration-300 backdrop-blur-md">
+                        <button className="px-6 py-2 w-[20rem] text-customText hover:text-white border border-customText rounded-3xl hover:bg-customHover hover:border-customHover transition duration-300 backdrop-blur-md">
                             Shop all our releases
                         </button>
                     </Link>
