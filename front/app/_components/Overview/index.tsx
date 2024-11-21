@@ -77,10 +77,10 @@ export default function Overview() {
     router.push('/authpage');
   };
 
-  const handleAddToWishlist = (item: WishlistItem) => {
-    setWishlistItems(prev => {
-      const updatedWishlist = [...prev, item];
-      localStorage.setItem('wishlistItems', JSON.stringify(updatedWishlist));
+  const handleRemoveFromWishlist = (_id: string) => {
+    setWishlistItems((prev) => {
+      const updatedWishlist = prev.filter((item) => item._id !== _id);
+      localStorage.setItem("wishlistItems", JSON.stringify(updatedWishlist));
       return updatedWishlist;
     });
   };
@@ -235,9 +235,7 @@ export default function Overview() {
                     <p className="text-customText text-center">€{item.price.toFixed(2)}</p>
                     <div
                       className="absolute top-7 right-8 w-8 h-8 flex items-center justify-center bg-white border border-customText rounded-full cursor-pointer"
-                      onClick={() => {
-                        setWishlistItems(prev => prev.filter(wishlistItem => wishlistItem._id !== item._id));
-                      }}
+                      onClick={() => handleRemoveFromWishlist(item._id)}
                     >
                       <FiX className="text-customText" />
                     </div>
